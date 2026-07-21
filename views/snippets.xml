@@ -38,7 +38,7 @@
     </template>
 
     <template id="ges_snippets" inherit_id="website.snippets" name="GES Website Snippets">
-        <xpath expr="//div[@id='snippet_structure']/div[@class='o_panel_body']" position="inside">
+        <xpath expr="//snippets[@id='snippet_structure']" position="inside">
             <t t-snippet="js_website_ges.s_ges_capabilities" string="GES — Capacidades" t-thumbnail="/js_website_ges/static/src/img/ges-logo.png"><keywords>GES, soluções, capacidades</keywords></t>
             <t t-snippet="js_website_ges.s_ges_proof_strip" string="GES — Indicadores" t-thumbnail="/js_website_ges/static/src/img/ges-logo.png"><keywords>GES, números, indicadores</keywords></t>
             <t t-snippet="js_website_ges.s_ges_quote_banner" string="GES — Cotação" t-thumbnail="/js_website_ges/static/src/img/ges-logo.png"><keywords>GES, contacto, cotação</keywords></t>

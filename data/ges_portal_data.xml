@@ -25,7 +25,7 @@
     <record id="product_ges_ready_concrete" model="product.template">
         <field name="name">Betão pronto</field>
         <field name="default_code">GES-BETAO</field>
-        <field name="type">product</field>
+        <field name="type">consu</field>
         <field name="sale_ok">True</field>
         <field name="purchase_ok">False</field>
         <field name="uom_id" ref="uom.product_uom_cubic_meter"/>
@@ -38,7 +38,7 @@
     <record id="product_ges_blocks" model="product.template">
         <field name="name">Blocos de construção</field>
         <field name="default_code">GES-BLOCO</field>
-        <field name="type">product</field>
+        <field name="type">consu</field>
         <field name="sale_ok">True</field>
         <field name="purchase_ok">False</field>
         <field name="uom_id" ref="uom.product_uom_unit"/>
@@ -51,7 +51,7 @@
     <record id="product_ges_construction_steel" model="product.template">
         <field name="name">Ferro de construção</field>
         <field name="default_code">GES-FERRO</field>
-        <field name="type">product</field>
+        <field name="type">consu</field>
         <field name="sale_ok">True</field>
         <field name="purchase_ok">False</field>
         <field name="uom_id" ref="uom.product_uom_kgm"/>
