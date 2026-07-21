@@ -10,8 +10,8 @@
                 <title>Portais GES</title>
                 <link rel="icon" type="image/x-icon" href="/js_website_ges/static/src/img/favicon.ico"/>
                 <link rel="stylesheet" href="/web/static/lib/fontawesome/css/font-awesome.css"/>
-                <link rel="stylesheet" href="/ges/assets/portal-light.css?v=20260721-2"/>
-                <script t-if="page_name == 'ges_calculator'" defer="defer" src="/js_website_ges/static/src/js/ges_portal_light.js"></script>
+                <link rel="stylesheet" href="/ges/assets/portal-light.css?v=20260721-3"/>
+                <script t-if="page_name in ('ges_calculator', 'ges_subcontractor_register')" defer="defer" src="/js_website_ges/static/src/js/ges_portal_light.js"></script>
             </head>
             <body class="ges-light-body">
                 <header class="ges-light-header">
@@ -368,18 +368,27 @@
     <template id="ges_subcontractor_register" name="Cadastro de Subempreiteiro GES">
         <t t-call="js_website_ges.ges_portal_light_layout">
             <div class="ges-portal-shell ges-subcontractor-shell">
-                <section class="ges-portal-page-head"><div><span class="ges-portal-kicker">Cadastro de parceiros</span><h1>Apresente a sua capacidade.</h1><p>Após o cadastro, defina a sua senha e complete documentos, certificações e tabela de preços na área digital GES.</p></div><img class="ges-register-logo" src="/js_website_ges/static/src/img/ges-logo-white.png" alt="GES"/></section>
+                <section class="ges-portal-page-head"><div><span class="ges-portal-kicker">Cadastro de parceiros</span><h1>Apresente a sua capacidade.</h1><p>O cadastro inicial demora cerca de 6 a 8 minutos. Depois, a GES analisa os dados, documentos e especialidades para activar oportunidades compatíveis.</p></div><img class="ges-register-logo" src="/js_website_ges/static/src/img/ges-logo-white.png" alt="GES"/></section>
                 <div t-if="errors" class="alert alert-danger ges-portal-alert"><ul><li t-foreach="errors" t-as="error" t-esc="error"/></ul></div>
-                <form action="/subempreiteiros/cadastro" method="post" enctype="multipart/form-data" class="ges-portal-section ges-contractor-form">
+                <form action="/subempreiteiros/cadastro" method="post" enctype="multipart/form-data" class="ges-portal-section ges-contractor-form" data-ges-subcontractor-register="1">
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="ges-register-progress" aria-label="Progresso do cadastro">
+                        <div class="ges-register-progress__summary"><span>Cadastro inicial</span><strong>6–8 min</strong></div>
+                        <ol>
+                            <li><strong>01</strong><span>Fornecedor</span></li>
+                            <li><strong>02</strong><span>Capacidade</span></li>
+                            <li><strong>03</strong><span>Documentos</span></li>
+                            <li><strong>04</strong><span>Acesso</span></li>
+                        </ol>
+                    </div>
                     <div class="ges-form-block"><div class="ges-form-block__head"><span>01</span><div><h2>Dados do fornecedor</h2><p>Informação fiscal e contacto principal.</p></div></div><div class="ges-project-fields__grid">
                         <label>Nome do responsável *<input name="name" required="required" maxlength="120" t-att-value="form_values.get('name', '')"/></label>
                         <label>Email *<input name="email" type="email" required="required" maxlength="254" t-att-value="form_values.get('email', '')"/></label>
                         <label>Telefone *<input name="phone" type="tel" required="required" maxlength="40" t-att-value="form_values.get('phone', '')"/></label>
-                        <label>Empresa ou equipa *<input name="company_name" required="required" maxlength="150" t-att-value="form_values.get('company_name', '')"/></label>
-                        <label>Razão social<input name="legal_name" maxlength="150" t-att-value="form_values.get('legal_name', '')"/></label>
-                        <label>Tipo de fornecedor<select name="supplier_type"><option value="company" t-att-selected="form_values.get('supplier_type', 'company') == 'company'">Empresa formal</option><option value="team" t-att-selected="form_values.get('supplier_type') == 'team'">Equipa técnica</option><option value="individual" t-att-selected="form_values.get('supplier_type') == 'individual'">Técnico independente</option></select></label>
-                        <label>NUIT<input name="nuit" maxlength="30" t-att-value="form_values.get('nuit', '')"/></label>
+                        <label data-ges-company-label="1">Empresa ou equipa *<input name="company_name" required="required" maxlength="150" placeholder="Nome comercial ou da equipa" t-att-value="form_values.get('company_name', '')"/></label>
+                        <label data-ges-company-only="1">Razão social<input name="legal_name" maxlength="150" placeholder="Obrigatório para empresa formal" t-att-value="form_values.get('legal_name', '')"/></label>
+                        <label>Tipo de fornecedor<select name="supplier_type" data-ges-supplier-type="1"><option value="company" t-att-selected="form_values.get('supplier_type', 'company') == 'company'">Empresa formal</option><option value="team" t-att-selected="form_values.get('supplier_type') == 'team'">Equipa técnica</option><option value="individual" t-att-selected="form_values.get('supplier_type') == 'individual'">Técnico independente</option></select></label>
+                        <label data-ges-fiscal-field="1">NUIT<input name="nuit" maxlength="30" placeholder="Se aplicável" t-att-value="form_values.get('nuit', '')"/></label>
                         <label>Província<input name="province" maxlength="80" t-att-value="form_values.get('province', '')"/></label>
                         <label>Cidade / distrito<input name="city" maxlength="80" t-att-value="form_values.get('city', '')"/></label>
                         <label>Endereço<input name="street" maxlength="180" t-att-value="form_values.get('street', '')"/></label>
@@ -399,7 +408,14 @@
                         <label class="ges-field-wide">Documentos do fornecedor<input name="documents" type="file" multiple="multiple" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,.xls,.xlsx"/></label>
                         <label class="ges-field-wide">Certificações<input name="certificates" type="file" multiple="multiple" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,.xls,.xlsx"/></label>
                     </div></div>
-                    <button type="submit" class="ges-portal-btn ges-contractor-submit">Continuar e definir senha</button>
+                    <div class="ges-form-block ges-register-next-step"><div class="ges-form-block__head"><span>04</span><div><h2>Antes de criar a senha</h2><p>Depois de enviar este cadastro, receberá um link seguro para definir a senha e entrar no portal de subempreiteiro.</p></div></div>
+                        <div class="ges-next-step-grid">
+                            <article><i class="fa fa-clock-o"></i><strong>Análise inicial</strong><span>A equipa GES valida os dados e documentos conforme a procura por especialidade.</span></article>
+                            <article><i class="fa fa-lock"></i><strong>Dados protegidos</strong><span>Informação fiscal e anexos ficam associados ao perfil de fornecedor para avaliação e contacto comercial.</span></article>
+                            <article><i class="fa fa-bell-o"></i><strong>Oportunidades</strong><span>Com o perfil completo, poderá receber e acompanhar oportunidades compatíveis na área digital.</span></article>
+                        </div>
+                    </div>
+                    <button type="submit" class="ges-portal-btn ges-contractor-submit">Enviar cadastro e receber acesso</button>
                 </form>
             </div>
         </t>
