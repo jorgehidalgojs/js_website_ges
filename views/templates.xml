@@ -20,11 +20,16 @@
                 <meta property="og:description" t-att-content="website_meta_description"/>
                 <meta property="og:url" t-att-content="seo_canonical_url"/>
                 <meta property="og:image" t-att-content="seo_base_url + seo_image"/>
+                <meta property="og:image:url" t-att-content="seo_base_url + seo_image"/>
                 <meta property="og:image:secure_url" t-att-content="seo_base_url + seo_image"/>
+                <meta property="og:image:type" t-att-content="seo_image_type"/>
                 <meta property="og:image:alt" t-att-content="seo_image_alt"/>
-                <meta property="og:image:width" content="1988"/>
-                <meta property="og:image:height" content="1000"/>
+                <meta property="og:image:width" t-att-content="seo_image_width"/>
+                <meta property="og:image:height" t-att-content="seo_image_height"/>
+                <meta name="image" t-att-content="seo_base_url + seo_image"/>
                 <meta name="twitter:card" content="summary_large_image"/>
+                <meta name="twitter:domain" content="generalexpress.co.mz"/>
+                <meta name="twitter:url" t-att-content="seo_canonical_url"/>
                 <meta name="twitter:title" t-att-content="title"/>
                 <meta name="twitter:description" t-att-content="website_meta_description"/>
                 <meta name="twitter:image" t-att-content="seo_base_url + seo_image"/>
