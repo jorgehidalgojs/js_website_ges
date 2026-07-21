@@ -255,6 +255,20 @@ body.ges-light-body {
 .ges-form-block__head > span { width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center; color: #111; background: #ffcc00; font-size: 12px; font-weight: 900; }
 .ges-form-block__head h2 { margin: 0 0 6px; font-size: 28px; line-height: 1.05; }
 .ges-form-block__head p { max-width: 660px; margin: 0; color: #69716f; font-size: 14px; line-height: 1.5; }
+.ges-register-progress { margin: -8px 0 30px; padding: 18px; border: 1px solid #dededb; background: #fbfbf8; }
+.ges-register-progress__summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; color: #4f5755; font-size: 11px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.ges-register-progress__summary strong { color: #111; font-size: 13px; }
+.ges-register-progress ol { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 0; padding: 0; list-style: none; }
+.ges-register-progress li { min-height: 66px; display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 10px; padding: 12px; background: #fff; border: 1px solid #e1e1dd; }
+.ges-register-progress li strong { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; color: #111; background: #ffcc00; font-size: 11px; }
+.ges-register-progress li span { color: #242827; font-size: 12px; font-weight: 900; text-transform: uppercase; }
+.ges-contractor-form label.is-context-hidden { display: none; }
+.ges-register-next-step { padding-bottom: 0; }
+.ges-next-step-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.ges-next-step-grid article { min-height: 170px; padding: 22px; border: 1px solid #dededb; background: #f8f8f5; }
+.ges-next-step-grid i { width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 18px; color: #111; background: #ffcc00; font-size: 18px; }
+.ges-next-step-grid strong { display: block; margin-bottom: 8px; color: #111; font-size: 18px; line-height: 1.1; }
+.ges-next-step-grid span { display: block; color: #636b68; font-size: 13px; line-height: 1.5; }
 .ges-contractor-form label { color: #4b5351; font-size: 11px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; }
 .ges-contractor-form input, .ges-contractor-form select, .ges-contractor-form textarea { width: 100%; min-height: 50px; display: block; margin-top: 7px; padding: 11px 12px; border: 1px solid #c8cac7; border-radius: 0; background: #fff; color: #151817; font-size: 16px; font-weight: 500; letter-spacing: 0; text-transform: none; }
 .ges-contractor-form textarea { min-height: 132px; resize: vertical; }
@@ -333,5 +347,8 @@ body.ges-light-body {
     .ges-register-logo, .ges-job-detail-head img { width: 140px; }
     .ges-form-block__head { grid-template-columns: 1fr; gap: 12px; }
     .ges-form-block__head h2 { font-size: 24px; }
+    .ges-register-progress { margin-top: 0; padding: 14px; }
+    .ges-register-progress ol, .ges-next-step-grid { grid-template-columns: 1fr; }
+    .ges-register-progress li { min-height: 56px; }
     .ges-profile-meter { width: 122px; height: 122px; }
 }

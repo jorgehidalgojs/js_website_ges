@@ -91,4 +91,61 @@
             }
         });
     });
+
+    ready(function () {
+        var form = document.querySelector('[data-ges-subcontractor-register]');
+        if (!form) {
+            return;
+        }
+
+        var supplierType = form.querySelector('[data-ges-supplier-type]');
+        var companyLabel = form.querySelector('[data-ges-company-label]');
+        var companyInput = companyLabel && companyLabel.querySelector('input');
+        var companyOnlyFields = form.querySelectorAll('[data-ges-company-only]');
+        var fiscalFields = form.querySelectorAll('[data-ges-fiscal-field]');
+
+        function setLabelText(label, text) {
+            if (!label) { return; }
+            Array.prototype.slice.call(label.childNodes).some(function (node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    node.nodeValue = text;
+                    return true;
+                }
+                return false;
+            });
+        }
+
+        function toggleFields(fields, visible) {
+            fields.forEach(function (field) {
+                field.classList.toggle('is-context-hidden', !visible);
+                field.querySelectorAll('input, select, textarea').forEach(function (input) {
+                    if (!visible) {
+                        input.setAttribute('data-ges-disabled-context', '1');
+                        input.disabled = true;
+                    } else if (input.getAttribute('data-ges-disabled-context') === '1') {
+                        input.disabled = false;
+                        input.removeAttribute('data-ges-disabled-context');
+                    }
+                });
+            });
+        }
+
+        function updateSupplierContext() {
+            var value = supplierType ? supplierType.value : 'company';
+            var isCompany = value === 'company';
+            var isIndividual = value === 'individual';
+
+            setLabelText(companyLabel, isIndividual ? 'Nome profissional *' : (isCompany ? 'Empresa *' : 'Nome da equipa *'));
+            if (companyInput) {
+                companyInput.placeholder = isIndividual ? 'Nome usado profissionalmente' : (isCompany ? 'Nome comercial da empresa' : 'Nome da equipa técnica');
+            }
+            toggleFields(companyOnlyFields, isCompany);
+            toggleFields(fiscalFields, !isIndividual);
+        }
+
+        updateSupplierContext();
+        if (supplierType) {
+            supplierType.addEventListener('change', updateSupplierContext);
+        }
+    });
 }());
