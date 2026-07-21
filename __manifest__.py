@@ -9,7 +9,7 @@ soluções, projectos, notícias e pedido de cotação.
     'author': 'General Express Service',
     'website': 'https://www.generalexpress.co.mz',
     'category': 'Website/Website',
-    'version': '15.0.8.0.0',
+    'version': '18.0.8.0.0',
     'license': 'LGPL-3',
     'depends': ['website', 'portal', 'sale_management', 'mail', 'auth_signup'],
     'data': [
