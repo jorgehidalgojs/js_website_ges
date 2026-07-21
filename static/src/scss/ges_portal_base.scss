@@ -211,6 +211,33 @@ body.ges-light-body {
 .ges-subcontractor-hero__logo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; background: #ffcc00; }
 .ges-subcontractor-hero__logo img { width: 220px; filter: none; }
 .ges-subcontractor-hero__logo span { color: #111; font-size: 10px; font-weight: 900; letter-spacing: .3em; }
+.ges-portal-link-light { align-self: center; padding-bottom: 4px; border-bottom: 2px solid rgba(255,204,0,.8); color: #fff !important; font-size: 12px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; text-decoration: none !important; }
+.ges-portal-link-light:hover { color: #ffcc00 !important; }
+.ges-subcontractor-trustline { max-width: 760px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin-top: 28px; border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.08); }
+.ges-subcontractor-trustline span { min-height: 86px; display: flex; flex-direction: column; justify-content: center; padding: 18px; color: #c5cbc9; font-size: 11px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.ges-subcontractor-trustline strong { color: #ffcc00; font-family: "Arial Black", Arial, sans-serif; font-size: 28px; line-height: 1; }
+.ges-subcontractor-proof { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid #dededb; border-top: 0; background: #fff; }
+.ges-subcontractor-proof article { min-height: 190px; padding: 30px; border-right: 1px solid #dededb; }
+.ges-subcontractor-proof article:last-child { border-right: 0; }
+.ges-subcontractor-proof i { color: #b38e00; font-size: 28px; }
+.ges-subcontractor-proof span { display: block; margin: 22px 0 10px; color: #111; font-size: 20px; font-weight: 900; line-height: 1.1; }
+.ges-subcontractor-proof p { margin: 0; color: #68706d; font-size: 14px; line-height: 1.55; }
+.ges-subcontractor-process { background: linear-gradient(180deg, #fff, #fbfbf8); }
+.ges-process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.ges-process-grid article { min-height: 220px; padding: 24px; border: 1px solid #dededb; background: #fff; }
+.ges-process-grid strong { width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center; color: #111; background: #ffcc00; font-size: 12px; }
+.ges-process-grid h3 { margin: 24px 0 10px; font-size: 22px; }
+.ges-process-grid p { margin: 0; color: #69716f; font-size: 14px; line-height: 1.5; }
+.ges-process-note { margin: 22px 0 0; padding: 18px 20px; border-left: 4px solid #ffcc00; background: #f8f8f5; color: #515957; font-size: 14px; line-height: 1.55; }
+.ges-opportunity-preview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.ges-opportunity-preview > article { min-height: 245px; padding: 26px; border: 1px solid #dededb; background: #f8f8f5; }
+.ges-opportunity-preview > article span { color: #8a7100; font-size: 10px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.ges-opportunity-preview > article h3 { margin: 28px 0 12px; font-size: 25px; line-height: 1.08; }
+.ges-opportunity-preview > article p { margin: 0; color: #626967; font-size: 14px; line-height: 1.55; }
+.ges-early-access { grid-column: 1 / -1; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 22px; padding: 24px; color: #fff; background: #111313; }
+.ges-early-access i { width: 54px; height: 54px; display: inline-flex; align-items: center; justify-content: center; color: #111; background: #ffcc00; font-size: 24px; }
+.ges-early-access h3 { margin: 0 0 6px; color: #fff; font-size: 24px; }
+.ges-early-access p { margin: 0; color: #c6ccca; font-size: 14px; line-height: 1.5; }
 .ges-job-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .ges-job-card { min-height: 270px; display: flex; flex-direction: column; padding: 26px; border: 1px solid #dededb; background: #f8f8f5; }
 .ges-job-card__meta { display: flex; justify-content: space-between; gap: 12px; color: #777e7c; font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
@@ -281,7 +308,8 @@ body.ges-light-body {
 @media (max-width: 991px) {
     .ges-subcontractor-hero { grid-template-columns: 1fr; }
     .ges-subcontractor-hero__logo { display: none; }
-    .ges-job-grid { grid-template-columns: 1fr 1fr; }
+    .ges-subcontractor-proof, .ges-process-grid, .ges-opportunity-preview, .ges-job-grid { grid-template-columns: 1fr 1fr; }
+    .ges-early-access { grid-template-columns: 1fr; }
     .ges-job-detail-grid, .ges-supplier-summary > div { grid-template-columns: 1fr; }
     .ges-application-panel { position: static; }
 }
@@ -291,7 +319,12 @@ body.ges-light-body {
     .ges-subcontractor-hero { min-height: 520px; }
     .ges-subcontractor-hero > div:first-child { padding: 44px 22px; }
     .ges-subcontractor-hero h1 { font-size: 43px; }
-    .ges-job-grid, .ges-contractor-stats, .ges-doc-grid { grid-template-columns: 1fr; }
+    .ges-subcontractor-trustline, .ges-subcontractor-proof, .ges-process-grid, .ges-opportunity-preview, .ges-job-grid, .ges-contractor-stats, .ges-doc-grid { grid-template-columns: 1fr; }
+    .ges-subcontractor-trustline span { min-height: 74px; }
+    .ges-subcontractor-proof article { border-right: 0; border-bottom: 1px solid #dededb; }
+    .ges-subcontractor-proof article:last-child { border-bottom: 0; }
+    .ges-portal-link-light { align-self: flex-start; }
+    .ges-early-access { padding: 22px 18px; }
     .ges-job-card { min-height: 240px; }
     .ges-subcontractor-dashboard-head, .ges-job-detail-head { align-items: flex-start; flex-direction: column; padding: 38px 22px; }
     .ges-subcontractor-dashboard-head .ges-portal-btn { width: 100%; }

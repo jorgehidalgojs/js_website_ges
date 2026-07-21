@@ -307,17 +307,59 @@
         <t t-call="js_website_ges.ges_portal_light_layout">
             <div class="ges-portal-shell ges-subcontractor-shell">
                 <section class="ges-subcontractor-hero">
-                    <div><span class="ges-portal-kicker">Rede de parceiros GES</span><h1>Cresça connosco. Execute projectos que deixam marca.</h1><p>Cadastre a sua empresa ou equipa, encontre oportunidades e acompanhe cada candidatura num portal profissional.</p><div class="ges-portal-actions"><a class="ges-portal-btn" href="/subempreiteiros/cadastro">Cadastrar como subempreiteiro</a><a class="ges-portal-btn ges-portal-btn--ghost" href="#oportunidades">Ver oportunidades</a></div></div>
+                    <div>
+                        <span class="ges-portal-kicker">Rede de parceiros GES</span>
+                        <h1>Receba oportunidades de obra com uma empresa organizada.</h1>
+                        <p>Cadastre a sua equipa para ganhar visibilidade junto da GES, apresentar serviços, preços, documentos e disponibilidade para projectos de construção em Moçambique.</p>
+                        <div class="ges-portal-actions">
+                            <a class="ges-portal-btn" href="/subempreiteiros/cadastro">Cadastrar como subempreiteiro</a>
+                            <a class="ges-portal-link-light" href="/web/login?redirect=/my/ges/subempreiteiro">Já tenho conta</a>
+                        </div>
+                        <div class="ges-subcontractor-trustline">
+                            <span><strong>15</strong> áreas operacionais</span>
+                            <span><strong>2.000</strong> blocos/dia</span>
+                            <span><strong>MZ</strong> rede em qualificação</span>
+                        </div>
+                    </div>
                     <div class="ges-subcontractor-hero__logo"><img src="/js_website_ges/static/src/img/ges-logo.png" alt="General Express Service"/><span>PARTNER NETWORK</span></div>
                 </section>
+
+                <section class="ges-subcontractor-proof" aria-label="Credibilidade da GES">
+                    <article><i class="fa fa-building-o"></i><span>Projectos residenciais e institucionais</span><p>Actuação em construção, reabilitação, manutenção e suporte operacional.</p></article>
+                    <article><i class="fa fa-industry"></i><span>Produção e logística próprias</span><p>Betão, blocos, equipamentos, transporte e materiais coordenados numa operação integrada.</p></article>
+                    <article><i class="fa fa-handshake-o"></i><span>Fornecedores melhor qualificados</span><p>Perfis completos ajudam a seleccionar parceiros por especialidade, cobertura, documentos e preços.</p></article>
+                </section>
+
+                <section class="ges-portal-section ges-subcontractor-process">
+                    <div class="ges-portal-section__head">
+                        <div><span class="ges-portal-kicker">Como funciona</span><h2>Depois do cadastro, o que acontece?</h2></div>
+                    </div>
+                    <div class="ges-process-grid">
+                        <article><strong>01</strong><h3>Cadastre-se</h3><p>Envie os dados principais da empresa, equipa ou técnico independente.</p></article>
+                        <article><strong>02</strong><h3>Complete o perfil</h3><p>Adicione documentos, certificações, serviços, preços indicativos e área de cobertura.</p></article>
+                        <article><strong>03</strong><h3>Análise GES</h3><p>A equipa valida a informação, capacidade técnica, documentação e aderência às necessidades de obra.</p></article>
+                        <article><strong>04</strong><h3>Receba oportunidades</h3><p>Quando surgirem vagas compatíveis, pode candidatar-se e acompanhar o estado no portal.</p></article>
+                    </div>
+                    <p class="ges-process-note">A análise depende da documentação submetida e da procura por especialidade. Perfis completos tendem a avançar mais rápido quando surgem necessidades compatíveis.</p>
+                </section>
+
                 <section id="oportunidades" class="ges-portal-section">
-                    <div class="ges-portal-section__head"><div><span class="ges-portal-kicker">Trabalhe com a GES</span><h2>Oportunidades abertas</h2></div><a href="/web/login?redirect=/my/ges/subempreiteiro">Já tenho conta</a></div>
+                    <div class="ges-portal-section__head"><div><span class="ges-portal-kicker">Trabalhe com a GES</span><h2>Tipos de oportunidade</h2></div><a href="/subempreiteiros/cadastro">Cadastrar agora</a></div>
                     <div t-if="jobs" class="ges-job-grid">
                         <article t-foreach="jobs" t-as="job" class="ges-job-card">
                             <div class="ges-job-card__meta"><span t-esc="job.trade"/><span t-esc="job.reference"/></div><h3 t-esc="job.name"/><p><i class="fa fa-map-marker"/> <t t-esc="job.location"/></p><div class="ges-job-card__footer"><span t-if="job.deadline">Até <span t-field="job.deadline"/></span><a t-att-href="'/web/login?redirect=/my/ges/subempreiteiro/vagas/%s' % job.id">Ver e postular</a></div>
                         </article>
                     </div>
-                    <div t-else="" class="ges-portal-empty"><i class="fa fa-briefcase"/><h3>Novas oportunidades em preparação</h3><p>Cadastre-se para ter o perfil pronto quando forem publicadas.</p><a class="ges-portal-btn" href="/subempreiteiros/cadastro">Criar perfil</a></div>
+                    <div t-else="" class="ges-opportunity-preview">
+                        <article><span>Construção civil</span><h3>Equipas para obra e reabilitação</h3><p>Alvenaria, reboco, pintura, acabamentos e pequenas empreitadas por especialidade.</p></article>
+                        <article><span>Instalações técnicas</span><h3>Electricidade, canalização e manutenção</h3><p>Parceiros com capacidade de resposta, documentação e referências técnicas.</p></article>
+                        <article><span>Operação e apoio</span><h3>Transporte, equipamentos e mão de obra</h3><p>Disponibilidade para suporte operacional em obras e entregas programadas.</p></article>
+                        <div class="ges-early-access">
+                            <i class="fa fa-bell-o"></i>
+                            <div><h3>As vagas públicas estão em preparação.</h3><p>Cadastre-se agora para estar na base de parceiros e ser notificado quando surgirem oportunidades na sua especialidade.</p></div>
+                            <a class="ges-portal-btn" href="/subempreiteiros/cadastro">Cadastrar cedo</a>
+                        </div>
+                    </div>
                 </section>
             </div>
         </t>
