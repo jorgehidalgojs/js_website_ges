@@ -231,6 +231,9 @@ CATALOG_GROUPS = [
 
 GES_CANONICAL_DOMAIN = 'generalexpress.co.mz'
 GES_DEFAULT_BASE_URL = 'https://www.generalexpress.co.mz'
+GES_SOCIAL_IMAGE = '/js_website_ges/static/src/img/ges-social-preview.jpg'
+GES_SOCIAL_IMAGE_WIDTH = 1200
+GES_SOCIAL_IMAGE_HEIGHT = 630
 
 
 SEO_PAGES = {
@@ -385,7 +388,12 @@ def _apply_structured_data(values, canonical_path, breadcrumb_items):
                 'width': 1550,
                 'height': 620,
             },
-            'image': base_url + '/js_website_ges/static/src/img/hero-integrated.webp',
+            'image': {
+                '@type': 'ImageObject',
+                'url': base_url + GES_SOCIAL_IMAGE,
+                'width': GES_SOCIAL_IMAGE_WIDTH,
+                'height': GES_SOCIAL_IMAGE_HEIGHT,
+            },
             'description': 'Soluções integradas para construção, reabilitação e manutenção em Moçambique.',
             'email': 'comercial@generalexpress.co.mz',
             'telephone': ['+258858900313', '+258849102552'],
@@ -456,6 +464,8 @@ def _apply_structured_data(values, canonical_path, breadcrumb_items):
             'primaryImageOfPage': {
                 '@type': 'ImageObject',
                 'url': base_url + values['seo_image'],
+                'width': values['seo_image_width'],
+                'height': values['seo_image_height'],
             },
         },
     ]
@@ -491,8 +501,11 @@ def _page_values(active):
         'solutions': _solutions(),
         'seo_keywords': SEO_PAGES[active].get('keywords', 'construção em Moçambique, betão, blocos, materiais de construção, aluguer de equipamentos, logística, mão de obra, infraestruturas'),
         'seo_schema_json': None,
-        'seo_image': '/js_website_ges/static/src/img/hero-integrated.webp',
-        'seo_image_alt': 'Capacidade integrada da General Express Service em Moçambique',
+        'seo_image': GES_SOCIAL_IMAGE,
+        'seo_image_alt': 'GES — construção, betão e soluções integradas em Moçambique',
+        'seo_image_width': GES_SOCIAL_IMAGE_WIDTH,
+        'seo_image_height': GES_SOCIAL_IMAGE_HEIGHT,
+        'seo_image_type': 'image/jpeg',
         'seo_canonical_path': canonical_path,
         'seo_base_url': _site_base_url(),
         'seo_canonical_url': _site_base_url() + canonical_path,
