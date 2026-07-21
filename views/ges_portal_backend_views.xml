@@ -138,28 +138,395 @@
     </record>
 
     <record id="view_ges_subcontractor_profile_tree" model="ir.ui.view">
-        <field name="name">ges.subcontractor.profile.tree</field><field name="model">ges.subcontractor.profile</field><field name="arch" type="xml"><list decoration-success="state == 'approved'" decoration-warning="state == 'pending'"><field name="company_name"/><field name="supplier_type"/><field name="nuit"/><field name="phone"/><field name="province"/><field name="trades"/><field name="price_range_min"/><field name="price_range_max"/><field name="profile_completeness" widget="progressbar"/><field name="document_count"/><field name="application_count"/><field name="state" widget="badge"/></list></field>
+        <field name="name">ges.subcontractor.profile.list</field>
+        <field name="model">ges.subcontractor.profile</field>
+        <field name="arch" type="xml">
+            <list string="Subempreiteiros" decoration-success="state == 'approved'" decoration-warning="state == 'pending'" decoration-muted="state == 'suspended'">
+                <field name="company_name"/>
+                <field name="supplier_type"/>
+                <field name="province"/>
+                <field name="coverage_area" optional="hide"/>
+                <field name="trades"/>
+                <field name="team_size" optional="show"/>
+                <field name="years_experience" optional="hide"/>
+                <field name="price_range_min" optional="hide"/>
+                <field name="price_range_max" optional="hide"/>
+                <field name="profile_completeness" widget="progressbar"/>
+                <field name="document_count"/>
+                <field name="application_count"/>
+                <field name="phone" optional="hide"/>
+                <field name="email" optional="hide"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
     </record>
+
     <record id="view_ges_subcontractor_profile_form" model="ir.ui.view">
-        <field name="name">ges.subcontractor.profile.form</field><field name="model">ges.subcontractor.profile</field><field name="arch" type="xml"><form string="Subempreiteiro"><header><button name="action_approve" type="object" string="Aprovar" class="oe_highlight" invisible="state == 'approved'"/><button name="action_suspend" type="object" string="Suspender" invisible="state == 'suspended'"/><field name="state" widget="statusbar" statusbar_visible="pending,approved,suspended"/></header><sheet><div class="oe_title"><h1><field name="company_name"/></h1></div><group string="Qualificação"><field name="profile_completeness" widget="progressbar"/><field name="document_count"/><field name="application_count"/></group><group><group string="Fornecedor"><field name="partner_id"/><field name="legal_name"/><field name="supplier_type"/><field name="email"/><field name="phone"/><field name="nuit"/><field name="tax_regime"/><field name="license_number"/></group><group string="Localização e capacidade"><field name="street"/><field name="city"/><field name="province"/><field name="coverage_area"/><field name="trades"/><field name="team_size"/><field name="years_experience"/><field name="availability"/></group></group><group string="Preços indicativos"><field name="currency_id"/><field name="price_range_min"/><field name="price_range_max"/></group><notebook><page string="Serviços"><field name="service_pricing"/><field name="equipment"/></page><page string="Certificações"><field name="certifications"/><field name="certification_attachment_ids" widget="many2many_binary"/></page><page string="Documentos"><field name="document_attachment_ids" widget="many2many_binary"/></page><page string="Apresentação"><field name="presentation"/></page><page string="Dados comerciais"><field name="bank_name"/><field name="bank_account"/><field name="payment_terms"/></page><page string="Candidaturas"><field name="application_ids" readonly="1"><list><field name="name"/><field name="job_id"/><field name="create_date"/><field name="proposed_price"/><field name="execution_days"/><field name="state" widget="badge"/></list></field></page></notebook></sheet><div class="oe_chatter"><field name="message_follower_ids" widget="mail_followers"/><field name="activity_ids" widget="mail_activity"/><field name="message_ids" widget="mail_thread"/></div></form></field>
+        <field name="name">ges.subcontractor.profile.form</field>
+        <field name="model">ges.subcontractor.profile</field>
+        <field name="arch" type="xml">
+            <form string="Subempreiteiro">
+                <header>
+                    <button name="action_approve" type="object" string="Aprovar" class="oe_highlight" invisible="state == 'approved'"/>
+                    <button name="action_suspend" type="object" string="Suspender" invisible="state == 'suspended'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,approved,suspended"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="company_name"/>
+                        <h1><field name="company_name" placeholder="Nome comercial do subempreiteiro"/></h1>
+                        <h2><field name="legal_name" placeholder="Razão social"/></h2>
+                    </div>
+
+                    <group string="Resumo operacional">
+                        <group>
+                            <field name="profile_completeness" widget="progressbar"/>
+                            <field name="document_count"/>
+                            <field name="application_count"/>
+                        </group>
+                        <group>
+                            <field name="availability"/>
+                            <field name="team_size"/>
+                            <field name="years_experience"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Dados de fornecedor">
+                            <field name="partner_id"/>
+                            <field name="supplier_type"/>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="nuit"/>
+                            <field name="tax_regime"/>
+                            <field name="license_number"/>
+                        </group>
+                        <group string="Localização e cobertura">
+                            <field name="street"/>
+                            <field name="city"/>
+                            <field name="province"/>
+                            <field name="coverage_area" placeholder="Ex.: Maputo, Matola, Gaza, Sofala..."/>
+                            <field name="trades" placeholder="Ex.: construção civil, electricidade, canalização"/>
+                        </group>
+                    </group>
+
+                    <group string="Preços indicativos">
+                        <group>
+                            <field name="currency_id"/>
+                            <field name="price_range_min"/>
+                            <field name="price_range_max"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Serviços e capacidade">
+                            <group>
+                                <field name="service_pricing" nolabel="1" placeholder="Serviços prestados, unidades de cobrança e preços indicativos..."/>
+                            </group>
+                            <group string="Equipamentos disponíveis">
+                                <field name="equipment" nolabel="1" placeholder="Equipamentos, máquinas, ferramentas e viaturas disponíveis..."/>
+                            </group>
+                        </page>
+                        <page string="Certificações">
+                            <group>
+                                <field name="certifications" nolabel="1" placeholder="Licenças, alvarás, certificações técnicas e validade..."/>
+                            </group>
+                            <field name="certification_attachment_ids" widget="many2many_binary"/>
+                        </page>
+                        <page string="Documentos">
+                            <field name="document_attachment_ids" widget="many2many_binary"/>
+                        </page>
+                        <page string="Apresentação">
+                            <field name="presentation" nolabel="1" placeholder="Carta de apresentação, experiência relevante e obras já executadas..."/>
+                        </page>
+                        <page string="Dados comerciais">
+                            <group>
+                                <group>
+                                    <field name="bank_name"/>
+                                    <field name="bank_account"/>
+                                </group>
+                                <group>
+                                    <field name="payment_terms"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Candidaturas">
+                            <field name="application_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="job_id"/>
+                                    <field name="create_date"/>
+                                    <field name="availability_date"/>
+                                    <field name="proposed_team_size"/>
+                                    <field name="proposed_price"/>
+                                    <field name="execution_days"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
     </record>
-    <record id="action_ges_subcontractor_profiles" model="ir.actions.act_window"><field name="name">Subempreiteiros</field><field name="res_model">ges.subcontractor.profile</field><field name="view_mode">list,form</field></record>
+
+    <record id="view_ges_subcontractor_profile_search" model="ir.ui.view">
+        <field name="name">ges.subcontractor.profile.search</field>
+        <field name="model">ges.subcontractor.profile</field>
+        <field name="arch" type="xml">
+            <search string="Pesquisar subempreiteiros">
+                <field name="company_name"/>
+                <field name="legal_name"/>
+                <field name="partner_id"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="nuit"/>
+                <field name="province"/>
+                <field name="trades"/>
+                <filter string="Em análise" name="pending" domain="[('state', '=', 'pending')]"/>
+                <filter string="Aprovados" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Suspensos" name="suspended" domain="[('state', '=', 'suspended')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Estado" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Tipo de fornecedor" name="group_supplier_type" context="{'group_by': 'supplier_type'}"/>
+                    <filter string="Província" name="group_province" context="{'group_by': 'province'}"/>
+                    <filter string="Disponibilidade" name="group_availability" context="{'group_by': 'availability'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_ges_subcontractor_profiles" model="ir.actions.act_window">
+        <field name="name">Subempreiteiros</field>
+        <field name="res_model">ges.subcontractor.profile</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_ges_subcontractor_profile_search"/>
+        <field name="context">{'search_default_pending': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Registe e qualifique subempreiteiros da rede GES.</p>
+            <p>Controle dados de fornecedor, documentos, certificações, serviços, preços indicativos e histórico de candidaturas.</p>
+        </field>
+    </record>
 
     <record id="view_ges_subcontractor_job_tree" model="ir.ui.view">
-        <field name="name">ges.subcontractor.job.tree</field><field name="model">ges.subcontractor.job</field><field name="arch" type="xml"><list decoration-success="state == 'published'" decoration-muted="state == 'closed'"><field name="reference"/><field name="name"/><field name="trade"/><field name="location"/><field name="publish_date"/><field name="deadline"/><field name="application_count"/><field name="state" widget="badge"/></list></field>
+        <field name="name">ges.subcontractor.job.list</field>
+        <field name="model">ges.subcontractor.job</field>
+        <field name="arch" type="xml">
+            <list string="Oportunidades" decoration-success="state == 'published'" decoration-muted="state == 'closed'" decoration-info="state == 'draft'">
+                <field name="reference"/>
+                <field name="name"/>
+                <field name="trade"/>
+                <field name="location"/>
+                <field name="publish_date"/>
+                <field name="deadline"/>
+                <field name="application_count"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
     </record>
+
     <record id="view_ges_subcontractor_job_form" model="ir.ui.view">
-        <field name="name">ges.subcontractor.job.form</field><field name="model">ges.subcontractor.job</field><field name="arch" type="xml"><form string="Oportunidade"><header><button name="action_publish" type="object" string="Publicar" class="oe_highlight" invisible="state == 'published'"/><button name="action_close" type="object" string="Encerrar" invisible="state == 'closed'"/><field name="state" widget="statusbar" statusbar_visible="draft,published,closed"/></header><sheet><div class="oe_title"><label for="name"/><h1><field name="name"/></h1><span><field name="reference"/></span></div><group><group><field name="trade"/><field name="location"/></group><group><field name="publish_date"/><field name="deadline"/></group></group><notebook><page string="Descrição"><field name="description" widget="html"/></page><page string="Requisitos"><field name="requirements" widget="html"/></page><page string="Candidaturas"><field name="application_ids" readonly="1"><list><field name="name"/><field name="profile_id"/><field name="availability_date"/><field name="proposed_team_size"/><field name="state" widget="badge"/></list></field></page></notebook></sheet><div class="oe_chatter"><field name="message_follower_ids" widget="mail_followers"/><field name="activity_ids" widget="mail_activity"/><field name="message_ids" widget="mail_thread"/></div></form></field>
+        <field name="name">ges.subcontractor.job.form</field>
+        <field name="model">ges.subcontractor.job</field>
+        <field name="arch" type="xml">
+            <form string="Oportunidade">
+                <header>
+                    <button name="action_publish" type="object" string="Publicar" class="oe_highlight" invisible="state == 'published'"/>
+                    <button name="action_close" type="object" string="Encerrar" invisible="state == 'closed'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,published,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Título da oportunidade"/></h1>
+                        <h2><field name="reference"/></h2>
+                    </div>
+                    <group>
+                        <group string="Detalhes da oportunidade">
+                            <field name="trade"/>
+                            <field name="location"/>
+                        </group>
+                        <group string="Publicação">
+                            <field name="publish_date"/>
+                            <field name="deadline"/>
+                            <field name="application_count"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Descrição">
+                            <field name="description" widget="html" nolabel="1" placeholder="Contexto da obra, escopo e entregáveis..."/>
+                        </page>
+                        <page string="Requisitos">
+                            <field name="requirements" widget="html" nolabel="1" placeholder="Documentos, equipa mínima, equipamentos, certificações e experiência exigida..."/>
+                        </page>
+                        <page string="Candidaturas">
+                            <field name="application_ids" readonly="1">
+                                <list decoration-success="state == 'accepted'" decoration-warning="state in ['review', 'shortlisted']" decoration-muted="state in ['rejected', 'withdrawn']">
+                                    <field name="name"/>
+                                    <field name="profile_id"/>
+                                    <field name="availability_date"/>
+                                    <field name="proposed_team_size"/>
+                                    <field name="proposed_price"/>
+                                    <field name="execution_days"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
     </record>
-    <record id="action_ges_subcontractor_jobs" model="ir.actions.act_window"><field name="name">Oportunidades</field><field name="res_model">ges.subcontractor.job</field><field name="view_mode">list,form</field></record>
+
+    <record id="view_ges_subcontractor_job_search" model="ir.ui.view">
+        <field name="name">ges.subcontractor.job.search</field>
+        <field name="model">ges.subcontractor.job</field>
+        <field name="arch" type="xml">
+            <search string="Pesquisar oportunidades">
+                <field name="reference"/>
+                <field name="name"/>
+                <field name="trade"/>
+                <field name="location"/>
+                <filter string="Rascunho" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Publicadas" name="published" domain="[('state', '=', 'published')]"/>
+                <filter string="Encerradas" name="closed" domain="[('state', '=', 'closed')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Estado" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Especialidade" name="group_trade" context="{'group_by': 'trade'}"/>
+                    <filter string="Local" name="group_location" context="{'group_by': 'location'}"/>
+                    <filter string="Data de publicação" name="group_publish_date" context="{'group_by': 'publish_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_ges_subcontractor_jobs" model="ir.actions.act_window">
+        <field name="name">Oportunidades</field>
+        <field name="res_model">ges.subcontractor.job</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_ges_subcontractor_job_search"/>
+        <field name="context">{'search_default_published': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Publique oportunidades para a rede de subempreiteiros.</p>
+            <p>Defina especialidade, localização, prazo, descrição e requisitos para receber candidaturas qualificadas.</p>
+        </field>
+    </record>
 
     <record id="view_ges_subcontractor_application_tree" model="ir.ui.view">
-        <field name="name">ges.subcontractor.application.tree</field><field name="model">ges.subcontractor.application</field><field name="arch" type="xml"><list decoration-success="state == 'accepted'" decoration-muted="state in ('rejected','withdrawn')"><field name="name"/><field name="create_date"/><field name="job_id"/><field name="profile_id"/><field name="availability_date"/><field name="proposed_team_size"/><field name="proposed_price"/><field name="execution_days"/><field name="state" widget="badge"/></list></field>
+        <field name="name">ges.subcontractor.application.list</field>
+        <field name="model">ges.subcontractor.application</field>
+        <field name="arch" type="xml">
+            <list string="Candidaturas" decoration-success="state == 'accepted'" decoration-warning="state in ['review', 'shortlisted']" decoration-muted="state in ['rejected', 'withdrawn']">
+                <field name="name"/>
+                <field name="create_date"/>
+                <field name="job_id"/>
+                <field name="profile_id"/>
+                <field name="partner_id" optional="hide"/>
+                <field name="availability_date"/>
+                <field name="proposed_team_size"/>
+                <field name="proposed_price"/>
+                <field name="execution_days"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
     </record>
+
     <record id="view_ges_subcontractor_application_form" model="ir.ui.view">
-        <field name="name">ges.subcontractor.application.form</field><field name="model">ges.subcontractor.application</field><field name="arch" type="xml"><form string="Candidatura"><header><button name="action_review" type="object" string="Em avaliação" invisible="state != 'submitted'"/><button name="action_shortlist" type="object" string="Pré-seleccionar" class="oe_highlight" invisible="state not in ['submitted', 'review']"/><button name="action_accept" type="object" string="Aceitar" class="oe_highlight" invisible="state not in ['review', 'shortlisted']"/><button name="action_reject" type="object" string="Não seleccionar" invisible="state in ['accepted', 'rejected', 'withdrawn']"/><field name="state" widget="statusbar" statusbar_visible="submitted,review,shortlisted,accepted,rejected"/></header><sheet><div class="oe_title"><h1><field name="name"/></h1></div><group><group><field name="job_id"/><field name="profile_id"/><field name="partner_id"/></group><group><field name="create_date"/><field name="availability_date"/><field name="proposed_team_size"/><field name="proposed_price"/><field name="execution_days"/></group></group><group string="Mensagem"><field name="message" nolabel="1"/></group><notebook><page string="Anexos"><field name="attachment_ids" widget="many2many_binary"/></page></notebook></sheet><div class="oe_chatter"><field name="message_follower_ids" widget="mail_followers"/><field name="activity_ids" widget="mail_activity"/><field name="message_ids" widget="mail_thread"/></div></form></field>
+        <field name="name">ges.subcontractor.application.form</field>
+        <field name="model">ges.subcontractor.application</field>
+        <field name="arch" type="xml">
+            <form string="Candidatura">
+                <header>
+                    <button name="action_review" type="object" string="Em avaliação" invisible="state != 'submitted'"/>
+                    <button name="action_shortlist" type="object" string="Pré-seleccionar" class="oe_highlight" invisible="state not in ['submitted', 'review']"/>
+                    <button name="action_accept" type="object" string="Aceitar" class="oe_highlight" invisible="state not in ['review', 'shortlisted']"/>
+                    <button name="action_reject" type="object" string="Não seleccionar" invisible="state in ['accepted', 'rejected', 'withdrawn']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="submitted,review,shortlisted,accepted,rejected"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Oportunidade e fornecedor">
+                            <field name="job_id"/>
+                            <field name="profile_id"/>
+                            <field name="partner_id"/>
+                        </group>
+                        <group string="Proposta">
+                            <field name="create_date"/>
+                            <field name="availability_date"/>
+                            <field name="proposed_team_size"/>
+                            <field name="proposed_price"/>
+                            <field name="execution_days"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Mensagem">
+                            <field name="message" nolabel="1" placeholder="Mensagem enviada pelo subempreiteiro..."/>
+                        </page>
+                        <page string="Anexos">
+                            <field name="attachment_ids" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
     </record>
-    <record id="action_ges_subcontractor_applications" model="ir.actions.act_window"><field name="name">Candidaturas</field><field name="res_model">ges.subcontractor.application</field><field name="view_mode">list,form</field></record>
+
+    <record id="view_ges_subcontractor_application_search" model="ir.ui.view">
+        <field name="name">ges.subcontractor.application.search</field>
+        <field name="model">ges.subcontractor.application</field>
+        <field name="arch" type="xml">
+            <search string="Pesquisar candidaturas">
+                <field name="name"/>
+                <field name="job_id"/>
+                <field name="profile_id"/>
+                <field name="partner_id"/>
+                <filter string="Recebidas" name="submitted" domain="[('state', '=', 'submitted')]"/>
+                <filter string="Em avaliação" name="review" domain="[('state', '=', 'review')]"/>
+                <filter string="Pré-seleccionadas" name="shortlisted" domain="[('state', '=', 'shortlisted')]"/>
+                <filter string="Aceites" name="accepted" domain="[('state', '=', 'accepted')]"/>
+                <filter string="Não seleccionadas" name="rejected" domain="[('state', '=', 'rejected')]"/>
+                <separator/>
+                <filter string="Com proposta financeira" name="with_price" domain="[('proposed_price', '>', 0)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Estado" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Oportunidade" name="group_job" context="{'group_by': 'job_id'}"/>
+                    <filter string="Subempreiteiro" name="group_profile" context="{'group_by': 'profile_id'}"/>
+                    <filter string="Data de criação" name="group_create_date" context="{'group_by': 'create_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_ges_subcontractor_applications" model="ir.actions.act_window">
+        <field name="name">Candidaturas</field>
+        <field name="res_model">ges.subcontractor.application</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_ges_subcontractor_application_search"/>
+        <field name="context">{'search_default_submitted': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Acompanhe candidaturas de subempreiteiros.</p>
+            <p>Compare disponibilidade, equipa proposta, preço, prazo de execução e documentos anexos.</p>
+        </field>
+    </record>
 
     <menuitem id="menu_ges_subcontractor_profiles" name="Subempreiteiros" parent="menu_ges_portal_root" action="action_ges_subcontractor_profiles" sequence="20"/>
     <menuitem id="menu_ges_subcontractor_jobs" name="Oportunidades" parent="menu_ges_portal_root" action="action_ges_subcontractor_jobs" sequence="30"/>
