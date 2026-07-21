@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="ges_portal_light_layout" name="GES Portal Light Layout">
+        <html lang="pt">
+            <head>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <meta name="robots" content="noindex,nofollow"/>
+                <meta name="theme-color" content="#ffcc00"/>
+                <title>Portais GES</title>
+                <link rel="icon" type="image/x-icon" href="/js_website_ges/static/src/img/favicon.ico"/>
+                <link rel="stylesheet" href="/web/static/lib/fontawesome/css/font-awesome.css"/>
+                <link rel="stylesheet" href="/ges/assets/portal-light.css?v=20260721-2"/>
+                <script t-if="page_name == 'ges_calculator'" defer="defer" src="/js_website_ges/static/src/js/ges_portal_light.js"></script>
+            </head>
+            <body class="ges-light-body">
+                <header class="ges-light-header">
+                    <div class="ges-light-container ges-light-header__inner">
+                        <a class="ges-light-header__brand" href="/" aria-label="GES — página inicial">
+                            <img src="/js_website_ges/static/src/img/ges-logo.png" alt="General Express Service" width="142" height="48"/>
+                        </a>
+                        <nav class="ges-light-nav" aria-label="Portal do cliente">
+                            <t t-if="request.env.user._is_public()">
+                                <a href="/">Início</a>
+                                <a href="/my/ges">Cliente</a>
+                                <a href="/subempreiteiros">Parceiros</a>
+                                <a href="/subempreiteiros/cadastro">Cadastro</a>
+                                <a class="ges-light-nav__cta" href="/web/login?redirect=/my/ges">Entrar</a>
+                            </t>
+                            <t t-else="">
+                                <a href="/">Início</a>
+                                <a href="/my/ges">Painel</a>
+                                <a href="/my/ges/requests">Pedidos</a>
+                                <a href="/my/ges/calculator">Requisitar</a>
+                                <a href="/my/ges/subempreiteiro">Parceiro</a>
+                                <a href="/web/session/logout?redirect=/">Sair</a>
+                            </t>
+                        </nav>
+                        <span t-if="not request.env.user._is_public()" class="ges-light-user" t-esc="request.env.user.name"/>
+                    </div>
+                </header>
+                <main class="ges-light-main"><t t-out="0"/></main>
+                <footer class="ges-portal-footer">
+                    <div class="ges-light-container ges-portal-footer__inner">
+                        <div><img src="/js_website_ges/static/src/img/ges-logo-white.png" alt="General Express Service" width="165" height="57"/><p>Engenharia que organiza. Execução que entrega.</p></div>
+                        <nav aria-label="Ligações do rodapé"><a href="/">Início</a><a href="/my/ges">Área do cliente</a><a href="/subempreiteiros">Subempreiteiros</a><a href="/subempreiteiros/cadastro">Cadastro de parceiro</a><a href="/ges/contactos">Contactos</a></nav>
+                        <div class="ges-portal-footer__contact"><a href="tel:+258858900313">+258 85 890 0313</a><a href="mailto:comercial@generalexpress.co.mz">comercial@generalexpress.co.mz</a></div>
+                    </div>
+                </footer>
+            </body>
+        </html>
+    </template>
+
+    <template id="ges_default_header_brand" inherit_id="website.option_header_brand_logo" priority="60">
+        <xpath expr="//span[@t-field='website.logo']" position="replace">
+            <img src="/js_website_ges/static/src/img/ges-logo.png" alt="General Express Service" class="ges-portal-nav-logo"/>
+        </xpath>
+    </template>
+
+    <template id="ges_default_footer" inherit_id="website.footer_custom" priority="60">
+        <xpath expr="//div[@id='footer']" position="replace">
+            <footer id="footer" class="ges-portal-footer" t-if="not no_footer">
+                <div class="container ges-portal-footer__inner">
+                    <div><img src="/js_website_ges/static/src/img/ges-logo-white.png" alt="General Express Service"/><p>Engenharia que organiza. Execução que entrega.</p></div>
+                    <nav aria-label="Ligações do rodapé"><a href="/">Início</a><a href="/my/ges">Área do cliente</a><a href="/subempreiteiros">Subempreiteiros</a><a href="/subempreiteiros/cadastro">Cadastro de parceiro</a><a href="/ges/contactos">Contactos</a></nav>
+                    <div class="ges-portal-footer__contact"><a href="tel:+258858900313">+258 85 890 0313</a><a href="mailto:comercial@generalexpress.co.mz">comercial@generalexpress.co.mz</a></div>
+                </div>
+            </footer>
+        </xpath>
+    </template>
+
+    <template id="ges_portal_home_entry" inherit_id="portal.portal_my_home" priority="10">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <section class="ges-portal-home-banner">
+                <div>
+                    <span class="ges-portal-kicker">Portal do cliente</span>
+                    <h2>Planeie materiais. Acompanhe cada entrega.</h2>
+                    <p>Calcule quantidades, envie requisições e acompanhe cotações e pedidos num único lugar.</p>
+                </div>
+                <a class="btn ges-portal-btn" href="/my/ges">Entrar na Área do cliente <i class="fa fa-arrow-right ml-2"/></a>
+            </section>
+        </xpath>
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Requisições de materiais GES</t>
+                <t t-set="url" t-value="'/my/ges/requests'"/>
+                <t t-set="placeholder_count" t-value="'ges_request_count'"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="ges_portal_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name and page_name.startswith('ges_')" t-attf-class="breadcrumb-item #{'active' if page_name == 'ges_dashboard' else ''}">
+                <a t-if="page_name != 'ges_dashboard'" href="/my/ges">Área do cliente</a>
+                <t t-else="">Área do cliente</t>
+            </li>
+            <li t-if="page_name in ('ges_requests', 'ges_request_detail')" t-attf-class="breadcrumb-item #{'active' if page_name == 'ges_requests' else ''}">
+                <a t-if="page_name == 'ges_request_detail'" href="/my/ges/requests">Requisições</a>
+                <t t-else="">Requisições</t>
+            </li>
+            <li t-if="page_name == 'ges_calculator'" class="breadcrumb-item active">Nova requisição</li>
+            <li t-if="page_name == 'ges_request_detail'" class="breadcrumb-item active"><t t-esc="material_request.name"/></li>
+        </xpath>
+    </template>
+
+    <template id="ges_portal_dashboard" name="Portal do Cliente GES">
+        <t t-call="js_website_ges.ges_portal_light_layout">
+            <div class="ges-portal-shell">
+                <section class="ges-portal-hero">
+                    <div class="ges-portal-hero__content">
+                        <span class="ges-portal-kicker">Bom dia, <t t-esc="partner.name"/></span>
+                        <h1>A sua obra, organizada num só portal.</h1>
+                        <p>Calcule materiais, envie uma requisição e acompanhe a resposta da GES até à entrega.</p>
+                        <div class="ges-portal-actions">
+                            <a class="btn ges-portal-btn ges-portal-btn--light" href="/my/ges/calculator"><i class="fa fa-calculator mr-2"/>Nova requisição</a>
+                            <a class="btn ges-portal-btn ges-portal-btn--ghost" href="/my/ges/requests">Ver requisições</a>
+                        </div>
+                    </div>
+                    <div class="ges-portal-hero__mark" aria-hidden="true"><span>GES</span><small>CLIENT PORTAL</small></div>
+                </section>
+
+                <section class="ges-portal-stats" aria-label="Resumo da conta">
+                    <a href="/my/ges/requests?state=all"><span>Requisições</span><strong t-esc="ges_request_count"/><small>Total enviado</small></a>
+                    <a href="/my/ges/requests?state=quoted"><span>Em curso</span><strong t-esc="ges_open_count"/><small>Aguardam entrega</small></a>
+                    <a href="/my/quotes"><span>Cotações</span><strong t-esc="quotation_count"/><small>Para analisar</small></a>
+                    <a href="/my/orders"><span>Pedidos</span><strong t-esc="order_count"/><small>Confirmados</small></a>
+                </section>
+
+                <section class="ges-portal-section">
+                    <div class="ges-portal-section__head">
+                        <div><span class="ges-portal-kicker">Actividade recente</span><h2>Últimas requisições</h2></div>
+                        <a href="/my/ges/requests">Ver todas <i class="fa fa-arrow-right ml-2"/></a>
+                    </div>
+                    <div t-if="requests" class="ges-request-list">
+                        <a t-foreach="requests" t-as="item" t-att-href="item.get_portal_url()" class="ges-request-row">
+                            <div class="ges-request-row__icon"><i class="fa fa-cubes"/></div>
+                            <div class="ges-request-row__main"><strong t-esc="item.project_name"/><span><t t-esc="item.name"/> · <t t-esc="item.item_count"/> itens</span></div>
+                            <div class="ges-request-row__date"><span t-field="item.create_date" t-options="{'widget':'date'}"/></div>
+                            <span t-attf-class="ges-status ges-status--#{ges_states[item.state][1]}" t-esc="ges_states[item.state][0]"/>
+                            <i class="fa fa-chevron-right ges-request-row__arrow"/>
+                        </a>
+                    </div>
+                    <div t-else="" class="ges-portal-empty">
+                        <i class="fa fa-calculator"/><h3>Ainda não existem requisições</h3>
+                        <p>Use a calculadora para preparar a primeira lista de materiais.</p>
+                        <a class="btn ges-portal-btn" href="/my/ges/calculator">Começar agora</a>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="ges_portal_requests" name="Requisições GES">
+        <t t-call="js_website_ges.ges_portal_light_layout">
+            <div class="ges-portal-shell">
+                <section class="ges-portal-page-head">
+                    <div><span class="ges-portal-kicker">Materiais &amp; logística</span><h1>Requisições</h1><p>Acompanhe todos os pedidos enviados à equipa GES.</p></div>
+                    <a class="btn ges-portal-btn" href="/my/ges/calculator"><i class="fa fa-plus mr-2"/>Nova requisição</a>
+                </section>
+                <form class="ges-portal-filters" method="get" action="/my/ges/requests">
+                    <label>Estado
+                        <select name="state" onchange="this.form.submit()">
+                            <option value="all" t-att-selected="state_filter == 'all'">Todos</option>
+                            <option t-foreach="ges_states.items()" t-as="state_item" t-att-value="state_item[0]" t-att-selected="state_filter == state_item[0]"><t t-esc="state_item[1][0]"/></option>
+                        </select>
+                    </label>
+                    <label>Ordenar
+                        <select name="sortby" onchange="this.form.submit()">
+                            <option t-foreach="searchbar_sortings.items()" t-as="sort_item" t-att-value="sort_item[0]" t-att-selected="sortby == sort_item[0]"><t t-esc="sort_item[1]['label']"/></option>
+                        </select>
+                    </label>
+                </form>
+                <div t-if="requests" class="ges-request-list ges-request-list--page">
+                    <a t-foreach="requests" t-as="item" t-att-href="item.get_portal_url()" class="ges-request-row">
+                        <div class="ges-request-row__icon"><i class="fa fa-cubes"/></div>
+                        <div class="ges-request-row__main"><strong t-esc="item.project_name"/><span><t t-esc="item.name"/> · <t t-esc="item.site_location"/></span></div>
+                        <div class="ges-request-row__date"><span t-field="item.create_date" t-options="{'widget':'date'}"/></div>
+                        <span t-attf-class="ges-status ges-status--#{ges_states[item.state][1]}" t-esc="ges_states[item.state][0]"/>
+                        <i class="fa fa-chevron-right ges-request-row__arrow"/>
+                    </a>
+                </div>
+                <div t-else="" class="ges-portal-empty"><i class="fa fa-inbox"/><h3>Nenhuma requisição encontrada</h3><p>Altere o filtro ou prepare uma nova requisição.</p></div>
+                <t t-call="portal.pager"/>
+            </div>
+        </t>
+    </template>
+
+    <template id="ges_portal_calculator" name="Calculadora de Materiais GES">
+        <t t-call="js_website_ges.ges_portal_light_layout">
+            <div class="ges-portal-shell ges-portal-shell--calculator" data-ges-portal-calculator="1" t-att-data-ges-currency="request.env.company.currency_id.name">
+                <section class="ges-portal-page-head">
+                    <div><span class="ges-portal-kicker">Estimativa inteligente</span><h1>Calculadora de materiais</h1><p>Calcule quantidades e envie a lista para validação comercial.</p></div>
+                    <div class="ges-portal-step"><strong>01</strong><span>Calcular<br/>e requisitar</span></div>
+                </section>
+
+                <div t-if="errors" class="alert alert-danger ges-portal-alert" role="alert"><ul class="mb-0"><li t-foreach="errors" t-as="form_error" t-esc="form_error"/></ul></div>
+
+                <section class="ges-calculator-tools">
+                    <article class="ges-calc-tool" data-ges-calc="concrete">
+                        <div class="ges-calc-tool__title"><i class="fa fa-cube"/><div><strong>Volume de betão</strong><span>Comprimento × largura × espessura</span></div></div>
+                        <div class="ges-calc-fields">
+                            <label>Comprimento (m)<input type="number" inputmode="decimal" min="0" step="0.01" data-calc-field="length"/></label>
+                            <label>Largura (m)<input type="number" inputmode="decimal" min="0" step="0.01" data-calc-field="width"/></label>
+                            <label>Espessura (cm)<input type="number" inputmode="decimal" min="0" step="0.1" data-calc-field="depth"/></label>
+                            <label>Desperdício (%)<input type="number" inputmode="decimal" min="0" max="30" step="1" value="5" data-calc-field="waste"/></label>
+                        </div>
+                        <button type="button" class="ges-calc-apply" data-calc-apply="concrete">Adicionar <span data-calc-result="concrete">0 m³</span></button>
+                    </article>
+                    <article class="ges-calc-tool" data-ges-calc="blocks">
+                        <div class="ges-calc-tool__title"><i class="fa fa-th-large"/><div><strong>Blocos para parede</strong><span>Área total ÷ face do bloco</span></div></div>
+                        <div class="ges-calc-fields">
+                            <label>Comprimento total (m)<input type="number" inputmode="decimal" min="0" step="0.01" data-calc-field="wall_length"/></label>
+                            <label>Altura (m)<input type="number" inputmode="decimal" min="0" step="0.01" data-calc-field="wall_height"/></label>
+                            <label>Bloco (cm)<select data-calc-field="block_size"><option value="0.08">40 × 20</option><option value="0.09">39 × 19</option></select></label>
+                            <label>Desperdício (%)<input type="number" inputmode="decimal" min="0" max="30" step="1" value="7" data-calc-field="waste"/></label>
+                        </div>
+                        <button type="button" class="ges-calc-apply" data-calc-apply="blocks">Adicionar <span data-calc-result="blocks">0 un.</span></button>
+                    </article>
+                </section>
+
+                <form action="/my/ges/requests/create" method="post" class="ges-portal-request-form">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <section class="ges-portal-section ges-material-picker">
+                        <div class="ges-portal-section__head"><div><span class="ges-portal-kicker">Lista da requisição</span><h2>Materiais e serviços</h2></div><span class="ges-picker-count"><strong data-ges-item-count="1">0</strong> seleccionados</span></div>
+                        <div class="ges-material-grid">
+                            <article t-foreach="products" t-as="product" class="ges-material-card" t-att-data-product-kind="product.product_tmpl_id.ges_calculator_type" t-att-data-product-price="product_prices.get(product.id, 0)">
+                                <div class="ges-material-card__icon"><i t-attf-class="fa #{'fa-cube' if product.product_tmpl_id.ges_calculator_type == 'concrete' else ('fa-th-large' if product.product_tmpl_id.ges_calculator_type == 'blocks' else ('fa-truck' if 'Transporte' in product.name else 'fa-wrench'))}"/></div>
+                                <div class="ges-material-card__body">
+                                    <span t-esc="product.default_code or 'GES'"/><h3 t-esc="product.name"/><p t-esc="product.product_tmpl_id.ges_portal_description or product.description_sale or 'Disponível para requisição.'"/>
+                                    <small t-if="product_prices.get(product.id, 0)"><span t-esc="format_amount(product_prices[product.id], product.currency_id)"/> / <t t-esc="product.uom_id.name"/></small>
+                                    <small t-else="" class="ges-price-on-request">Preço sob consulta</small>
+                                </div>
+                                <label class="ges-material-qty">Quantidade <span t-esc="product.uom_id.name"/><input t-att-name="'qty_%s' % product.id" type="number" inputmode="decimal" min="0" step="0.01" t-att-value="form_values.get('qty_%s' % product.id, '0') if form_values else '0'" data-ges-product-qty="1"/></label>
+                            </article>
+                        </div>
+                    </section>
+
+                    <section class="ges-portal-section ges-project-fields">
+                        <div class="ges-portal-section__head"><div><span class="ges-portal-kicker">Dados da entrega</span><h2>Onde e quando precisa?</h2></div></div>
+                        <div class="ges-project-fields__grid">
+                            <label>Projecto ou obra *<input name="project_name" required="required" maxlength="120" placeholder="Ex.: Edifício Matola" t-att-value="form_values.get('project_name', '') if form_values else ''"/></label>
+                            <label>Local de entrega *<input name="site_location" required="required" maxlength="180" placeholder="Cidade, bairro ou coordenadas" t-att-value="form_values.get('site_location', partner.city or '') if form_values else (partner.city or '')"/></label>
+                            <label>Data necessária<input name="required_date" type="date" t-att-min="today" t-att-value="form_values.get('required_date', '') if form_values else ''"/></label>
+                            <label class="ges-field-wide">Observações<textarea name="notes" rows="4" placeholder="Especificações, acesso à obra, equipamento pretendido..."><t t-esc="form_values.get('notes', '') if form_values else ''"/></textarea></label>
+                        </div>
+                    </section>
+
+                    <aside class="ges-quote-summary">
+                        <div><span>Estimativa actual</span><strong data-ges-estimated-total="1">—</strong><small>Valores sujeitos a validação pela equipa comercial.</small></div>
+                        <button type="submit" class="btn ges-portal-btn">Enviar requisição <i class="fa fa-arrow-right ml-2"/></button>
+                    </aside>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="ges_portal_request_detail" name="Detalhe da Requisição GES">
+        <t t-call="js_website_ges.ges_portal_light_layout">
+            <div class="ges-portal-shell">
+                <div t-if="created" class="alert alert-success ges-portal-alert"><strong>Requisição enviada.</strong> A cotação já está disponível e será validada pela equipa GES.</div>
+                <section class="ges-portal-page-head ges-request-detail-head">
+                    <div><span class="ges-portal-kicker" t-esc="material_request.name"/><h1 t-esc="material_request.project_name"/><p><i class="fa fa-map-marker mr-2"/><t t-esc="material_request.site_location"/></p></div>
+                    <span t-attf-class="ges-status ges-status--large ges-status--#{ges_states[material_request.state][1]}" t-esc="ges_states[material_request.state][0]"/>
+                </section>
+
+                <t t-set="steps" t-value="['quoted', 'confirmed', 'preparing', 'dispatched', 'delivered']"/>
+                <t t-set="current_step" t-value="material_request.state if material_request.state in steps else 'quoted'"/>
+                <section t-if="material_request.state != 'cancelled'" class="ges-tracking" aria-label="Progresso da requisição">
+                    <div t-foreach="steps" t-as="step" t-attf-class="ges-tracking__step #{'is-done' if steps.index(step) &lt;= steps.index(current_step) else ''}">
+                        <span><i t-if="steps.index(step) &lt;= steps.index(current_step)" class="fa fa-check"/><i t-else="" class="fa fa-circle"/></span><strong t-esc="ges_states[step][0]"/>
+                    </div>
+                </section>
+
+                <div class="ges-detail-grid">
+                    <section class="ges-portal-section">
+                        <div class="ges-portal-section__head"><div><span class="ges-portal-kicker">Conteúdo</span><h2>Materiais requisitados</h2></div></div>
+                        <div class="ges-request-lines">
+                            <div t-foreach="material_request.line_ids" t-as="line" class="ges-request-line">
+                                <div><strong t-esc="line.product_id.name"/><span t-esc="line.name"/></div>
+                                <div><strong><t t-esc="line.quantity"/> <t t-esc="line.uom_id.name"/></strong><span t-if="line.price_unit_estimated" t-field="line.subtotal_estimated" t-options="{'widget':'monetary','display_currency':line.currency_id}"/><span t-else="">Sob consulta</span></div>
+                            </div>
+                        </div>
+                        <div t-if="material_request.amount_estimated" class="ges-request-total"><span>Estimativa</span><strong t-field="material_request.amount_estimated"/></div>
+                    </section>
+                    <aside class="ges-detail-side">
+                        <section class="ges-portal-section">
+                            <span class="ges-portal-kicker">Detalhes</span>
+                            <dl class="ges-detail-list">
+                                <dt>Enviada em</dt><dd><span t-field="material_request.create_date" t-options="{'widget':'date'}"/></dd>
+                                <dt>Data necessária</dt><dd><span t-if="material_request.required_date" t-field="material_request.required_date"/><span t-else="">A combinar</span></dd>
+                                <dt>Itens</dt><dd t-esc="material_request.item_count"/>
+                            </dl>
+                            <p t-if="material_request.notes" class="ges-request-notes" t-esc="material_request.notes"/>
+                        </section>
+                        <section t-if="material_request.sale_order_id" class="ges-portal-section ges-quote-link">
+                            <i class="fa fa-file-text-o"/><div><span>Cotação associada</span><strong t-esc="material_request.sale_order_id.name"/></div>
+                            <a class="btn ges-portal-btn" t-att-href="material_request.sale_order_id.get_portal_url()">Abrir cotação</a>
+                        </section>
+                    </aside>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="ges_subcontractor_public" name="Subempreiteiros GES">
+        <t t-call="js_website_ges.ges_portal_light_layout">
+            <div class="ges-portal-shell ges-subcontractor-shell">
+                <section class="ges-subcontractor-hero">
+                    <div><span class="ges-portal-kicker">Rede de parceiros GES</span><h1>Cresça connosco. Execute projectos que deixam marca.</h1><p>Cadastre a sua empresa ou equipa, encontre oportunidades e acompanhe cada candidatura num portal profissional.</p><div class="ges-portal-actions"><a class="ges-portal-btn" href="/subempreiteiros/cadastro">Cadastrar como subempreiteiro</a><a class="ges-portal-btn ges-portal-btn--ghost" href="#oportunidades">Ver oportunidades</a></div></div>
+                    <div class="ges-subcontractor-hero__logo"><img src="/js_website_ges/static/src/img/ges-logo.png" alt="General Express Service"/><span>PARTNER NETWORK</span></div>
+                </section>
+                <section id="oportunidades" class="ges-portal-section">
+                    <div class="ges-portal-section__head"><div><span class="ges-portal-kicker">Trabalhe com a GES</span><h2>Oportunidades abertas</h2></div><a href="/web/login?redirect=/my/ges/subempreiteiro">Já tenho conta</a></div>
+                    <div t-if="jobs" class="ges-job-grid">
+                        <article t-foreach="jobs" t-as="job" class="ges-job-card">
+                            <div class="ges-job-card__meta"><span t-esc="job.trade"/><span t-esc="job.reference"/></div><h3 t-esc="job.name"/><p><i class="fa fa-map-marker"/> <t t-esc="job.location"/></p><div class="ges-job-card__footer"><span t-if="job.deadline">Até <span t-field="job.deadline"/></span><a t-att-href="'/web/login?redirect=/my/ges/subempreiteiro/vagas/%s' % job.id">Ver e postular</a></div>
+                        </article>
+                    </div>
+                    <div t-else="" class="ges-portal-empty"><i class="fa fa-briefcase"/><h3>Novas oportunidades em preparação</h3><p>Cadastre-se para ter o perfil pronto quando forem publicadas.</p><a class="ges-portal-btn" href="/subempreiteiros/cadastro">Criar perfil</a></div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="ges_subcontractor_register" name="Cadastro de Subempreiteiro GES">
+        <t t-call="js_website_ges.ges_portal_light_layout">
+            <div class="ges-portal-shell ges-subcontractor-shell">
+                <section class="ges-portal-page-head"><div><span class="ges-portal-kicker">Cadastro de parceiros</span><h1>Apresente a sua capacidade.</h1><p>Após o cadastro, defina a sua senha e complete documentos, certificações e tabela de preços na área digital GES.</p></div><img class="ges-register-logo" src="/js_website_ges/static/src/img/ges-logo-white.png" alt="GES"/></section>
+                <div t-if="errors" class="alert alert-danger ges-portal-alert"><ul><li t-foreach="errors" t-as="error" t-esc="error"/></ul></div>
+                <form action="/subempreiteiros/cadastro" method="post" enctype="multipart/form-data" class="ges-portal-section ges-contractor-form">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="ges-form-block"><div class="ges-form-block__head"><span>01</span><div><h2>Dados do fornecedor</h2><p>Informação fiscal e contacto principal.</p></div></div><div class="ges-project-fields__grid">
+                        <label>Nome do responsável *<input name="name" required="required" maxlength="120" t-att-value="form_values.get('name', '')"/></label>
+                        <label>Email *<input name="email" type="email" required="required" maxlength="254" t-att-value="form_values.get('email', '')"/></label>
+                        <label>Telefone *<input name="phone" type="tel" required="required" maxlength="40" t-att-value="form_values.get('phone', '')"/></label>
+                        <label>Empresa ou equipa *<input name="company_name" required="required" maxlength="150" t-att-value="form_values.get('company_name', '')"/></label>
+                        <label>Razão social<input name="legal_name" maxlength="150" t-att-value="form_values.get('legal_name', '')"/></label>
+                        <label>Tipo de fornecedor<select name="supplier_type"><option value="company" t-att-selected="form_values.get('supplier_type', 'company') == 'company'">Empresa formal</option><option value="team" t-att-selected="form_values.get('supplier_type') == 'team'">Equipa técnica</option><option value="individual" t-att-selected="form_values.get('supplier_type') == 'individual'">Técnico independente</option></select></label>
+                        <label>NUIT<input name="nuit" maxlength="30" t-att-value="form_values.get('nuit', '')"/></label>
+                        <label>Província<input name="province" maxlength="80" t-att-value="form_values.get('province', '')"/></label>
+                        <label>Cidade / distrito<input name="city" maxlength="80" t-att-value="form_values.get('city', '')"/></label>
+                        <label>Endereço<input name="street" maxlength="180" t-att-value="form_values.get('street', '')"/></label>
+                    </div></div>
+                    <div class="ges-form-block"><div class="ges-form-block__head"><span>02</span><div><h2>Serviços e capacidade</h2><p>Ajuda a GES a filtrar fornecedores por especialidade, preço e cobertura.</p></div></div><div class="ges-project-fields__grid">
+                        <label>Quantidade de profissionais<input name="team_size" type="number" min="1" max="10000" value="1" t-att-value="form_values.get('team_size', '1')"/></label>
+                        <label>Anos de experiência<input name="years_experience" type="number" min="0" max="100" value="0" t-att-value="form_values.get('years_experience', '0')"/></label>
+                        <label>Disponibilidade<select name="availability"><option value="scheduled" t-att-selected="form_values.get('availability', 'scheduled') == 'scheduled'">Disponível por agenda</option><option value="immediate" t-att-selected="form_values.get('availability') == 'immediate'">Disponível imediatamente</option><option value="limited" t-att-selected="form_values.get('availability') == 'limited'">Capacidade limitada</option></select></label>
+                        <label>Área de cobertura<input name="coverage_area" maxlength="180" placeholder="Maputo, Matola, Boane..." t-att-value="form_values.get('coverage_area', '')"/></label>
+                        <label>Preço mínimo indicativo<input name="price_range_min" type="number" min="0" step="0.01" t-att-value="form_values.get('price_range_min', '')"/></label>
+                        <label>Preço máximo indicativo<input name="price_range_max" type="number" min="0" step="0.01" t-att-value="form_values.get('price_range_max', '')"/></label>
+                        <label class="ges-field-wide">Especialidades *<input name="trades" required="required" maxlength="250" placeholder="Construção civil, electricidade, canalização..." t-att-value="form_values.get('trades', '')"/></label>
+                        <label class="ges-field-wide">Serviços e preços<textarea name="service_pricing" rows="5" placeholder="Ex.: alvenaria por m2, pintura por m2, electricidade por ponto, diária de equipa..."><t t-esc="form_values.get('service_pricing', '')"/></textarea></label>
+                        <label class="ges-field-wide">Apresentação<textarea name="presentation" rows="5" placeholder="Projectos executados, capacidade, cobertura geográfica..."><t t-esc="form_values.get('presentation', '')"/></textarea></label>
+                    </div></div>
+                    <div class="ges-form-block"><div class="ges-form-block__head"><span>03</span><div><h2>Documentos iniciais</h2><p>Pode anexar NUIT, alvará, certidão, certificados ou carta de apresentação já no cadastro.</p></div></div><div class="ges-project-fields__grid">
+                        <label class="ges-field-wide">Documentos do fornecedor<input name="documents" type="file" multiple="multiple" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,.xls,.xlsx"/></label>
+                        <label class="ges-field-wide">Certificações<input name="certificates" type="file" multiple="multiple" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,.xls,.xlsx"/></label>
+                    </div></div>
+                    <button type="submit" class="ges-portal-btn ges-contractor-submit">Continuar e definir senha</button>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="ges_subcontractor_dashboard" name="Portal de Subempreiteiros GES">
+        <t t-call="js_website_ges.ges_portal_light_layout">
+            <div class="ges-portal-shell ges-subcontractor-shell">
+                <div t-if="saved" class="alert alert-success ges-portal-alert">Perfil actualizado com sucesso.</div>
+                <section class="ges-subcontractor-dashboard-head"><div><span class="ges-portal-kicker">Portal de subempreiteiros</span><h1 t-if="profile">Olá, <t t-esc="profile.company_name"/>.</h1><h1 t-else="">Complete o seu perfil profissional.</h1><p>Oportunidades, candidaturas, documentos e dados da sua equipa num único espaço.</p></div><a class="ges-portal-btn" href="/my/ges/subempreiteiro/perfil"><t t-if="profile">Editar perfil</t><t t-else="">Criar perfil</t></a></section>
+                <section t-if="profile" class="ges-contractor-stats"><div><span>Estado do perfil</span><strong t-esc="dict(profile._fields['state'].selection).get(profile.state)"/></div><div><span>Perfil completo</span><strong><t t-esc="profile.profile_completeness"/>%</strong></div><div><span>Documentos</span><strong t-esc="profile.document_count"/></div><div><span>Candidaturas</span><strong t-esc="len(applications)"/></div></section>
+                <section t-if="profile" class="ges-portal-section ges-supplier-summary"><div><div class="ges-summary-card"><span>Serviços</span><strong t-esc="profile.trades"/><p t-if="profile.service_pricing" t-esc="profile.service_pricing"/></div><div class="ges-summary-card"><span>Cobertura</span><strong t-esc="profile.coverage_area or profile.province or 'Por definir'"/><p><t t-esc="profile.team_size"/> profissionais · <t t-esc="profile.years_experience"/> anos de experiência</p></div><div class="ges-summary-card"><span>Preço indicativo</span><strong><span t-field="profile.price_range_min"/> - <span t-field="profile.price_range_max"/></strong><p t-esc="dict(profile._fields['availability'].selection).get(profile.availability)"/></div></div></section>
+                <section t-if="profile" class="ges-portal-section ges-document-center"><div class="ges-portal-section__head"><div><span class="ges-portal-kicker">Centro documental</span><h2>Documentos e certificações</h2></div><a href="/my/ges/subempreiteiro/perfil">Adicionar ficheiros</a></div><div class="ges-doc-grid"><div><h3>Documentos do fornecedor</h3><a t-foreach="profile_documents['documents']" t-as="attachment" t-att-href="'/my/ges/subempreiteiro/documentos/%s' % attachment.id"><i class="fa fa-file-o"/> <t t-esc="attachment.name"/></a><p t-if="not profile_documents['documents']">Sem documentos anexados.</p></div><div><h3>Certificações</h3><a t-foreach="profile_documents['certificates']" t-as="attachment" t-att-href="'/my/ges/subempreiteiro/documentos/%s' % attachment.id"><i class="fa fa-certificate"/> <t t-esc="attachment.name"/></a><p t-if="not profile_documents['certificates']">Sem certificações anexadas.</p></div></div></section>
+                <section class="ges-portal-section"><div class="ges-portal-section__head"><div><span class="ges-portal-kicker">Disponíveis agora</span><h2>Oportunidades</h2></div></div>
+                    <div t-if="jobs" class="ges-job-grid"><article t-foreach="jobs" t-as="job" class="ges-job-card"><div class="ges-job-card__meta"><span t-esc="job.trade"/><span t-esc="job.reference"/></div><h3 t-esc="job.name"/><p><i class="fa fa-map-marker"/> <t t-esc="job.location"/></p><div class="ges-job-card__footer"><span t-if="job.deadline">Até <span t-field="job.deadline"/></span><a t-att-href="'/my/ges/subempreiteiro/vagas/%s' % job.id">Ver oportunidade</a></div></article></div>
+                    <div t-else="" class="ges-portal-empty"><i class="fa fa-briefcase"/><h3>Sem oportunidades abertas</h3><p>As novas oportunidades aparecerão aqui.</p></div>
+                </section>
+                <section t-if="profile" class="ges-portal-section"><div class="ges-portal-section__head"><div><span class="ges-portal-kicker">Acompanhamento</span><h2>Minhas candidaturas</h2></div></div><div t-if="applications" class="ges-application-list"><a t-foreach="applications" t-as="application" t-att-href="'/my/ges/subempreiteiro/vagas/%s' % application.job_id.id" class="ges-application-row"><div><strong t-esc="application.job_id.name"/><span><t t-esc="application.name"/> · <t t-esc="application.job_id.location"/></span></div><span t-attf-class="ges-status ges-status--#{application_states[application.state][1]}" t-esc="application_states[application.state][0]"/></a></div><div t-else="" class="ges-portal-empty ges-portal-empty--compact"><p>Ainda não submeteu candidaturas.</p></div></section>
+            </div>
+        </t>
+    </template>
+
+    <template id="ges_subcontractor_profile" name="Perfil de Subempreiteiro GES">
+        <t t-call="js_website_ges.ges_portal_light_layout">
+            <div class="ges-portal-shell ges-subcontractor-shell"><section class="ges-portal-page-head"><div><span class="ges-portal-kicker">Perfil profissional</span><h1>Ficha de fornecedor GES.</h1><p>Mantenha dados fiscais, serviços, preços e documentos completos para acelerar a avaliação.</p></div><div t-if="profile" class="ges-profile-meter"><strong><t t-esc="profile.profile_completeness"/>%</strong><span>perfil completo</span></div></section><div t-if="errors" class="alert alert-danger ges-portal-alert"><ul><li t-foreach="errors" t-as="error" t-esc="error"/></ul></div>
+                <form action="/my/ges/subempreiteiro/perfil" method="post" enctype="multipart/form-data" class="ges-portal-section ges-contractor-form"><input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="ges-form-block"><div class="ges-form-block__head"><span>01</span><div><h2>Fornecedor</h2><p>Campos equivalentes à ficha de fornecedor em Odoo.</p></div></div><div class="ges-project-fields__grid">
+                        <label>Empresa ou equipa *<input name="company_name" required="required" t-att-value="form_values.get('company_name') or (profile.company_name if profile else '')"/></label><label>Razão social<input name="legal_name" t-att-value="form_values.get('legal_name') or (profile.legal_name if profile else '')"/></label><label>Tipo de fornecedor<select name="supplier_type"><option value="company" t-att-selected="(form_values.get('supplier_type') or (profile.supplier_type if profile else 'company')) == 'company'">Empresa formal</option><option value="team" t-att-selected="(form_values.get('supplier_type') or (profile.supplier_type if profile else '')) == 'team'">Equipa técnica</option><option value="individual" t-att-selected="(form_values.get('supplier_type') or (profile.supplier_type if profile else '')) == 'individual'">Técnico independente</option></select></label><label>Telefone *<input name="phone" required="required" t-att-value="form_values.get('phone') or (profile.phone if profile else request.env.user.partner_id.phone or '')"/></label><label>NUIT<input name="nuit" t-att-value="form_values.get('nuit') or (profile.nuit if profile else '')"/></label><label>Regime fiscal<input name="tax_regime" t-att-value="form_values.get('tax_regime') or (profile.tax_regime if profile else '')"/></label><label>Licença / alvará<input name="license_number" t-att-value="form_values.get('license_number') or (profile.license_number if profile else '')"/></label><label>Província<input name="province" t-att-value="form_values.get('province') or (profile.province if profile else '')"/></label><label>Cidade / distrito<input name="city" t-att-value="form_values.get('city') or (profile.city if profile else '')"/></label><label>Endereço<input name="street" t-att-value="form_values.get('street') or (profile.street if profile else '')"/></label>
+                    </div></div>
+                    <div class="ges-form-block"><div class="ges-form-block__head"><span>02</span><div><h2>Serviços, preços e capacidade</h2><p>Use valores indicativos para a GES comparar propostas rapidamente.</p></div></div><div class="ges-project-fields__grid">
+                        <label>Tamanho da equipa<input name="team_size" type="number" min="1" max="10000" t-att-value="form_values.get('team_size') or (profile.team_size if profile else 1)"/></label><label>Anos de experiência<input name="years_experience" type="number" min="0" max="100" t-att-value="form_values.get('years_experience') or (profile.years_experience if profile else 0)"/></label><label>Disponibilidade<select name="availability"><option value="scheduled" t-att-selected="(form_values.get('availability') or (profile.availability if profile else 'scheduled')) == 'scheduled'">Disponível por agenda</option><option value="immediate" t-att-selected="(form_values.get('availability') or (profile.availability if profile else '')) == 'immediate'">Disponível imediatamente</option><option value="limited" t-att-selected="(form_values.get('availability') or (profile.availability if profile else '')) == 'limited'">Capacidade limitada</option></select></label><label>Área de cobertura<input name="coverage_area" t-att-value="form_values.get('coverage_area') or (profile.coverage_area if profile else '')"/></label><label>Preço mínimo indicativo<input name="price_range_min" type="number" min="0" step="0.01" t-att-value="form_values.get('price_range_min') or (profile.price_range_min if profile else '')"/></label><label>Preço máximo indicativo<input name="price_range_max" type="number" min="0" step="0.01" t-att-value="form_values.get('price_range_max') or (profile.price_range_max if profile else '')"/></label><label class="ges-field-wide">Especialidades *<input name="trades" required="required" t-att-value="form_values.get('trades') or (profile.trades if profile else '')"/></label><label class="ges-field-wide">Serviços e preços<textarea name="service_pricing" rows="5"><t t-esc="form_values.get('service_pricing') or (profile.service_pricing if profile else '')"/></textarea></label><label class="ges-field-wide">Equipamentos<textarea name="equipment"><t t-esc="form_values.get('equipment') or (profile.equipment if profile else '')"/></textarea></label>
+                    </div></div>
+                    <div class="ges-form-block"><div class="ges-form-block__head"><span>03</span><div><h2>Certificações e documentos</h2><p>Anexe NUIT, alvará, certidão, carta de apresentação, certificados técnicos e fichas de equipamento.</p></div></div><div class="ges-project-fields__grid">
+                        <label class="ges-field-wide">Licenças e certificações<textarea name="certifications"><t t-esc="form_values.get('certifications') or (profile.certifications if profile else '')"/></textarea></label><label class="ges-field-wide">Carta de apresentação<textarea name="presentation"><t t-esc="form_values.get('presentation') or (profile.presentation if profile else '')"/></textarea></label><label class="ges-field-wide">Documentos do fornecedor<input name="documents" type="file" multiple="multiple" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,.xls,.xlsx"/></label><label class="ges-field-wide">Certificados<input name="certificates" type="file" multiple="multiple" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,.xls,.xlsx"/></label>
+                    </div><div class="ges-doc-grid ges-doc-grid--compact"><div><h3>Documentos actuais</h3><a t-foreach="profile_documents['documents']" t-as="attachment" t-att-href="'/my/ges/subempreiteiro/documentos/%s' % attachment.id"><i class="fa fa-file-o"/> <t t-esc="attachment.name"/></a><p t-if="not profile_documents['documents']">Ainda sem documentos.</p></div><div><h3>Certificados actuais</h3><a t-foreach="profile_documents['certificates']" t-as="attachment" t-att-href="'/my/ges/subempreiteiro/documentos/%s' % attachment.id"><i class="fa fa-certificate"/> <t t-esc="attachment.name"/></a><p t-if="not profile_documents['certificates']">Ainda sem certificados.</p></div></div></div>
+                    <div class="ges-form-block"><div class="ges-form-block__head"><span>04</span><div><h2>Dados comerciais</h2><p>Informação útil para compras, pagamentos e contratação.</p></div></div><div class="ges-project-fields__grid"><label>Banco<input name="bank_name" t-att-value="form_values.get('bank_name') or (profile.bank_name if profile else '')"/></label><label>Conta bancária<input name="bank_account" t-att-value="form_values.get('bank_account') or (profile.bank_account if profile else '')"/></label><label class="ges-field-wide">Condições de pagamento<input name="payment_terms" placeholder="Ex.: 50% adjudicação, 50% conclusão" t-att-value="form_values.get('payment_terms') or (profile.payment_terms if profile else '')"/></label></div></div>
+                    <button type="submit" class="ges-portal-btn ges-contractor-submit">Guardar ficha de fornecedor</button></form>
+            </div>
+        </t>
+    </template>
+
+    <template id="ges_subcontractor_job" name="Oportunidade GES">
+        <t t-call="js_website_ges.ges_portal_light_layout"><div class="ges-portal-shell ges-subcontractor-shell"><section class="ges-job-detail-head"><div><span class="ges-portal-kicker"><t t-esc="job.reference"/> · <t t-esc="job.trade"/></span><h1 t-esc="job.name"/><p><i class="fa fa-map-marker"/> <t t-esc="job.location"/><t t-if="job.deadline"> · Candidaturas até <span t-field="job.deadline"/></t></p></div><img src="/js_website_ges/static/src/img/ges-logo-white.png" alt="GES"/></section><div class="ges-job-detail-grid"><div><section class="ges-portal-section"><h2>Sobre a oportunidade</h2><div class="ges-rich-text" t-field="job.description"/></section><section t-if="job.requirements" class="ges-portal-section"><h2>Requisitos</h2><div class="ges-rich-text" t-field="job.requirements"/></section></div><aside class="ges-portal-section ges-application-panel"><span class="ges-portal-kicker">Candidatura</span><div t-if="application"><h2>Já se candidatou</h2><span t-attf-class="ges-status ges-status--large ges-status--#{application_states[application.state][1]}" t-esc="application_states[application.state][0]"/><p>A equipa GES actualizará o estado da candidatura neste portal.</p><div class="ges-application-facts"><span>Equipa: <strong t-esc="application.proposed_team_size"/></span><span t-if="application.proposed_price">Proposta: <strong t-field="application.proposed_price"/></span><span t-if="application.execution_days">Prazo: <strong><t t-esc="application.execution_days"/> dias</strong></span></div><div t-if="application.attachment_ids" class="ges-application-files"><a t-foreach="application.attachment_ids" t-as="attachment" t-att-href="'/my/ges/subempreiteiro/documentos/%s' % attachment.id"><i class="fa fa-paperclip"/> <t t-esc="attachment.name"/></a></div></div><form t-else="" t-att-action="'/my/ges/subempreiteiro/vagas/%s' % job.id" method="post" enctype="multipart/form-data"><input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/><div t-if="errors" class="alert alert-danger"><ul><li t-foreach="errors" t-as="error" t-esc="error"/></ul></div><label>Mensagem de candidatura *<textarea name="message" required="required" minlength="30" rows="7" placeholder="Experiência relevante, abordagem e disponibilidade..."><t t-esc="form_values.get('message', '')"/></textarea></label><label>Disponível a partir de<input name="availability_date" type="date" t-att-value="form_values.get('availability_date', '')"/></label><label>Equipa proposta<input name="proposed_team_size" type="number" min="1" max="10000" t-att-value="form_values.get('proposed_team_size') or profile.team_size or 1"/></label><label>Proposta financeira<input name="proposed_price" type="number" min="0" step="0.01" t-att-value="form_values.get('proposed_price', '')"/></label><label>Prazo de execução em dias<input name="execution_days" type="number" min="0" max="3650" t-att-value="form_values.get('execution_days', '')"/></label><label>Anexos da proposta<input name="application_documents" type="file" multiple="multiple" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,.xls,.xlsx"/></label><button type="submit" class="ges-portal-btn">Enviar candidatura</button></form></aside></div></div></t>
+    </template>
+</odoo>

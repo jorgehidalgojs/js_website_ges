@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_ges_capabilities" name="GES — Áreas de capacidade">
+        <section class="s_ges_capabilities ges-section ges-section--soft" data-snippet="s_ges_capabilities" data-name="GES — Áreas de capacidade">
+            <div class="ges-container">
+                <div class="ges-section-heading">
+                    <div><span class="ges-eyebrow">Capacidade integrada</span><h2>Uma estrutura. Múltiplas soluções.</h2></div>
+                    <p>Produção, operação e execução coordenadas para responder ao ciclo completo da obra.</p>
+                </div>
+                <div class="ges-solution-panels">
+                    <article class="ges-solution-panel"><span class="ges-solution-panel__number">01</span><div><i class="ges-solution-panel__icon fa fa-industry"></i><h3>Produção</h3><p>Materiais e componentes essenciais, produzidos com consistência.</p></div><a href="/ges/solucoes#producao"><i class="fa fa-arrow-right"></i></a></article>
+                    <article class="ges-solution-panel"><span class="ges-solution-panel__number">02</span><div><i class="ges-solution-panel__icon fa fa-truck"></i><h3>Operação</h3><p>Frota, equipamentos e logística para manter o terreno em movimento.</p></div><a href="/ges/solucoes#operacao"><i class="fa fa-arrow-right"></i></a></article>
+                    <article class="ges-solution-panel"><span class="ges-solution-panel__number">03</span><div><i class="ges-solution-panel__icon fa fa-building"></i><h3>Execução</h3><p>Estrutura humana e operacional para transformar planeamento em obra.</p></div><a href="/ges/solucoes#execucao"><i class="fa fa-arrow-right"></i></a></article>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="s_ges_proof_strip" name="GES — Indicadores">
+        <section class="s_ges_proof_strip ges-proof-strip" data-snippet="s_ges_proof_strip" data-name="GES — Indicadores">
+            <div class="ges-container ges-proof-strip__grid">
+                <article><i class="fa fa-cubes"></i><strong>15</strong><span>áreas operacionais</span></article>
+                <article><i class="fa fa-industry"></i><strong>2.000</strong><span>blocos por dia</span></article>
+                <article><i class="fa fa-refresh"></i><strong>01</strong><span>cadeia integrada</span></article>
+                <article><i class="fa fa-map-marker"></i><strong>MZ</strong><span>capacidade nacional</span></article>
+            </div>
+        </section>
+    </template>
+
+    <template id="s_ges_quote_banner" name="GES — Pedido de cotação">
+        <section class="s_ges_quote_banner ges-cta" data-snippet="s_ges_quote_banner" data-name="GES — Pedido de cotação">
+            <div class="ges-container ges-cta__inner">
+                <div><span class="ges-eyebrow ges-eyebrow--dark">Próximo passo</span><h2>Vamos construir o seu próximo projecto.</h2></div>
+                <p>Partilhe a sua necessidade. A equipa GES identificará a combinação certa de soluções.</p>
+                <a class="ges-btn ges-btn--dark" href="/ges/contactos#cotacao">Pedir cotação <i class="fa fa-arrow-right"></i></a>
+            </div>
+        </section>
+    </template>
+
+    <template id="ges_snippets" inherit_id="website.snippets" name="GES Website Snippets">
+        <xpath expr="//div[@id='snippet_structure']/div[@class='o_panel_body']" position="inside">
+            <t t-snippet="js_website_ges.s_ges_capabilities" string="GES — Capacidades" t-thumbnail="/js_website_ges/static/src/img/ges-logo.png"><keywords>GES, soluções, capacidades</keywords></t>
+            <t t-snippet="js_website_ges.s_ges_proof_strip" string="GES — Indicadores" t-thumbnail="/js_website_ges/static/src/img/ges-logo.png"><keywords>GES, números, indicadores</keywords></t>
+            <t t-snippet="js_website_ges.s_ges_quote_banner" string="GES — Cotação" t-thumbnail="/js_website_ges/static/src/img/ges-logo.png"><keywords>GES, contacto, cotação</keywords></t>
+        </xpath>
+    </template>
+</odoo>

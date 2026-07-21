@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ges_material_request_tree" model="ir.ui.view">
+        <field name="name">ges.material.request.tree</field>
+        <field name="model">ges.material.request</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="state == 'delivered'" decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="create_date"/>
+                <field name="partner_id"/>
+                <field name="project_name"/>
+                <field name="site_location"/>
+                <field name="required_date"/>
+                <field name="amount_estimated" sum="Total"/>
+                <field name="sale_order_id"/>
+                <field name="state" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_ges_material_request_form" model="ir.ui.view">
+        <field name="name">ges.material.request.form</field>
+        <field name="model">ges.material.request</field>
+        <field name="arch" type="xml">
+            <form string="Requisição de material">
+                <header>
+                    <button name="action_submit" type="object" string="Criar cotação" class="oe_highlight" attrs="{'invisible': [('sale_order_id', '!=', False)]}"/>
+                    <button name="action_set_preparing" type="object" string="Em preparação" attrs="{'invisible': [('state', 'not in', ['quoted', 'confirmed'])]}"/>
+                    <button name="action_set_dispatched" type="object" string="Despachar" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'preparing')]}"/>
+                    <button name="action_set_delivered" type="object" string="Marcar entregue" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'dispatched')]}"/>
+                    <button name="action_cancel" type="object" string="Cancelar" attrs="{'invisible': [('state', 'in', ['delivered', 'cancelled'])]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,quoted,confirmed,preparing,dispatched,delivered"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_view_sale_order" icon="fa-file-text-o" attrs="{'invisible': [('sale_order_id', '=', False)]}">
+                            <field name="sale_order_id" widget="statinfo" string="Cotação"/>
+                        </button>
+                    </div>
+                    <div class="oe_title"><h1><field name="name"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="user_id"/>
+                            <field name="project_name"/>
+                        </group>
+                        <group>
+                            <field name="site_location"/>
+                            <field name="required_date"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="sale_order_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Materiais">
+                            <field name="line_ids">
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="name"/>
+                                    <field name="quantity"/>
+                                    <field name="uom_id"/>
+                                    <field name="price_unit_estimated"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="subtotal_estimated" sum="Total"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="amount_estimated"/>
+                            </group>
+                        </page>
+                        <page string="Observações"><field name="notes" placeholder="Informação sobre acesso, descarga, especificações..."/></page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ges_material_request_search" model="ir.ui.view">
+        <field name="name">ges.material.request.search</field>
+        <field name="model">ges.material.request</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="project_name"/>
+                <filter string="Em aberto" name="open" domain="[('state', 'not in', ['delivered', 'cancelled'])]"/>
+                <filter string="Entregues" name="delivered" domain="[('state', '=', 'delivered')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Estado" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Cliente" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_ges_material_requests" model="ir.actions.act_window">
+        <field name="name">Requisições do Portal</field>
+        <field name="res_model">ges.material.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_ges_material_request_search"/>
+        <field name="context">{'search_default_open': 1}</field>
+    </record>
+
+    <menuitem id="menu_ges_portal_root" name="GES Digital" sequence="55" web_icon="js_website_ges,static/description/icon.png" groups="sales_team.group_sale_salesman"/>
+    <menuitem id="menu_ges_material_requests" name="Requisições" parent="menu_ges_portal_root" action="action_ges_material_requests" sequence="10"/>
+
+    <record id="product_template_form_ges_portal" model="ir.ui.view">
+        <field name="name">product.template.form.ges.portal</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sale_ok']" position="after">
+                <field name="ges_portal_available"/>
+            </xpath>
+            <xpath expr="//page[@name='sales']" position="inside">
+                <group string="GES Digital">
+                    <field name="ges_calculator_type" attrs="{'invisible': [('ges_portal_available', '=', False)]}"/>
+                    <field name="ges_portal_description" attrs="{'invisible': [('ges_portal_available', '=', False)]}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_order_form_ges_request" model="ir.ui.view">
+        <field name="name">sale.order.form.ges.request</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='client_order_ref']" position="after">
+                <field name="ges_request_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_ges_subcontractor_profile_tree" model="ir.ui.view">
+        <field name="name">ges.subcontractor.profile.tree</field><field name="model">ges.subcontractor.profile</field><field name="arch" type="xml"><tree decoration-success="state == 'approved'" decoration-warning="state == 'pending'"><field name="company_name"/><field name="supplier_type"/><field name="nuit"/><field name="phone"/><field name="province"/><field name="trades"/><field name="price_range_min"/><field name="price_range_max"/><field name="profile_completeness" widget="progressbar"/><field name="document_count"/><field name="application_count"/><field name="state" widget="badge"/></tree></field>
+    </record>
+    <record id="view_ges_subcontractor_profile_form" model="ir.ui.view">
+        <field name="name">ges.subcontractor.profile.form</field><field name="model">ges.subcontractor.profile</field><field name="arch" type="xml"><form string="Subempreiteiro"><header><button name="action_approve" type="object" string="Aprovar" class="oe_highlight" attrs="{'invisible':[('state','=','approved')]}"/><button name="action_suspend" type="object" string="Suspender" attrs="{'invisible':[('state','=','suspended')]}"/><field name="state" widget="statusbar" statusbar_visible="pending,approved,suspended"/></header><sheet><div class="oe_title"><h1><field name="company_name"/></h1></div><group string="Qualificação"><field name="profile_completeness" widget="progressbar"/><field name="document_count"/><field name="application_count"/></group><group><group string="Fornecedor"><field name="partner_id"/><field name="legal_name"/><field name="supplier_type"/><field name="email"/><field name="phone"/><field name="nuit"/><field name="tax_regime"/><field name="license_number"/></group><group string="Localização e capacidade"><field name="street"/><field name="city"/><field name="province"/><field name="coverage_area"/><field name="trades"/><field name="team_size"/><field name="years_experience"/><field name="availability"/></group></group><group string="Preços indicativos"><field name="currency_id"/><field name="price_range_min"/><field name="price_range_max"/></group><notebook><page string="Serviços"><field name="service_pricing"/><field name="equipment"/></page><page string="Certificações"><field name="certifications"/><field name="certification_attachment_ids" widget="many2many_binary"/></page><page string="Documentos"><field name="document_attachment_ids" widget="many2many_binary"/></page><page string="Apresentação"><field name="presentation"/></page><page string="Dados comerciais"><field name="bank_name"/><field name="bank_account"/><field name="payment_terms"/></page><page string="Candidaturas"><field name="application_ids" readonly="1"><tree><field name="name"/><field name="job_id"/><field name="create_date"/><field name="proposed_price"/><field name="execution_days"/><field name="state" widget="badge"/></tree></field></page></notebook></sheet><div class="oe_chatter"><field name="message_follower_ids" widget="mail_followers"/><field name="activity_ids" widget="mail_activity"/><field name="message_ids" widget="mail_thread"/></div></form></field>
+    </record>
+    <record id="action_ges_subcontractor_profiles" model="ir.actions.act_window"><field name="name">Subempreiteiros</field><field name="res_model">ges.subcontractor.profile</field><field name="view_mode">tree,form</field></record>
+
+    <record id="view_ges_subcontractor_job_tree" model="ir.ui.view">
+        <field name="name">ges.subcontractor.job.tree</field><field name="model">ges.subcontractor.job</field><field name="arch" type="xml"><tree decoration-success="state == 'published'" decoration-muted="state == 'closed'"><field name="reference"/><field name="name"/><field name="trade"/><field name="location"/><field name="publish_date"/><field name="deadline"/><field name="application_count"/><field name="state" widget="badge"/></tree></field>
+    </record>
+    <record id="view_ges_subcontractor_job_form" model="ir.ui.view">
+        <field name="name">ges.subcontractor.job.form</field><field name="model">ges.subcontractor.job</field><field name="arch" type="xml"><form string="Oportunidade"><header><button name="action_publish" type="object" string="Publicar" class="oe_highlight" attrs="{'invisible':[('state','=','published')]}"/><button name="action_close" type="object" string="Encerrar" attrs="{'invisible':[('state','=','closed')]}"/><field name="state" widget="statusbar" statusbar_visible="draft,published,closed"/></header><sheet><div class="oe_title"><label for="name"/><h1><field name="name"/></h1><span><field name="reference"/></span></div><group><group><field name="trade"/><field name="location"/></group><group><field name="publish_date"/><field name="deadline"/></group></group><notebook><page string="Descrição"><field name="description" widget="html"/></page><page string="Requisitos"><field name="requirements" widget="html"/></page><page string="Candidaturas"><field name="application_ids" readonly="1"><tree><field name="name"/><field name="profile_id"/><field name="availability_date"/><field name="proposed_team_size"/><field name="state" widget="badge"/></tree></field></page></notebook></sheet><div class="oe_chatter"><field name="message_follower_ids" widget="mail_followers"/><field name="activity_ids" widget="mail_activity"/><field name="message_ids" widget="mail_thread"/></div></form></field>
+    </record>
+    <record id="action_ges_subcontractor_jobs" model="ir.actions.act_window"><field name="name">Oportunidades</field><field name="res_model">ges.subcontractor.job</field><field name="view_mode">tree,form</field></record>
+
+    <record id="view_ges_subcontractor_application_tree" model="ir.ui.view">
+        <field name="name">ges.subcontractor.application.tree</field><field name="model">ges.subcontractor.application</field><field name="arch" type="xml"><tree decoration-success="state == 'accepted'" decoration-muted="state in ('rejected','withdrawn')"><field name="name"/><field name="create_date"/><field name="job_id"/><field name="profile_id"/><field name="availability_date"/><field name="proposed_team_size"/><field name="proposed_price"/><field name="execution_days"/><field name="state" widget="badge"/></tree></field>
+    </record>
+    <record id="view_ges_subcontractor_application_form" model="ir.ui.view">
+        <field name="name">ges.subcontractor.application.form</field><field name="model">ges.subcontractor.application</field><field name="arch" type="xml"><form string="Candidatura"><header><button name="action_review" type="object" string="Em avaliação" attrs="{'invisible':[('state','!=','submitted')]}"/><button name="action_shortlist" type="object" string="Pré-seleccionar" class="oe_highlight" attrs="{'invisible':[('state','not in',['submitted','review'])]}"/><button name="action_accept" type="object" string="Aceitar" class="oe_highlight" attrs="{'invisible':[('state','not in',['review','shortlisted'])]}"/><button name="action_reject" type="object" string="Não seleccionar" attrs="{'invisible':[('state','in',['accepted','rejected','withdrawn'])]}"/><field name="state" widget="statusbar" statusbar_visible="submitted,review,shortlisted,accepted,rejected"/></header><sheet><div class="oe_title"><h1><field name="name"/></h1></div><group><group><field name="job_id"/><field name="profile_id"/><field name="partner_id"/></group><group><field name="create_date"/><field name="availability_date"/><field name="proposed_team_size"/><field name="proposed_price"/><field name="execution_days"/></group></group><group string="Mensagem"><field name="message" nolabel="1"/></group><notebook><page string="Anexos"><field name="attachment_ids" widget="many2many_binary"/></page></notebook></sheet><div class="oe_chatter"><field name="message_follower_ids" widget="mail_followers"/><field name="activity_ids" widget="mail_activity"/><field name="message_ids" widget="mail_thread"/></div></form></field>
+    </record>
+    <record id="action_ges_subcontractor_applications" model="ir.actions.act_window"><field name="name">Candidaturas</field><field name="res_model">ges.subcontractor.application</field><field name="view_mode">tree,form</field></record>
+
+    <menuitem id="menu_ges_subcontractor_profiles" name="Subempreiteiros" parent="menu_ges_portal_root" action="action_ges_subcontractor_profiles" sequence="20"/>
+    <menuitem id="menu_ges_subcontractor_jobs" name="Oportunidades" parent="menu_ges_portal_root" action="action_ges_subcontractor_jobs" sequence="30"/>
+    <menuitem id="menu_ges_subcontractor_applications" name="Candidaturas" parent="menu_ges_portal_root" action="action_ges_subcontractor_applications" sequence="40"/>
+</odoo>

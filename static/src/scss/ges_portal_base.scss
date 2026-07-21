@@ -1,0 +1,304 @@
+html { scroll-behavior: smooth; }
+body.ges-light-body {
+    margin: 0;
+    color: #111313;
+    background: #f4f4f1;
+    font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+.ges-light-body *, .ges-light-body *::before, .ges-light-body *::after { box-sizing: border-box; }
+.ges-light-body a { color: inherit; text-decoration: none; }
+.ges-light-body button, .ges-light-body input, .ges-light-body select, .ges-light-body textarea { font: inherit; }
+.ges-light-body img { max-width: 100%; }
+.ges-light-container { width: calc(100% - 32px); max-width: 1240px; margin-inline: auto; }
+.ges-light-header { min-height: 76px; display: flex; align-items: center; border-bottom: 1px solid #dededb; background: #fff; }
+.ges-light-header__inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.ges-light-header__brand img { width: 142px; height: 48px; display: block; object-fit: contain; }
+.ges-light-nav { display: flex; align-items: center; gap: 6px; }
+.ges-light-nav a { padding: 10px 13px; color: #4e5553; font-size: 12px; font-weight: 800; text-transform: uppercase; }
+.ges-light-nav a:hover, .ges-light-nav a:focus-visible { color: #080909; background: #ffcc00; }
+.ges-light-nav__cta { color: #111313 !important; background: #ffcc00; }
+.ges-light-user { padding-left: 13px; border-left: 1px solid #ddd; color: #6d7472; font-size: 12px; }
+.ges-light-main { min-height: calc(100vh - 290px); }
+.btn { cursor: pointer; text-decoration: none; }
+.alert { padding: 14px 18px; border: 1px solid transparent; }
+.alert-danger { color: #781e25; border-color: #efc2c6; background: #f9d7da; }
+.alert-success { color: #155b35; border-color: #bce2cc; background: #d9f3e4; }
+.alert ul { margin: 0; padding-left: 20px; }
+.pagination { display: flex; justify-content: center; gap: 4px; margin: 24px 0; padding: 0; list-style: none; }
+.page-link { min-width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid #ddd; background: #fff; }
+.page-item.active .page-link { border-color: #ffcc00; background: #ffcc00; }
+.page-item.disabled { opacity: .45; }
+.mr-2 { margin-right: .5rem; }
+.ml-2 { margin-left: .5rem; }
+.mb-0 { margin-bottom: 0; }
+.ges-light-body .ges-portal-shell { width: calc(100% - 32px); max-width: 1240px; }
+.ges-light-body .ges-portal-footer { margin-top: 0; }
+.ges-portal-shell { margin-right: auto; margin-left: auto; }
+.ges-portal-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.ges-portal-kicker { display: inline-flex; margin-bottom: 14px; color: #9f8200; font-size: 11px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+.ges-portal-btn { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; padding: 12px 22px; border: 2px solid #ffcc00; border-radius: 2px; color: #111313 !important; background: #ffcc00; font-size: 12px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; transition: transform .2s ease, box-shadow .2s ease; }
+.ges-portal-btn:hover { color: #111313; box-shadow: 0 10px 24px rgba(0,0,0,.15); transform: translateY(-2px); }
+.ges-portal-btn--ghost { border-color: rgba(255,255,255,.42); color: #fff !important; background: transparent; }
+.ges-portal-btn--outline { border-color: #111313; background: transparent; }
+.ges-portal-section { margin-top: 28px; padding: 36px; border: 1px solid #dededb; background: #fff; }
+.ges-portal-section__head, .ges-portal-page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.ges-portal-section__head { margin-bottom: 26px; }
+.ges-portal-section__head h2 { margin: 0; font-size: 32px; line-height: 1.05; }
+.ges-portal-section__head a { color: #232726; font-size: 12px; font-weight: 900; text-transform: uppercase; }
+.ges-portal-page-head { min-height: 210px; padding: 42px 48px; color: #fff; background: #111313; }
+.ges-portal-page-head .ges-portal-kicker { color: #ffcc00; }
+.ges-portal-page-head h1 { margin: 0 0 10px; color: #fff; font-size: clamp(42px, 6vw, 66px); line-height: 1; }
+.ges-portal-page-head p { margin: 0; color: #bcc2c0; font-size: 17px; }
+.ges-project-fields__grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+.ges-field-wide { grid-column: 1 / -1; }
+.ges-status { display: inline-flex; align-items: center; justify-content: center; min-height: 30px; padding: 6px 10px; border-radius: 100px; font-size: 10px; font-weight: 900; letter-spacing: .04em; text-align: center; text-transform: uppercase; }
+.ges-status--primary { color: #4f3e00; background: #fff1ad; }
+.ges-status--success { color: #0b5a36; background: #d9f5e7; }
+.ges-status--warning { color: #7a4a00; background: #ffebc7; }
+.ges-status--info { color: #07506d; background: #d9f2fb; }
+.ges-status--secondary, .ges-status--muted { color: #515756; background: #e9eceb; }
+.ges-status--large { min-height: 42px; padding-inline: 18px; }
+.ges-portal-empty { min-height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px; color: #69716f; border: 1px dashed #c8cac7; text-align: center; }
+.ges-portal-empty i { margin-bottom: 10px; color: #b38e00; font-size: 34px; }
+.ges-portal-empty h3 { margin: 0 0 8px; color: #111313; font-size: 24px; }
+.ges-portal-alert { width: calc(100% - 32px); max-width: 1080px; margin: 18px auto; }
+.ges-portal-footer { margin-top: 55px; color: #fff; background: #101212; }
+.ges-portal-footer__inner { min-height: 210px; display: grid; grid-template-columns: 1.2fr 1fr 1fr; align-items: center; gap: 45px; padding-top: 38px; padding-bottom: 38px; }
+.ges-portal-footer img { width: 165px; height: auto; margin-bottom: 12px; }
+.ges-portal-footer p { max-width: 280px; margin: 0; color: #9ea5a3; font-size: 13px; }
+.ges-portal-footer nav, .ges-portal-footer__contact { display: flex; flex-direction: column; gap: 10px; }
+.ges-portal-footer a { color: #e8ebe9 !important; font-size: 13px; }
+.ges-portal-footer a:hover { color: #ffcc00 !important; }
+.ges-portal-hero { min-height: 410px; display: grid; grid-template-columns: 1.35fr .65fr; align-items: stretch; overflow: hidden; color: #fff; background: #0c0e0d; }
+.ges-portal-hero__content { padding: 62px; }
+.ges-portal-hero .ges-portal-kicker { color: #ffcc00; }
+.ges-portal-hero h1 { max-width: 700px; margin: 0 0 20px; color: #fff; font-size: clamp(42px, 5vw, 68px); line-height: .98; }
+.ges-portal-hero p { max-width: 650px; margin: 0 0 32px; color: #c6ccca; font-size: 18px; line-height: 1.55; }
+.ges-portal-hero__mark { display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; color: #111313; background: #ffcc00; }
+.ges-portal-hero__mark span { font-family: "Arial Black", Arial, sans-serif; font-size: clamp(90px, 13vw, 180px); letter-spacing: 0; line-height: .8; transform: translateX(-.04em); }
+.ges-portal-hero__mark small { margin-top: 26px; font-size: 10px; font-weight: 900; letter-spacing: .25em; }
+.ges-portal-stats { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid #ddd; border-top: 0; background: #fff; }
+.ges-portal-stats a { min-height: 145px; display: grid; grid-template-columns: 1fr auto; align-content: center; gap: 4px 12px; padding: 28px; border-right: 1px solid #ddd; color: inherit; text-decoration: none !important; transition: background .2s ease; }
+.ges-portal-stats a:last-child { border-right: 0; }
+.ges-portal-stats a:hover { background: #f7f7f4; }
+.ges-portal-stats span { align-self: end; color: #4f5755; font-size: 11px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.ges-portal-stats strong { grid-row: span 2; font-family: "Arial Black", Arial, sans-serif; font-size: 42px; }
+.ges-portal-stats small { color: #7d8382; font-size: 12px; }
+.ges-request-list { border-top: 1px solid #e3e3df; }
+.ges-request-list--page { margin-top: 24px; border: 1px solid #dededb; background: #fff; }
+.ges-request-row { min-height: 88px; display: grid; grid-template-columns: 48px minmax(0, 1fr) 120px 160px 18px; align-items: center; gap: 16px; padding: 15px 18px; border-bottom: 1px solid #e3e3df; color: inherit !important; text-decoration: none !important; transition: background .2s ease; }
+.ges-request-row:last-child { border-bottom: 0; }
+.ges-request-row:hover { background: #f7f7f4; }
+.ges-request-row__icon { width: 46px; height: 46px; display: grid; place-items: center; color: #111313; background: #ffcc00; font-size: 18px; }
+.ges-request-row__main { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.ges-request-row__main strong { overflow: hidden; font-size: 16px; text-overflow: ellipsis; white-space: nowrap; }
+.ges-request-row__main span, .ges-request-row__date { color: #747b79; font-size: 12px; }
+.ges-request-row__arrow { color: #9a9f9d; }
+.ges-calculator-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 24px; }
+.ges-calc-tool { display: flex; flex-direction: column; gap: 22px; padding: 28px; border: 1px solid #d9d9d6; background: #f6f6f3; }
+.ges-calc-tool__title { display: grid; grid-template-columns: 52px minmax(0, 1fr); align-items: center; gap: 16px; }
+.ges-calc-tool__title > i { width: 50px; height: 50px; display: grid; place-items: center; color: #111; background: #ffcc00; font-size: 20px; }
+.ges-calc-tool__title strong { display: block; color: #111313; font-size: 22px; line-height: 1.08; }
+.ges-calc-tool__title span { display: block; margin-top: 4px; color: #69716f; font-size: 12px; line-height: 1.35; }
+.ges-calc-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.ges-calc-fields label,
+.ges-project-fields label { display: block; margin: 0; color: #4c5351; font-size: 11px; font-weight: 900; letter-spacing: .05em; line-height: 1.35; text-transform: uppercase; }
+.ges-calc-fields input,
+.ges-calc-fields select,
+.ges-project-fields input,
+.ges-project-fields textarea { width: 100%; min-height: 50px; display: block; margin-top: 7px; padding: 10px 12px; border: 1px solid #c8cac7; border-radius: 0; color: #171918; background: #fff; box-shadow: none; font-size: 16px; line-height: 1.35; }
+.ges-calc-fields input:focus,
+.ges-calc-fields select:focus,
+.ges-project-fields input:focus,
+.ges-project-fields textarea:focus,
+.ges-material-qty input:focus { border-color: #ffcc00; outline: 2px solid rgba(255,204,0,.28); }
+.ges-calc-apply { width: 100%; min-height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: auto; padding: 12px 16px; border: 0; color: #111; background: #ffcc00; font-size: 12px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
+.ges-calc-apply span { font-family: "Arial Black", Arial, sans-serif; font-size: 18px; letter-spacing: 0; text-transform: none; }
+.ges-calc-apply:hover { box-shadow: 0 10px 24px rgba(0,0,0,.12); transform: translateY(-1px); }
+.ges-material-picker { overflow: hidden; }
+.ges-material-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.ges-material-card { min-height: 255px; display: grid; grid-template-columns: 52px 1fr; align-content: start; gap: 16px; padding: 20px; border: 2px solid #e0e0dc; position: relative; transition: border-color .2s ease, background .2s ease; }
+.ges-material-card.is-selected { border-color: #ffcc00; background: #fffdf2; }
+.ges-material-card__icon { width: 50px; height: 50px; display: grid; place-items: center; color: #111; background: #ecece8; font-size: 20px; }
+.ges-material-card.is-selected .ges-material-card__icon { background: #ffcc00; }
+.ges-material-card__body > span { color: #777e7c; font-size: 9px; font-weight: 900; letter-spacing: .1em; }
+.ges-material-card__body h3 { margin: 4px 0 8px; font-size: 19px; }
+.ges-material-card__body p { min-height: 38px; margin: 0 0 8px; color: #68706e; font-size: 12px; line-height: 1.45; }
+.ges-material-card__body small { color: #323735; font-weight: 700; }
+.ges-material-qty { grid-column: 1 / -1; align-self: end; margin: 10px 0 0; color: #555c5a; font-size: 10px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
+.ges-material-qty span { float: right; color: #858a88; }
+.ges-material-qty input { width: 100%; height: 52px; margin-top: 6px; padding: 0 14px; border: 1px solid #c9cbc8; border-radius: 0; font-size: 17px; }
+.ges-project-fields__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.ges-project-fields__grid .ges-field-wide { grid-column: 1 / -1; }
+.ges-project-fields textarea { min-height: 118px; resize: vertical; }
+.ges-quote-summary { min-height: 104px; display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 20px; padding: 20px 26px; border-left: 6px solid #ffcc00; color: #fff; background: #111313; position: sticky; bottom: 12px; z-index: 5; box-shadow: 0 16px 40px rgba(0,0,0,.2); }
+.ges-quote-summary > div { display: grid; grid-template-columns: auto auto; align-items: end; gap: 2px 18px; }
+.ges-quote-summary span { color: #aeb4b2; font-size: 10px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.ges-quote-summary strong { font-family: "Arial Black", Arial, sans-serif; font-size: 25px; }
+.ges-quote-summary small { grid-column: 1 / -1; color: #8e9693; }
+.ges-request-detail-head { align-items: center; }
+.ges-request-notes { margin: 22px 0 0; padding-top: 18px; border-top: 1px solid #e0e0dd; color: #646c69; white-space: pre-line; }
+.ges-request-line { min-height: 72px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 18px; padding: 13px 0; border-bottom: 1px solid #e2e2df; }
+.ges-request-line > div { display: flex; flex-direction: column; }
+.ges-request-line > div:last-child { text-align: right; }
+.ges-request-line span { color: #737a78; font-size: 12px; }
+.ges-request-total { display: flex; align-items: center; justify-content: space-between; padding-top: 20px; font-size: 13px; }
+.ges-request-total strong { font-family: "Arial Black", Arial, sans-serif; font-size: 25px; }
+.ges-quote-link { display: grid; grid-template-columns: 42px 1fr; gap: 14px; align-items: center; }
+.ges-quote-link > i { width: 42px; height: 42px; display: grid; place-items: center; background: #ffcc00; }
+.ges-quote-link div { display: flex; flex-direction: column; }
+.ges-quote-link .ges-portal-btn { grid-column: 1 / -1; margin-top: 10px; }
+
+@media (max-width: 767px) {
+    .ges-light-container { width: calc(100% - 24px); }
+    .ges-light-header { min-height: 68px; }
+    .ges-light-header__inner { gap: 10px; }
+    .ges-light-header__brand img { width: 108px; height: 40px; }
+    .ges-light-nav { max-width: calc(100vw - 142px); overflow-x: auto; scrollbar-width: none; }
+    .ges-light-nav::-webkit-scrollbar { display: none; }
+    .ges-light-nav a { flex: 0 0 auto; padding: 10px 9px; font-size: 10px; }
+    .ges-light-user { display: none; }
+    .ges-light-body .ges-portal-shell { width: 100%; margin-left: 0; }
+    .ges-portal-actions, .ges-portal-actions .ges-portal-btn { width: 100%; }
+    .ges-portal-footer__inner { grid-template-columns: 1fr; gap: 26px; padding: 42px 22px; }
+    .ges-portal-section { margin-top: 14px; padding: 24px 16px; border-right: 0; border-left: 0; }
+    .ges-portal-section__head, .ges-portal-page-head { align-items: flex-start; flex-direction: column; }
+    .ges-portal-section__head h2 { font-size: 28px; }
+    .ges-portal-page-head { min-height: 240px; padding: 34px 22px; }
+    .ges-portal-page-head h1 { font-size: 42px; }
+    .ges-project-fields__grid { grid-template-columns: 1fr; }
+    .ges-portal-hero__content { padding: 42px 22px; }
+    .ges-portal-hero h1 { font-size: 39px; }
+    .ges-portal-hero p { font-size: 16px; }
+    .ges-portal-stats { grid-template-columns: 1fr; }
+    .ges-portal-stats a { min-height: 118px; padding: 18px; border-right: 0; border-bottom: 1px solid #ddd; }
+    .ges-portal-stats strong { font-size: 34px; }
+    .ges-request-row { min-height: 110px; grid-template-columns: 42px minmax(0, 1fr) auto; gap: 10px; padding: 14px 12px; }
+    .ges-request-row__icon { width: 42px; height: 42px; }
+    .ges-request-row__date { display: none; }
+    .ges-request-row .ges-status { grid-column: 2; justify-self: start; }
+    .ges-request-row__arrow { grid-column: 3; grid-row: 1 / span 2; }
+    .ges-calculator-tools, .ges-material-grid, .ges-calc-fields, .ges-project-fields__grid { grid-template-columns: 1fr; }
+    .ges-calculator-tools { gap: 12px; margin: 12px 0 0; }
+    .ges-calc-tool { padding: 22px 16px; }
+    .ges-calc-tool__title { grid-template-columns: 46px minmax(0, 1fr); gap: 12px; }
+    .ges-calc-tool__title > i { width: 44px; height: 44px; }
+    .ges-calc-tool__title strong { font-size: 19px; }
+    .ges-calc-apply { align-items: flex-start; flex-direction: column; }
+    .ges-material-card { min-height: 235px; }
+    .ges-project-fields__grid .ges-field-wide { grid-column: auto; }
+    .ges-quote-summary { align-items: stretch; flex-direction: column; margin-inline: 0; bottom: 6px; padding: 18px; }
+    .ges-quote-summary .ges-portal-btn { width: 100%; }
+    .ges-request-detail-head { align-items: flex-start; }
+    .ges-request-line { grid-template-columns: 1fr; }
+    .ges-request-line > div:last-child { flex-direction: row; justify-content: space-between; text-align: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .ges-light-body *, .ges-light-body *::before, .ges-light-body *::after { transition: none !important; animation: none !important; }
+}
+
+/* Subcontractor partner portal */
+.ges-subcontractor-shell { padding-top: 24px; }
+.ges-subcontractor-hero { min-height: 500px; display: grid; grid-template-columns: 1.45fr .55fr; overflow: hidden; color: #fff; background: #0d0f0e; }
+.ges-subcontractor-hero > div:first-child { display: flex; flex-direction: column; justify-content: center; padding: 64px; }
+.ges-subcontractor-hero .ges-portal-kicker { color: #ffcc00; }
+.ges-subcontractor-hero h1 { max-width: 800px; margin: 0 0 24px; color: #fff; font-size: clamp(44px, 6vw, 76px); line-height: .96; }
+.ges-subcontractor-hero p { max-width: 680px; margin: 0 0 32px; color: #c5cbc9; font-size: 18px; }
+.ges-subcontractor-hero__logo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; background: #ffcc00; }
+.ges-subcontractor-hero__logo img { width: 220px; filter: none; }
+.ges-subcontractor-hero__logo span { color: #111; font-size: 10px; font-weight: 900; letter-spacing: .3em; }
+.ges-job-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.ges-job-card { min-height: 270px; display: flex; flex-direction: column; padding: 26px; border: 1px solid #dededb; background: #f8f8f5; }
+.ges-job-card__meta { display: flex; justify-content: space-between; gap: 12px; color: #777e7c; font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.ges-job-card h3 { margin: 28px 0 12px; font-size: 25px; line-height: 1.08; }
+.ges-job-card p { margin: 0; color: #626967; font-size: 13px; }
+.ges-job-card__footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 22px; border-top: 1px solid #dededb; font-size: 12px; }
+.ges-job-card__footer a { font-weight: 900; text-transform: uppercase; }
+.ges-job-card__footer a::after { content: " →"; color: #b38e00; }
+.ges-register-logo { width: 180px; max-height: 70px; object-fit: contain; }
+.ges-contractor-form { max-width: 1080px; margin-right: auto; margin-left: auto; }
+.ges-contractor-submit { margin-top: 26px; }
+.ges-form-block { padding: 28px 0; border-top: 1px solid #dededb; }
+.ges-form-block:first-of-type { padding-top: 0; border-top: 0; }
+.ges-form-block__head { display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 18px; margin-bottom: 22px; }
+.ges-form-block__head > span { width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center; color: #111; background: #ffcc00; font-size: 12px; font-weight: 900; }
+.ges-form-block__head h2 { margin: 0 0 6px; font-size: 28px; line-height: 1.05; }
+.ges-form-block__head p { max-width: 660px; margin: 0; color: #69716f; font-size: 14px; line-height: 1.5; }
+.ges-contractor-form label { color: #4b5351; font-size: 11px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; }
+.ges-contractor-form input, .ges-contractor-form select, .ges-contractor-form textarea { width: 100%; min-height: 50px; display: block; margin-top: 7px; padding: 11px 12px; border: 1px solid #c8cac7; border-radius: 0; background: #fff; color: #151817; font-size: 16px; font-weight: 500; letter-spacing: 0; text-transform: none; }
+.ges-contractor-form textarea { min-height: 132px; resize: vertical; }
+.ges-contractor-form input[type="file"] { min-height: 58px; padding: 15px 12px; background: #f8f8f5; font-size: 13px; }
+.ges-subcontractor-dashboard-head { min-height: 330px; display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 52px 58px; color: #fff; background: linear-gradient(120deg, #0c0e0d, #252927); }
+.ges-subcontractor-dashboard-head .ges-portal-kicker { color: #ffcc00; }
+.ges-subcontractor-dashboard-head h1 { max-width: 780px; margin: 0 0 15px; color: #fff; font-size: clamp(42px, 6vw, 68px); line-height: .98; }
+.ges-subcontractor-dashboard-head p { margin: 0; color: #c4cac8; font-size: 17px; }
+.ges-contractor-stats { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid #ddd; border-top: 0; background: #fff; }
+.ges-contractor-stats > div { min-height: 120px; display: flex; flex-direction: column; justify-content: center; padding: 26px; border-right: 1px solid #ddd; }
+.ges-contractor-stats > div:last-child { border-right: 0; }
+.ges-contractor-stats span { color: #707775; font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.ges-contractor-stats strong { margin-top: 7px; font-family: "Arial Black", Arial, sans-serif; font-size: 28px; }
+.ges-supplier-summary > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.ges-summary-card { min-height: 170px; padding: 24px; border: 1px solid #dededb; background: #f8f8f5; }
+.ges-summary-card span { color: #777e7c; font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.ges-summary-card strong { display: block; margin: 12px 0 8px; color: #111; font-size: 24px; line-height: 1.1; }
+.ges-summary-card p { max-height: 78px; margin: 0; overflow: hidden; color: #68706d; font-size: 13px; line-height: 1.45; }
+.ges-document-center .ges-portal-section__head a { font-weight: 900; text-transform: uppercase; }
+.ges-doc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.ges-doc-grid > div { min-height: 150px; padding: 22px; border: 1px solid #dededb; background: #fbfbf8; }
+.ges-doc-grid h3 { margin: 0 0 14px; font-size: 20px; }
+.ges-doc-grid a { display: flex; align-items: center; gap: 8px; min-height: 38px; padding: 7px 0; border-top: 1px solid #ecece8; color: #232827; font-weight: 800; }
+.ges-doc-grid p { color: #737b78; }
+.ges-doc-grid--compact { margin-top: 18px; }
+.ges-profile-meter { width: 150px; height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; border: 2px solid #ffcc00; border-radius: 50%; color: #fff; }
+.ges-profile-meter strong { font-family: "Arial Black", Arial, sans-serif; font-size: 34px; line-height: 1; }
+.ges-profile-meter span { max-width: 90px; margin-top: 6px; font-size: 10px; font-weight: 900; letter-spacing: .08em; text-align: center; text-transform: uppercase; }
+.ges-application-list { border-top: 1px solid #e1e1de; }
+.ges-application-row { min-height: 82px; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px; border-bottom: 1px solid #e1e1de; }
+.ges-application-row > div { display: flex; flex-direction: column; }
+.ges-application-row > div span { color: #747b79; font-size: 12px; }
+.ges-portal-empty--compact { min-height: 150px; }
+.ges-job-detail-head { min-height: 330px; display: flex; align-items: center; justify-content: space-between; gap: 30px; padding: 52px; color: #fff; background: #111313; }
+.ges-job-detail-head .ges-portal-kicker { color: #ffcc00; }
+.ges-job-detail-head img { width: 180px; max-height: 74px; object-fit: contain; flex: 0 0 auto; }
+.ges-job-detail-head h1 { max-width: 850px; margin: 0 0 16px; color: #fff; font-size: clamp(42px, 6vw, 68px); line-height: 1; }
+.ges-job-detail-head p { color: #c2c8c6; }
+.ges-job-detail-head img { width: 180px; }
+.ges-job-detail-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(320px, .6fr); gap: 20px; }
+.ges-rich-text { color: #4f5754; line-height: 1.7; }
+.ges-application-panel { align-self: start; position: sticky; top: 18px; }
+.ges-application-panel form { display: flex; flex-direction: column; gap: 18px; }
+.ges-application-panel label { color: #4e5553; font-size: 11px; font-weight: 800; }
+.ges-application-panel input, .ges-application-panel textarea { width: 100%; min-height: 50px; display: block; margin-top: 6px; padding: 11px 12px; border: 1px solid #c8cac7; border-radius: 0; font-size: 16px; }
+.ges-application-panel input[type="file"] { padding: 14px 12px; background: #f8f8f5; font-size: 13px; }
+.ges-application-panel textarea { min-height: 150px; resize: vertical; }
+.ges-application-facts { display: flex; flex-direction: column; gap: 8px; margin: 18px 0; padding: 14px 0; border-top: 1px solid #dededb; border-bottom: 1px solid #dededb; color: #5d6663; font-size: 13px; }
+.ges-application-files a { display: flex; gap: 8px; padding: 6px 0; font-weight: 800; }
+
+@media (max-width: 991px) {
+    .ges-subcontractor-hero { grid-template-columns: 1fr; }
+    .ges-subcontractor-hero__logo { display: none; }
+    .ges-job-grid { grid-template-columns: 1fr 1fr; }
+    .ges-job-detail-grid, .ges-supplier-summary > div { grid-template-columns: 1fr; }
+    .ges-application-panel { position: static; }
+}
+
+@media (max-width: 767px) {
+    .ges-subcontractor-shell { padding-top: 0; }
+    .ges-subcontractor-hero { min-height: 520px; }
+    .ges-subcontractor-hero > div:first-child { padding: 44px 22px; }
+    .ges-subcontractor-hero h1 { font-size: 43px; }
+    .ges-job-grid, .ges-contractor-stats, .ges-doc-grid { grid-template-columns: 1fr; }
+    .ges-job-card { min-height: 240px; }
+    .ges-subcontractor-dashboard-head, .ges-job-detail-head { align-items: flex-start; flex-direction: column; padding: 38px 22px; }
+    .ges-subcontractor-dashboard-head .ges-portal-btn { width: 100%; }
+    .ges-contractor-stats > div { min-height: 95px; border-right: 0; border-bottom: 1px solid #ddd; }
+    .ges-application-row { align-items: flex-start; flex-direction: column; }
+    .ges-register-logo, .ges-job-detail-head img { width: 140px; }
+    .ges-form-block__head { grid-template-columns: 1fr; gap: 12px; }
+    .ges-form-block__head h2 { font-size: 24px; }
+    .ges-profile-meter { width: 122px; height: 122px; }
+}

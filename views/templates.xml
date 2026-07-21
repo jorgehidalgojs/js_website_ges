@@ -1,0 +1,957 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="safe_text"><t t-esc="value"/></template>
+
+    <template id="ges_seo_head" inherit_id="website.layout" name="GES SEO and social metadata">
+        <xpath expr="//link[@rel='canonical']" position="replace">
+            <link t-if="request and website and website.is_public_user() and not (request.httprequest.path == '/' or request.httprequest.path.startswith('/ges'))" rel="canonical" t-att-href="website._get_canonical_url(canonical_params=canonical_params)"/>
+            <link t-if="request and website and website.is_public_user() and (request.httprequest.path == '/' or request.httprequest.path.startswith('/ges'))" rel="canonical" t-att-href="seo_canonical_url"/>
+        </xpath>
+        <xpath expr="//link[@rel='shortcut icon']" position="attributes">
+            <attribute name="t-att-href">'/js_website_ges/static/src/img/favicon.ico' if request and (request.httprequest.path == '/' or request.httprequest.path.startswith('/ges')) else (x_icon or '/web/static/img/favicon.ico')</attribute>
+        </xpath>
+        <xpath expr="//head" position="inside">
+            <t t-if="request and (request.httprequest.path == '/' or request.httprequest.path.startswith('/ges'))">
+                <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
+                <meta property="og:locale" content="pt_MZ"/>
+                <meta property="og:type" content="website"/>
+                <meta property="og:site_name" content="General Express Service"/>
+                <meta property="og:title" t-att-content="title"/>
+                <meta property="og:description" t-att-content="website_meta_description"/>
+                <meta property="og:url" t-att-content="seo_canonical_url"/>
+                <meta property="og:image" t-att-content="seo_base_url + seo_image"/>
+                <meta property="og:image:secure_url" t-att-content="seo_base_url + seo_image"/>
+                <meta property="og:image:alt" t-att-content="seo_image_alt"/>
+                <meta property="og:image:width" content="1988"/>
+                <meta property="og:image:height" content="1000"/>
+                <meta name="twitter:card" content="summary_large_image"/>
+                <meta name="twitter:title" t-att-content="title"/>
+                <meta name="twitter:description" t-att-content="website_meta_description"/>
+                <meta name="twitter:image" t-att-content="seo_base_url + seo_image"/>
+                <meta name="twitter:image:alt" t-att-content="seo_image_alt"/>
+                <meta name="theme-color" content="#ffcc00"/>
+                <meta name="author" content="General Express Service"/>
+                <meta name="geo.region" content="MZ-MPM"/>
+                <meta name="geo.placename" content="Maputo, Moçambique"/>
+                <meta name="ICBM" content="-25.9682, 32.5732"/>
+                <link rel="alternate" hreflang="pt-MZ" t-att-href="seo_canonical_url"/>
+                <link rel="alternate" hreflang="x-default" t-att-href="seo_canonical_url"/>
+                <link rel="icon" href="/js_website_ges/static/src/img/favicon.ico" sizes="any"/>
+                <link rel="icon" type="image/png" sizes="48x48" href="/js_website_ges/static/src/img/favicon-48.png"/>
+                <link rel="icon" type="image/png" sizes="192x192" href="/js_website_ges/static/src/img/favicon-192.png"/>
+                <link rel="apple-touch-icon" sizes="180x180" href="/js_website_ges/static/src/img/apple-touch-icon.png"/>
+                <link rel="manifest" href="/js_website_ges/static/src/site.webmanifest"/>
+                <link t-if="request.httprequest.path == '/ges/contribuicao-social'" rel="preconnect" href="https://sos.palace.co.mz" crossorigin="anonymous"/>
+                <link t-if="request.httprequest.path == '/ges/contribuicao-social'" rel="dns-prefetch" href="//sos.palace.co.mz"/>
+                <link t-if="request.httprequest.path in ('/', '/ges')" rel="preload" as="image" href="/js_website_ges/static/src/img/hero-integrated.webp" imagesrcset="/js_website_ges/static/src/img/hero-integrated-720.webp 720w, /js_website_ges/static/src/img/hero-integrated.webp 1988w" imagesizes="100vw" type="image/webp" fetchpriority="high"/>
+                <script type="application/ld+json"><t t-out="seo_base_schema_json"/></script>
+                <script t-if="seo_schema_json" type="application/ld+json"><t t-out="seo_schema_json"/></script>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="ges_shell" name="GES Website Layout">
+        <t t-call="website.layout">
+            <t t-set="title" t-value="seo_title"/>
+            <t t-set="website_meta_description" t-value="seo_description"/>
+            <t t-set="website_meta_keywords" t-value="seo_keywords"/>
+            <t t-set="no_header" t-value="True"/>
+            <t t-set="no_footer" t-value="True"/>
+            <div class="ges-page">
+                <a class="ges-skip-link" href="#main-content">Saltar para o conteúdo</a>
+                <header class="ges-header" id="ges-header">
+                    <div class="ges-container ges-header__inner">
+                        <a class="ges-logo" href="/" aria-label="GES — página inicial">
+                            <img class="ges-logo__img ges-logo__img--dark" src="/js_website_ges/static/src/img/ges-logo.png" alt="General Express Service"/>
+                            <img class="ges-logo__img ges-logo__img--light" src="/js_website_ges/static/src/img/ges-logo-white.png" alt="General Express Service"/>
+                        </a>
+                        <button class="ges-menu-toggle" type="button" aria-expanded="false" aria-controls="ges-navigation" aria-label="Abrir menu">
+                            <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+                        </button>
+                        <nav class="ges-nav" id="ges-navigation" aria-label="Navegação principal">
+                            <a t-att-class="'is-active' if active_page == 'about' else ''" href="/ges/sobre-nos">Sobre nós</a>
+                            <a t-att-class="'is-active' if active_page == 'solutions' else ''" href="/ges/solucoes">Soluções</a>
+                            <a t-att-class="'is-active' if active_page == 'projects' else ''" href="/ges/projectos">Projectos</a>
+                            <a t-att-class="'is-active' if active_page == 'news' else ''" href="/ges/noticias">Notícias</a>
+                            <details t-att-class="'ges-nav-cluster is-active' if active_page in ('social', 'environment') else 'ges-nav-cluster'">
+                                <summary>Impacto <i class="fa fa-angle-down"></i></summary>
+                                <div class="ges-nav-cluster__menu">
+                                    <a t-att-class="'is-active' if active_page == 'social' else ''" href="/ges/contribuicao-social"><i class="fa fa-heart"></i><span>Contribuição social</span></a>
+                                    <a t-att-class="'is-active' if active_page == 'environment' else ''" href="/ges/contribuicao-ambiental"><i class="fa fa-leaf"></i><span>Contribuição ambiental</span></a>
+                                </div>
+                            </details>
+                            <a t-att-class="'is-active' if active_page == 'contact' else ''" href="/ges/contactos">Contactos</a>
+                            <details t-att-class="'ges-nav-cluster ges-nav-cluster--digital is-active' if active_page in ('catalog', 'tools') else 'ges-nav-cluster ges-nav-cluster--digital'">
+                                <summary>Digital GES <i class="fa fa-angle-down"></i></summary>
+                                <div class="ges-nav-cluster__menu ges-nav-cluster__menu--wide">
+                                    <span class="ges-nav-cluster__label">Consulta pública</span>
+                                    <a t-att-class="'is-active' if active_page == 'catalog' else ''" href="/ges/catalogo"><i class="fa fa-th-large"></i><span>Catálogo de produtos<small>Capacidades, aplicações e formatos</small></span></a>
+                                    <a t-att-class="'is-active' if active_page == 'tools' else ''" href="/ges/ferramentas"><i class="fa fa-calculator"></i><span>Ferramentas de obra<small>Estimativas rápidas antes da cotação</small></span></a>
+                                    <span class="ges-nav-cluster__label">Portais operacionais</span>
+                                    <a href="/my/ges"><i class="fa fa-user-circle"></i><span>Cliente e requisições<small>Pedidos, materiais e acompanhamento</small></span></a>
+                                    <a href="/subempreiteiros"><i class="fa fa-briefcase"></i><span>Rede de parceiros<small>Subempreiteiros, vagas e cadastro</small></span></a>
+                                </div>
+                            </details>
+                            <a class="ges-btn ges-btn--small" href="/ges/contactos#cotacao">Pedir cotação</a>
+                        </nav>
+                    </div>
+                </header>
+
+                <main id="main-content" class="oe_structure">
+                    <nav t-if="breadcrumb_items" class="ges-breadcrumb" aria-label="Percurso de navegação">
+                        <ol class="ges-container">
+                            <li t-foreach="breadcrumb_items" t-as="crumb">
+                                <a t-if="crumb.get('href')" t-att-href="crumb['href']"><t t-esc="crumb['name']"/></a>
+                                <span t-else="" aria-current="page"><t t-esc="crumb['name']"/></span>
+                            </li>
+                        </ol>
+                    </nav>
+                    <t t-out="0"/>
+                </main>
+
+                <footer class="ges-footer">
+                    <div class="ges-container ges-footer__grid">
+                        <div class="ges-footer__brand">
+                            <img src="/js_website_ges/static/src/img/ges-logo-white.png" alt="General Express Service"/>
+                            <p>Engenharia que organiza.<br/>Execução que entrega.</p>
+                        </div>
+                        <div>
+                            <p class="ges-footer__title">Explorar</p>
+                            <a href="/ges/sobre-nos">Sobre nós</a>
+                            <a href="/ges/solucoes">Soluções</a>
+                            <a href="/ges/catalogo">Catálogo</a>
+                            <a href="/ges/ferramentas">Ferramentas</a>
+                            <a href="/ges/projectos">Projectos</a>
+                            <a href="/ges/noticias">Notícias</a>
+                            <a href="/ges/contribuicao-social">Contribuição social</a>
+                            <a href="/ges/contribuicao-ambiental">Contribuição ambiental</a>
+                            <a href="/ges/contactos">Contactos</a>
+                        </div>
+                        <div>
+                            <p class="ges-footer__title">Portais GES</p>
+                            <a href="/my/ges">Cliente: painel e pedidos</a>
+                            <a href="/my/ges/calculator">Cliente: nova requisição</a>
+                            <a href="/subempreiteiros">Parceiros e oportunidades</a>
+                            <a href="/subempreiteiros/cadastro">Cadastro de subempreiteiro</a>
+                            <a href="/web/login?redirect=/my/ges">Entrar no portal</a>
+                        </div>
+                        <div>
+                            <p class="ges-footer__title">Contactos</p>
+                            <a href="tel:+258858900313">+258 85 890 0313</a>
+                            <a href="tel:+258849102552">+258 84 910 2552</a>
+                            <a href="mailto:comercial@generalexpress.co.mz">comercial@generalexpress.co.mz</a>
+                        </div>
+                        <div>
+                            <p class="ges-footer__title">Sede</p>
+                            <p>Av. de Moçambique, n.º 2298<br/>Maputo 1102, Moçambique</p>
+                            <p>NUIT 400130264</p>
+                        </div>
+                    </div>
+                    <div class="ges-container ges-footer__bottom">
+                        <span>© 2026 General Express Service</span>
+                        <span>Construímos com confiança. Entregamos com excelência.</span>
+                    </div>
+                </footer>
+            </div>
+        </t>
+    </template>
+
+    <template id="section_intro" name="GES Section Intro">
+        <div class="ges-section-heading">
+            <div>
+                <span class="ges-eyebrow"><t t-esc="eyebrow"/></span>
+                <h2><t t-esc="title"/></h2>
+            </div>
+            <p t-if="description"><t t-esc="description"/></p>
+        </div>
+    </template>
+
+    <template id="cta_band" name="GES CTA">
+        <section class="ges-cta">
+            <div class="ges-container ges-cta__inner">
+                <div>
+                    <span class="ges-eyebrow ges-eyebrow--dark">Próximo passo</span>
+                    <h2>Vamos construir o seu próximo projecto.</h2>
+                </div>
+                <p>Partilhe a sua necessidade. A nossa equipa identificará a combinação certa de soluções para o seu projecto.</p>
+                <a class="ges-btn ges-btn--dark" href="/ges/contactos#cotacao">Falar com a GES <i class="fa fa-arrow-right"/></a>
+            </div>
+        </section>
+    </template>
+
+    <template id="homepage" name="GES | Soluções Integradas de Construção em Moçambique">
+        <t t-call="js_website_ges.ges_shell">
+            <section class="ges-hero ges-hero-slider" aria-roledescription="carousel" aria-label="Capacidades da GES">
+                <article class="ges-hero-slide ges-hero-slide--integrated is-active" data-ges-slide="0" aria-hidden="false">
+                    <img class="ges-hero__media" src="/js_website_ges/static/src/img/hero-integrated.webp" srcset="/js_website_ges/static/src/img/hero-integrated-720.webp 720w, /js_website_ges/static/src/img/hero-integrated.webp 1988w" sizes="100vw" alt="Camião betoneira GES numa obra de construção em Moçambique" width="1988" height="1000" fetchpriority="high" decoding="async"/>
+                    <div class="ges-hero__shade"></div>
+                    <div class="ges-container ges-hero__content">
+                        <span class="ges-eyebrow ges-eyebrow--light">General Express Service</span>
+                        <h1>Engenharia que organiza.<br/><em>Execução que entrega.</em></h1>
+                        <p>Soluções integradas para construção, reabilitação e manutenção em Moçambique.</p>
+                        <div class="ges-actions"><a class="ges-btn" href="/ges/solucoes">Conheça as nossas soluções <i class="fa fa-arrow-right"/></a><a class="ges-text-link ges-text-link--light" href="/ges/contactos#cotacao">Pedir cotação</a></div>
+                    </div>
+                </article>
+                <article class="ges-hero-slide ges-hero-slide--concrete" data-ges-slide="1" aria-hidden="true">
+                    <img class="ges-hero__media" data-ges-src="/js_website_ges/static/src/img/hero-concrete-premium.webp" data-ges-srcset="/js_website_ges/static/src/img/hero-concrete-premium-720.webp 720w, /js_website_ges/static/src/img/hero-concrete-premium.webp 1672w" sizes="100vw" alt="Central de produção de betão em operação em Moçambique" width="1672" height="941" loading="lazy" fetchpriority="low" decoding="async"/><div class="ges-hero__shade"></div>
+                    <div class="ges-container ges-hero__content"><span class="ges-eyebrow ges-eyebrow--light">01 · Produção</span><h1>A mistura certa começa<br/><em>no controlo.</em></h1><p>Produção de betão com consistência, acompanhamento técnico e prontidão para o ritmo da obra.</p><div class="ges-actions"><a class="ges-btn" href="/ges/solucoes/fabrica-de-betao">Explorar Fábrica de Betão <i class="fa fa-arrow-right"/></a></div></div>
+                </article>
+                <article class="ges-hero-slide ges-hero-slide--equipment" data-ges-slide="2" aria-hidden="true">
+                    <img class="ges-hero__media" data-ges-src="/js_website_ges/static/src/img/hero-equipment-premium.webp" data-ges-srcset="/js_website_ges/static/src/img/hero-equipment-premium-720.webp 720w, /js_website_ges/static/src/img/hero-equipment-premium.webp 1672w" sizes="100vw" alt="Frota e equipamentos operacionais num projecto de infraestruturas" width="1672" height="941" loading="lazy" fetchpriority="low" decoding="async"/><div class="ges-hero__shade"></div>
+                    <div class="ges-container ges-hero__content"><span class="ges-eyebrow ges-eyebrow--light">02 · Operação</span><h1>Equipamentos certos mantêm<br/><em>a obra em movimento.</em></h1><p>Frota, bombagem, movimentação e estruturas de apoio com prontidão operacional.</p><div class="ges-actions"><a class="ges-btn" href="/ges/solucoes/aluguer-de-equipamentos">Ver equipamentos <i class="fa fa-arrow-right"/></a></div></div>
+                </article>
+                <article class="ges-hero-slide ges-hero-slide--materials" data-ges-slide="3" aria-hidden="true">
+                    <img class="ges-hero__media" data-ges-src="/js_website_ges/static/src/img/hero-materials-premium.webp" data-ges-srcset="/js_website_ges/static/src/img/hero-materials-premium-720.webp 720w, /js_website_ges/static/src/img/hero-materials-premium.webp 1672w" sizes="100vw" alt="Materiais de construção organizados num armazém operacional" width="1672" height="941" loading="lazy" fetchpriority="low" decoding="async"/><div class="ges-hero__shade"></div>
+                    <div class="ges-container ges-hero__content"><span class="ges-eyebrow ges-eyebrow--light">03 · Materiais</span><h1>Materiais que sustentam<br/><em>cada etapa.</em></h1><p>Blocos, vigotas, ferro, agregados e componentes com disponibilidade e controlo de qualidade.</p><div class="ges-actions"><a class="ges-btn" href="/ges/solucoes">Conhecer a produção <i class="fa fa-arrow-right"/></a></div></div>
+                </article>
+                <article class="ges-hero-slide ges-hero-slide--architecture" data-ges-slide="4" aria-hidden="true">
+                    <img class="ges-hero__media" data-ges-src="/js_website_ges/static/src/img/hero-architecture-premium.webp" data-ges-srcset="/js_website_ges/static/src/img/hero-architecture-premium-720.webp 720w, /js_website_ges/static/src/img/hero-architecture-premium.webp 1672w" sizes="100vw" alt="Edifício institucional contemporâneo em Maputo" width="1672" height="941" loading="lazy" fetchpriority="low" decoding="async"/><div class="ges-hero__shade"></div>
+                    <div class="ges-container ges-hero__content"><span class="ges-eyebrow ges-eyebrow--light">04 · Arquitectura &amp; Construção</span><h1>Criatividade técnica<br/><em>do conceito à entrega.</em></h1><p>Projectos modernos, funcionais e sustentáveis, coordenados com rigor técnico.</p><div class="ges-actions"><a class="ges-btn" href="/ges/projectos">Ver projectos <i class="fa fa-arrow-right"/></a></div></div>
+                </article>
+                <div class="ges-hero-controls" aria-label="Controlos do destaque">
+                    <button type="button" class="ges-hero-arrow ges-hero-arrow--prev" aria-label="Destaque anterior"><i class="fa fa-long-arrow-left"></i></button>
+                    <div class="ges-hero-dots">
+                        <button type="button" class="is-active" data-ges-slide-to="0" aria-label="Ver destaque 1" aria-current="true"><span>01</span></button>
+                        <button type="button" data-ges-slide-to="1" aria-label="Ver destaque 2"><span>02</span></button>
+                        <button type="button" data-ges-slide-to="2" aria-label="Ver destaque 3"><span>03</span></button>
+                        <button type="button" data-ges-slide-to="3" aria-label="Ver destaque 4"><span>04</span></button>
+                        <button type="button" data-ges-slide-to="4" aria-label="Ver destaque 5"><span>05</span></button>
+                    </div>
+                    <button type="button" class="ges-hero-arrow ges-hero-arrow--next" aria-label="Destaque seguinte"><i class="fa fa-long-arrow-right"></i></button>
+                </div>
+                <div class="ges-hero__index"><span class="ges-hero-current">01</span> <b>/</b> 05</div>
+            </section>
+
+            <section class="ges-capability-bar" aria-label="Áreas de capacidade">
+                <div class="ges-container">
+                    <span>Engenharia</span><i></i><span>Construção</span><i></i><span>Materiais</span><i></i><span>Equipamentos</span>
+                </div>
+            </section>
+
+            <div class="ges-motion-rail" aria-hidden="true">
+                <div class="ges-motion-rail__track">
+                    <span>Betão</span><i></i><span>Blocos</span><i></i><span>Vigotas</span><i></i><span>Transporte</span><i></i><span>Equipamentos</span><i></i><span>Logística</span><i></i><span>Construção</span><i></i><span>Betão</span><i></i><span>Blocos</span><i></i><span>Vigotas</span><i></i><span>Transporte</span><i></i><span>Equipamentos</span><i></i><span>Logística</span><i></i><span>Construção</span>
+                </div>
+            </div>
+
+            <section class="ges-home-story">
+                <div class="ges-container ges-home-story__grid">
+                    <div class="ges-home-story__copy">
+                        <span class="ges-eyebrow">Quem somos</span>
+                        <h2>Uma empresa.<br/>Todo o ciclo da obra.</h2>
+                        <p class="ges-lead">Ligamos planeamento técnico, produção, logística e operação no terreno para construir com maior controlo.</p>
+                        <p>A General Express Service reúne recursos que normalmente estão fragmentados. O resultado é uma resposta coordenada, clara e preparada para projectos de diferentes escalas.</p>
+                        <a class="ges-text-link" href="/ges/sobre-nos">Conheça a GES <i class="fa fa-arrow-right"/></a>
+                    </div>
+                    <div class="ges-home-story__visual" data-ges-parallax="1">
+                        <figure class="ges-story-image ges-story-image--main"><img src="/js_website_ges/static/src/img/hero-architecture-premium.webp" srcset="/js_website_ges/static/src/img/hero-architecture-premium-720.webp 720w, /js_website_ges/static/src/img/hero-architecture-premium.webp 1672w" sizes="(max-width: 767px) 62vw, 48vw" alt="Arquitectura institucional contemporânea" width="1672" height="941" loading="lazy" decoding="async"/><figcaption>Arquitectura &amp; construção</figcaption></figure>
+                        <figure class="ges-story-image ges-story-image--small"><img src="/js_website_ges/static/src/img/hero-concrete-premium.webp" srcset="/js_website_ges/static/src/img/hero-concrete-premium-720.webp 720w, /js_website_ges/static/src/img/hero-concrete-premium.webp 1672w" sizes="(max-width: 767px) 32vw, 24vw" alt="Produção de betão para construção" width="1672" height="941" loading="lazy" decoding="async"/><figcaption>Produção controlada</figcaption></figure>
+                        <div class="ges-story-badge"><strong>15</strong><span>áreas operacionais<br/>coordenadas</span></div>
+                        <div class="ges-story-coordinate"><span>25°58' S</span><span>32°35' E</span><b>Maputo · MZ</b></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="ges-proof-strip">
+                <div class="ges-container ges-proof-strip__grid">
+                    <article><i class="fa fa-cubes"></i><strong data-ges-count="15">15</strong><span>áreas operacionais</span></article>
+                    <article><i class="fa fa-industry"></i><strong data-ges-count="2000">2.000</strong><span>blocos por dia</span></article>
+                    <article><i class="fa fa-refresh"></i><strong data-ges-count="1" data-ges-pad="2">01</strong><span>cadeia integrada</span></article>
+                    <article><i class="fa fa-map-marker"></i><strong>MZ</strong><span>capacidade nacional</span></article>
+                </div>
+            </section>
+
+            <section class="ges-section ges-section--soft">
+                <div class="ges-container">
+                    <t t-set="eyebrow">Soluções</t>
+                    <t t-set="title">Soluções que cobrem todo o ciclo da obra.</t>
+                    <t t-set="description">Da produção de materiais à execução no terreno, reunimos capacidades para responder com maior coordenação, qualidade e confiança.</t>
+                    <t t-call="js_website_ges.section_intro"/>
+                    <div class="ges-capability-showcase" data-ges-capability-showcase="1">
+                        <nav class="ges-capability-tabs" aria-label="Áreas de soluções">
+                            <button type="button" class="is-active" data-ges-capability="producao" aria-pressed="true"><span>01</span><i class="fa fa-industry"></i><b>Produção</b><small>7 capacidades</small><i class="fa fa-long-arrow-right"></i></button>
+                            <button type="button" data-ges-capability="operacao" aria-pressed="false"><span>02</span><i class="fa fa-truck"></i><b>Operação</b><small>5 capacidades</small><i class="fa fa-long-arrow-right"></i></button>
+                            <button type="button" data-ges-capability="execucao" aria-pressed="false"><span>03</span><i class="fa fa-building"></i><b>Execução</b><small>3 capacidades</small><i class="fa fa-long-arrow-right"></i></button>
+                        </nav>
+                        <div class="ges-capability-scenes">
+                            <article class="ges-capability-scene is-active" data-ges-capability-scene="producao" aria-hidden="false">
+                                <img src="/js_website_ges/static/src/img/hero-materials-premium.webp" srcset="/js_website_ges/static/src/img/hero-materials-premium-720.webp 720w, /js_website_ges/static/src/img/hero-materials-premium.webp 1672w" sizes="(max-width: 767px) 100vw, 70vw" alt="Produção e armazenamento de materiais de construção" width="1672" height="941" loading="lazy" decoding="async"/>
+                                <div class="ges-capability-scene__overlay"><span>Produção</span><h3>Da matéria-prima ao componente pronto.</h3><ul><li>Betão, blocos e vigotas</li><li>Alumínio e mobiliário</li><li>Estruturas e ferro</li></ul><a href="/ges/solucoes#producao">Explorar produção <i class="fa fa-arrow-right"></i></a></div>
+                            </article>
+                            <article class="ges-capability-scene" data-ges-capability-scene="operacao" aria-hidden="true">
+                                <img data-ges-src="/js_website_ges/static/src/img/hero-equipment-premium.webp" data-ges-srcset="/js_website_ges/static/src/img/hero-equipment-premium-720.webp 720w, /js_website_ges/static/src/img/hero-equipment-premium.webp 1672w" sizes="(max-width: 767px) 100vw, 70vw" alt="Equipamentos e logística de apoio à construção" width="1672" height="941" loading="lazy" decoding="async"/>
+                                <div class="ges-capability-scene__overlay"><span>Operação</span><h3>Recursos que mantêm o terreno em movimento.</h3><ul><li>Transporte e equipamentos</li><li>Andaimes e ferramentas</li><li>Armazém e logística</li></ul><a href="/ges/solucoes#operacao">Explorar operação <i class="fa fa-arrow-right"></i></a></div>
+                            </article>
+                            <article class="ges-capability-scene" data-ges-capability-scene="execucao" aria-hidden="true">
+                                <img data-ges-src="/js_website_ges/static/src/img/hero-architecture-premium.webp" data-ges-srcset="/js_website_ges/static/src/img/hero-architecture-premium-720.webp 720w, /js_website_ges/static/src/img/hero-architecture-premium.webp 1672w" sizes="(max-width: 767px) 100vw, 70vw" alt="Execução de arquitectura e construção" width="1672" height="941" loading="lazy" decoding="async"/>
+                                <div class="ges-capability-scene__overlay"><span>Execução</span><h3>Planeamento transformado em obra realizada.</h3><ul><li>Mão de obra especializada</li><li>Estaleiros coordenados</li><li>Agregados de pedreira</li></ul><a href="/ges/solucoes#execucao">Explorar execução <i class="fa fa-arrow-right"></i></a></div>
+                            </article>
+                        </div>
+                    </div>
+                    <div class="ges-section-action"><a class="ges-text-link" href="/ges/solucoes">Ver todas as 15 soluções <i class="fa fa-arrow-right"/></a></div>
+                </div>
+            </section>
+
+            <section class="ges-signage-section">
+                <div class="ges-container">
+                    <div class="ges-signage-heading">
+                        <div><span class="ges-eyebrow ges-eyebrow--light">Sistema de orientação</span><h2>Encontre a capacidade certa.</h2></div>
+                        <p>Uma sinalética digital inspirada no terreno organiza a oferta e conduz rapidamente da necessidade à solução.</p>
+                    </div>
+                    <div class="ges-signage-grid">
+                        <a href="/ges/solucoes#producao" class="ges-sign ges-sign--yellow"><span class="ges-sign__code">A / 01</span><i class="fa fa-industry"></i><div><b>Produção</b><small>Materiais &amp; componentes</small></div><i class="fa fa-long-arrow-right"></i></a>
+                        <a href="/ges/solucoes#operacao" class="ges-sign"><span class="ges-sign__code">B / 02</span><i class="fa fa-truck"></i><div><b>Operação</b><small>Frota &amp; logística</small></div><i class="fa fa-long-arrow-right"></i></a>
+                        <a href="/ges/solucoes#execucao" class="ges-sign"><span class="ges-sign__code">C / 03</span><i class="fa fa-building"></i><div><b>Execução</b><small>Obra &amp; terreno</small></div><i class="fa fa-long-arrow-right"></i></a>
+                    </div>
+                    <div class="ges-safety-pattern" aria-hidden="true"></div>
+                </div>
+            </section>
+
+            <section class="ges-section ges-ecosystem">
+                <div class="ges-container">
+                    <div class="ges-ecosystem__copy"><span class="ges-eyebrow">Sistema integrado</span><h2>Uma operação conectada do recurso ao edifício.</h2><p>Pedreira, produção, armazenamento, transporte e construção trabalham como uma única cadeia coordenada.</p></div>
+                    <figure class="ges-ecosystem__visual"><img src="/js_website_ges/static/src/img/ges-ecosystem-illustration.webp" alt="Ilustração do ecossistema integrado GES, da pedreira ao edifício concluído" loading="lazy" decoding="async" width="1823" height="863"/><figcaption><span>Extrair</span><span>Produzir</span><span>Coordenar</span><span>Construir</span><span>Entregar</span></figcaption></figure>
+                </div>
+            </section>
+
+            <section class="ges-section ges-project-feature">
+                <div class="ges-container ges-project-feature__grid">
+                    <div class="ges-project-feature__image">
+                        <span>Projecto em destaque</span>
+                    </div>
+                    <div>
+                        <span class="ges-eyebrow">Capacidade no terreno</span>
+                        <h2>INSS Matola: uma obra que simboliza progresso.</h2>
+                        <p>A construção do novo edifício combina rigor técnico, funcionalidade e compromisso com uma infraestrutura duradoura.</p>
+                        <dl>
+                            <div><dt>Tipo</dt><dd>Construção institucional</dd></div>
+                            <div><dt>Local</dt><dd>Matola, Moçambique</dd></div>
+                        </dl>
+                        <a class="ges-text-link" href="/ges/projectos">Ver projectos <i class="fa fa-arrow-right"/></a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="ges-material-gallery">
+                <div class="ges-container">
+                    <div class="ges-material-gallery__heading"><span class="ges-eyebrow ges-eyebrow--light">Materiais visuais</span><h2>Escala, detalhe e competência.</h2><a class="ges-text-link ges-text-link--light" href="/ges/catalogo">Abrir catálogo <i class="fa fa-arrow-right"></i></a></div>
+                    <div class="ges-material-mosaic">
+                        <a href="/ges/solucoes/fabrica-de-betao" class="ges-material-tile ges-material-tile--concrete" data-ges-lazy-bg="/js_website_ges/static/src/img/hero-concrete-premium.webp"><span>Betão</span><strong>Produção controlada</strong></a>
+                        <a href="/ges/solucoes/aluguer-de-equipamentos" class="ges-material-tile ges-material-tile--equipment" data-ges-lazy-bg="/js_website_ges/static/src/img/hero-equipment-premium.webp"><span>Equipamentos</span><strong>Prontidão operacional</strong></a>
+                        <a href="/ges/solucoes/fabrica-de-blocos" class="ges-material-tile ges-material-tile--materials" data-ges-lazy-bg="/js_website_ges/static/src/img/hero-materials-premium.webp"><span>Materiais</span><strong>Disponibilidade consistente</strong></a>
+                        <a href="/ges/projectos" class="ges-material-tile ges-material-tile--architecture" data-ges-lazy-bg="/js_website_ges/static/src/img/hero-architecture-premium.webp"><span>Arquitectura</span><strong>Conceito &amp; entrega</strong></a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="ges-section ges-values-preview">
+                <div class="ges-container">
+                    <t t-set="eyebrow">Princípios</t>
+                    <t t-set="title">Valores que orientam cada decisão.</t>
+                    <t t-set="description">Qualidade, confiança, foco no cliente, sustentabilidade e valorização das pessoas definem a forma como actuamos.</t>
+                    <t t-call="js_website_ges.section_intro"/>
+                    <div class="ges-values-line">
+                        <article data-number="01"><i class="fa fa-diamond"></i><b>01</b><span>Qualidade &amp;<br/>inovação</span></article>
+                        <article data-number="02"><i class="fa fa-shield"></i><b>02</b><span>Integridade &amp;<br/>confiança</span></article>
+                        <article data-number="03"><i class="fa fa-crosshairs"></i><b>03</b><span>Obsessão pelo<br/>cliente</span></article>
+                        <article data-number="04"><i class="fa fa-leaf"></i><b>04</b><span>Eco-<br/>sustentável</span></article>
+                        <article data-number="05"><i class="fa fa-users"></i><b>05</b><span>Valorização de<br/>pessoas</span></article>
+                    </div>
+                </div>
+            </section>
+            <section class="ges-tools-preview">
+                <div class="ges-container ges-tools-preview__grid">
+                    <div>
+                        <span class="ges-eyebrow">Ferramentas digitais</span>
+                        <h2>Planeie melhor antes de pedir cotação.</h2>
+                        <p>Estimativas rápidas para betão, blocos, transporte, preparação de obra e escolha da solução GES mais adequada.</p>
+                    </div>
+                    <div class="ges-tools-preview__cards">
+                        <a href="/ges/ferramentas#betao"><i class="fa fa-cube"></i><span>Betão</span></a>
+                        <a href="/ges/ferramentas#blocos"><i class="fa fa-th-large"></i><span>Blocos</span></a>
+                        <a href="/ges/ferramentas#transporte"><i class="fa fa-truck"></i><span>Transporte</span></a>
+                        <a href="/ges/ferramentas#checklist"><i class="fa fa-check-square-o"></i><span>Checklist</span></a>
+                        <a href="/ges/ferramentas#recomendador"><i class="fa fa-compass"></i><span>Solução ideal</span></a>
+                    </div>
+                    <a class="ges-btn ges-btn--dark" href="/ges/ferramentas">Abrir ferramentas <i class="fa fa-arrow-right"></i></a>
+                </div>
+            </section>
+
+            <section class="ges-local-presence" aria-labelledby="ges-local-title">
+                <div class="ges-container ges-local-presence__grid">
+                    <div>
+                        <span class="ges-eyebrow">Presença local</span>
+                        <h2 id="ges-local-title">Construção e infraestruturas em Moçambique.</h2>
+                        <p>A partir de Maputo, a GES coordena engenharia, produção de materiais, transporte, aluguer de equipamentos, logística e execução para projectos em todo o país.</p>
+                        <div class="ges-local-presence__links">
+                            <a href="/ges/solucoes">Explorar soluções <i class="fa fa-arrow-right"></i></a>
+                            <a href="/ges/contactos#cotacao">Solicitar cotação <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <address>
+                        <span>Sede GES</span>
+                        <strong>Maputo, Moçambique</strong>
+                        <p>Av. de Moçambique, n.º 2298<br/>Maputo 1102</p>
+                        <a href="tel:+258858900313">+258 85 890 0313</a>
+                        <a href="mailto:comercial@generalexpress.co.mz">comercial@generalexpress.co.mz</a>
+                    </address>
+                </div>
+            </section>
+            <t t-call="js_website_ges.cta_band"/>
+        </t>
+    </template>
+
+    <template id="about_page" name="Sobre a GES | General Express Service">
+        <t t-call="js_website_ges.ges_shell">
+            <section class="ges-inner-hero ges-inner-hero--about">
+                <div class="ges-container">
+                    <span class="ges-eyebrow ges-eyebrow--light">Sobre nós</span>
+                    <h1>Uma marca feita para<br/><em>construir confiança.</em></h1>
+                    <p>A GES combina engenharia, execução e capacidade operacional numa presença única: robusta no terreno, clara na comunicação e responsável em cada entrega.</p>
+                </div>
+            </section>
+            <section class="ges-section">
+                <div class="ges-container ges-copy-grid">
+                    <span class="ges-kicker">01 — Quem somos</span>
+                    <div>
+                        <h2>Uma resposta coordenada às necessidades de cada obra.</h2>
+                        <p class="ges-lead">A General Express Service é uma empresa moçambicana de soluções integradas para construção e infraestruturas.</p>
+                        <p>A nossa estrutura reúne produção de materiais, transporte, aluguer de equipamentos, logística, mão de obra e execução. Trabalhamos para transformar projectos em resultados concretos, com atenção à qualidade, ao prazo, à segurança e à sustentabilidade.</p>
+                    </div>
+                </div>
+            </section>
+            <section class="ges-section ges-section--black">
+                <div class="ges-container ges-mission-grid">
+                    <article><span>Missão</span><h2>Transformar sonhos em realidade.</h2><p>Soluções completas, inovadoras e sustentáveis de construção civil.</p></article>
+                    <article><span>Visão</span><h2>Edificar um futuro mais próspero.</h2><p>Ser a preferência de clientes e parceiros em construção, reabilitação e manutenção.</p></article>
+                </div>
+            </section>
+            <section class="ges-section">
+                <div class="ges-container">
+                    <t t-set="eyebrow">A nossa cultura</t>
+                    <t t-set="title">Cinco princípios definem a forma como a GES actua.</t>
+                    <t t-set="description">Decisões técnicas, relações duradouras e responsabilidade em cada entrega.</t>
+                    <t t-call="js_website_ges.section_intro"/>
+                    <div class="ges-values-grid">
+                        <article><b>01</b><h3>Qualidade e Inovação</h3><p>Superamos padrões locais, incorporando inovação nos nossos processos e materiais.</p></article>
+                        <article><b>02</b><h3>Integridade e Confiança</h3><p>Agimos com honestidade, seriedade e responsabilidade em todas as relações.</p></article>
+                        <article><b>03</b><h3>Obsessão pelo Cliente</h3><p>Prestamos serviços personalizados e assumimos compromissos realistas.</p></article>
+                        <article><b>04</b><h3>Eco-sustentável</h3><p>Minimizamos impactos ambientais e promovemos desenvolvimento social.</p></article>
+                        <article><b>05</b><h3>Valorização de Pessoas</h3><p>Investimos no crescimento, inclusão e reconhecimento de cada colaborador.</p></article>
+                    </div>
+                </div>
+            </section>
+            <t t-call="js_website_ges.cta_band"/>
+        </t>
+    </template>
+
+    <template id="solutions_page" name="Soluções de Construção e Infraestruturas | GES">
+        <t t-call="js_website_ges.ges_shell">
+            <section class="ges-inner-hero ges-inner-hero--solutions">
+                <div class="ges-container">
+                    <span class="ges-eyebrow ges-eyebrow--light">15 áreas operacionais</span>
+                    <h1>Soluções integradas.<br/><em>Uma única capacidade de entrega.</em></h1>
+                    <p>Produção, operação e execução para responder às necessidades de construção, reabilitação e manutenção.</p>
+                </div>
+            </section>
+            <nav class="ges-solution-filter" aria-label="Filtrar soluções">
+                <div class="ges-container">
+                    <button type="button" class="is-active" data-ges-solution-filter="all" aria-pressed="true"><i class="fa fa-th-large"></i> Todas <span>15</span></button>
+                    <button type="button" data-ges-solution-filter="producao" aria-pressed="false"><i class="fa fa-industry"></i> Produção <span>07</span></button>
+                    <button type="button" data-ges-solution-filter="operacao" aria-pressed="false"><i class="fa fa-truck"></i> Operação <span>05</span></button>
+                    <button type="button" data-ges-solution-filter="execucao" aria-pressed="false"><i class="fa fa-building"></i> Execução <span>03</span></button>
+                </div>
+            </nav>
+            <section class="ges-section">
+                <div class="ges-container">
+                    <div t-foreach="solution_groups" t-as="group" t-att-id="group['key']" t-att-data-ges-solution-group="group['key']" class="ges-solution-group">
+                        <div class="ges-solution-group__heading">
+                            <span>0<t t-esc="group_index + 1"/></span>
+                            <div><h2><t t-esc="group['name']"/></h2><p><t t-esc="group['intro']"/></p></div>
+                        </div>
+                        <div class="ges-solution-list">
+                            <a t-foreach="solutions" t-as="item" t-if="item['group_key'] == group['key']" t-att-href="'/ges/solucoes/%s' % item['slug']" class="ges-solution-row">
+                                <span><t t-esc="item['number']"/></span>
+                                <h3><t t-esc="item['name']"/></h3>
+                                <p><t t-esc="item['summary']"/></p>
+                                <i class="fa fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <t t-call="js_website_ges.cta_band"/>
+        </t>
+    </template>
+
+    <template id="solution_detail_page" name="GES Solution Detail">
+        <t t-call="js_website_ges.ges_shell">
+            <section t-att-class="'ges-solution-detail-hero ges-solution-detail-hero--%s' % solution['group_key']">
+                <div class="ges-container">
+                    <a href="/ges/solucoes" class="ges-back-link"><i class="fa fa-arrow-left"></i> Todas as soluções</a>
+                    <span class="ges-eyebrow ges-eyebrow--light"><t t-esc="solution['group']"/> · <t t-esc="solution['number']"/></span>
+                    <h1><t t-esc="solution['name']"/></h1>
+                    <p><t t-esc="solution['summary']"/></p>
+                </div>
+            </section>
+            <section class="ges-section">
+                <div class="ges-container ges-detail-grid">
+                    <div><span class="ges-kicker">Solução</span><h2>Capacidade orientada à necessidade do projecto.</h2></div>
+                    <div>
+                        <p class="ges-lead">Analisamos a necessidade, definimos o âmbito, coordenamos os recursos e acompanhamos a execução até à entrega.</p>
+                        <div class="ges-benefit-list">
+                            <span><i class="fa fa-check"></i> Capacidade integrada</span>
+                            <span><i class="fa fa-check"></i> Coordenação entre produção, logística e terreno</span>
+                            <span><i class="fa fa-check"></i> Compromisso com qualidade e prazo</span>
+                            <span><i class="fa fa-check"></i> Atendimento orientado ao cliente</span>
+                        </div>
+                        <a class="ges-btn ges-btn--dark" t-att-href="'/ges/contactos?solution=%s#cotacao' % solution['slug']">Solicitar informação</a>
+                    </div>
+                </div>
+            </section>
+            <t t-call="js_website_ges.cta_band"/>
+        </t>
+    </template>
+
+    <template id="projects_page" name="Projectos | Capacidade GES no Terreno">
+        <t t-call="js_website_ges.ges_shell">
+            <section class="ges-inner-hero ges-inner-hero--projects">
+                <div class="ges-container">
+                    <span class="ges-eyebrow ges-eyebrow--light">Projectos</span>
+                    <h1>Capacidade que se prova<br/><em>no terreno.</em></h1>
+                    <p>Cada projecto demonstra a capacidade da GES para integrar recursos, produção, logística e execução.</p>
+                </div>
+            </section>
+            <section class="ges-section">
+                <div class="ges-container">
+                    <div class="ges-projects-grid">
+                        <article class="ges-project-card ges-project-card--inss">
+                            <div class="ges-project-card__media" data-ges-lazy-bg="/js_website_ges/static/src/img/project-inss.webp"></div>
+                            <div><span>Construção institucional</span><h2>INSS Matola</h2><p>Matola · Moçambique</p></div>
+                        </article>
+                        <article class="ges-project-card ges-project-card--flats">
+                            <div class="ges-project-card__media" data-ges-lazy-bg="/js_website_ges/static/src/img/project-flats.webp"></div>
+                            <div><span>Residencial</span><h2>Flats contemporâneos</h2><p>Funcionalidade, conforto e acabamento.</p></div>
+                        </article>
+                        <article class="ges-project-card ges-project-card--operations">
+                            <div class="ges-project-card__media"></div>
+                            <div><span>Operações</span><h2>Capacidade integrada</h2><p>Produção, transporte e apoio no terreno.</p></div>
+                        </article>
+                    </div>
+                    <div class="ges-project-note"><span>Nota de publicação</span><p>Novos projectos serão apresentados após validação de imagens, âmbito e resultados documentados.</p></div>
+                </div>
+            </section>
+            <t t-call="js_website_ges.cta_band"/>
+        </t>
+    </template>
+
+    <template id="news_page" name="Notícias e Comunidade | GES">
+        <t t-call="js_website_ges.ges_shell">
+            <section class="ges-inner-hero ges-inner-hero--news">
+                <div class="ges-container">
+                    <span class="ges-eyebrow ges-eyebrow--light">Notícias &amp; comunidade</span>
+                    <h1>Conhecimento que<br/><em>constrói impacto.</em></h1>
+                    <p>Notícias, iniciativas e conhecimento técnico sobre a actividade da GES e o desenvolvimento das comunidades onde actuamos.</p>
+                </div>
+            </section>
+            <section class="ges-section">
+                <div class="ges-container ges-editorial-grid">
+                    <div><span class="ges-kicker">Linhas editoriais</span><h2>Uma presença digital que prova capacidade.</h2></div>
+                    <div class="ges-topic-list">
+                        <article><span>01</span><h3>Projectos &amp; entregas</h3><p>Evolução das obras, soluções mobilizadas e resultados documentados.</p></article>
+                        <article><span>02</span><h3>Indústria &amp; operações</h3><p>Bastidores das fábricas, equipamentos, logística, segurança e qualidade.</p></article>
+                        <article><span>03</span><h3>Pessoas &amp; comunidade</h3><p>Formação, valorização das equipas, sustentabilidade e impacto comunitário.</p></article>
+                    </div>
+                </div>
+            </section>
+            <section class="ges-coming-soon">
+                <div class="ges-container"><span class="ges-eyebrow">Publicações</span><h2>Conteúdo em preparação.</h2><p>Os primeiros artigos serão publicados com informação e imagens validadas pela equipa GES.</p></div>
+            </section>
+            <t t-call="js_website_ges.cta_band"/>
+        </t>
+    </template>
+
+    <template id="catalog_page" name="Catálogo Online | GES">
+        <t t-call="js_website_ges.ges_shell">
+            <section class="ges-inner-hero ges-inner-hero--catalog">
+                <div class="ges-container">
+                    <span class="ges-eyebrow ges-eyebrow--light">Catálogo online GES</span>
+                    <h1>Produtos e serviços.<br/><em>Por capacidade.</em></h1>
+                    <p>Explore a oferta GES de forma interactiva: filtre por área operacional, pesquise por material ou serviço e avance directamente para cotação.</p>
+                    <div class="ges-catalog-hero__actions">
+                        <a class="ges-btn" href="/ges/contactos#cotacao">Pedir cotação <i class="fa fa-arrow-right"></i></a>
+                        <a class="ges-btn ges-btn--ghost" href="/my/ges/calculator">Calcular materiais</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="ges-section ges-catalog-page" data-ges-catalog="1">
+                <div class="ges-container">
+                    <div class="ges-catalog-control">
+                        <div>
+                            <span class="ges-kicker">Catálogo interactivo</span>
+                            <h2>Seleccione uma capacidade e encontre a solução certa.</h2>
+                        </div>
+                        <label class="ges-catalog-search">
+                            <i class="fa fa-search"></i>
+                            <input type="search" placeholder="Pesquisar: betão, blocos, andaimes, transporte..." data-catalog-search="1"/>
+                        </label>
+                    </div>
+
+                    <div class="ges-catalog-tabs" role="tablist" aria-label="Filtros do catálogo">
+                        <button type="button" class="is-active" data-catalog-filter="all" aria-pressed="true"><i class="fa fa-th"></i><span>Todos</span><strong t-esc="len(catalog_products)"/></button>
+                        <button t-foreach="catalog_groups" t-as="group" type="button" t-att-data-catalog-filter="group['key']" aria-pressed="false">
+                            <i t-attf-class="fa #{group['icon']}"></i><span t-esc="group['name']"/><strong t-esc="len(group['products'])"/>
+                        </button>
+                    </div>
+
+                    <div class="ges-catalog-layout">
+                        <aside class="ges-catalog-map" aria-label="Mapa de capacidades">
+                            <article t-foreach="catalog_groups" t-as="group" t-att-data-catalog-map="group['key']">
+                                <i t-attf-class="fa #{group['icon']}"></i>
+                                <div>
+                                    <h3 t-esc="group['name']"/>
+                                    <p t-esc="group['intro']"/>
+                                </div>
+                            </article>
+                        </aside>
+
+                        <div>
+                            <div class="ges-catalog-grid">
+                                <article t-foreach="catalog_products" t-as="product"
+                                         class="ges-catalog-card"
+                                         t-att-data-catalog-item="product['group_key']"
+                                         t-att-data-catalog-text="'%s %s %s %s %s' % (product['name'], product['capacity'], product['description'], product['applications'], ' '.join(product['formats']))">
+                                    <div class="ges-catalog-card__top">
+                                        <span t-esc="product['sku']"/>
+                                        <button type="button" data-catalog-compare="1" t-att-data-catalog-name="product['name']" aria-pressed="false">Comparar</button>
+                                    </div>
+                                    <div class="ges-catalog-card__icon"><i t-attf-class="fa #{product['icon']}"></i></div>
+                                    <span class="ges-catalog-card__badge" t-esc="product['badge']"/>
+                                    <h2 t-esc="product['name']"/>
+                                    <p t-esc="product['description']"/>
+                                    <dl>
+                                        <div><dt>Capacidade</dt><dd t-esc="product['capacity']"/></div>
+                                        <div><dt>Aplicação</dt><dd t-esc="product['applications']"/></div>
+                                    </dl>
+                                    <div class="ges-catalog-card__chips">
+                                        <span t-foreach="product['formats']" t-as="format_item" t-esc="format_item"/>
+                                    </div>
+                                    <div class="ges-catalog-card__actions">
+                                        <a t-attf-href="/ges/contactos?produto=#{product['sku']}#cotacao">Solicitar <i class="fa fa-arrow-right"></i></a>
+                                        <a href="/my/ges/calculator">Requisitar</a>
+                                    </div>
+                                </article>
+                            </div>
+                            <div class="ges-catalog-empty" hidden="hidden" data-catalog-empty="1">
+                                <i class="fa fa-search"></i>
+                                <h3>Nenhum item encontrado.</h3>
+                                <p>Tente pesquisar por capacidade, material ou serviço.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="ges-catalog-compare" data-catalog-tray="1" aria-live="polite">
+                        <div><span>Comparação rápida</span><strong data-catalog-count="1">0 itens</strong></div>
+                        <p data-catalog-list="1">Seleccione produtos para comparar capacidades antes de pedir cotação.</p>
+                        <a class="ges-btn ges-btn--small ges-btn--dark" href="/ges/contactos#cotacao">Enviar pedido</a>
+                    </aside>
+                </div>
+            </section>
+
+            <section class="ges-catalog-band">
+                <div class="ges-container">
+                    <div><span class="ges-eyebrow">Da consulta à entrega</span><h2>Catálogo conectado à operação.</h2></div>
+                    <p>Use o catálogo para identificar a solução, depois envie a necessidade para a equipa GES validar disponibilidade, quantidades, transporte e prazo.</p>
+                    <a class="ges-text-link" href="/ges/ferramentas">Abrir ferramentas de obra <i class="fa fa-arrow-right"></i></a>
+                </div>
+            </section>
+        </t>
+    </template>
+
+    <template id="tools_page" name="Ferramentas de Obra | GES">
+        <t t-call="js_website_ges.ges_shell">
+            <section class="ges-inner-hero ges-inner-hero--tools">
+                <div class="ges-container">
+                    <span class="ges-eyebrow ges-eyebrow--light">Ferramentas digitais GES</span>
+                    <h1>Planeamento rápido.<br/><em>Decisão mais clara.</em></h1>
+                    <p>Use cinco ferramentas práticas para estimar materiais, logística e preparação antes de falar com a equipa comercial.</p>
+                </div>
+            </section>
+
+            <section class="ges-section ges-tools-page" data-ges-tools="1">
+                <div class="ges-container">
+                    <div class="ges-tools-intro">
+                        <span class="ges-kicker">Central de ferramentas</span>
+                        <h2>Dados simples que ajudam a orientar a obra.</h2>
+                        <p>As estimativas são indicativas e devem ser validadas pela equipa técnica GES conforme projecto, acesso, perdas reais e especificações.</p>
+                    </div>
+
+                    <div class="ges-tools-grid">
+                        <article id="betao" class="ges-tool-card ges-tool-card--featured" data-ges-tool="concrete">
+                            <div class="ges-tool-card__head">
+                                <span>01</span><i class="fa fa-cube"></i>
+                                <div><h2>Estimador de betão</h2><p>Calcula volume com margem de desperdício.</p></div>
+                            </div>
+                            <div class="ges-tool-fields">
+                                <label>Comprimento (m)<input type="number" min="0" step="0.01" data-tool-field="length" placeholder="0"/></label>
+                                <label>Largura (m)<input type="number" min="0" step="0.01" data-tool-field="width" placeholder="0"/></label>
+                                <label>Espessura (cm)<input type="number" min="0" step="0.1" data-tool-field="depth" placeholder="10"/></label>
+                                <label>Desperdício (%)<input type="number" min="0" max="40" step="1" data-tool-field="waste" value="5"/></label>
+                            </div>
+                            <div class="ges-tool-result"><span>Volume estimado</span><strong data-tool-output="concrete">0,00 m³</strong><small>Inclui desperdício indicado.</small></div>
+                        </article>
+
+                        <article id="blocos" class="ges-tool-card" data-ges-tool="blocks">
+                            <div class="ges-tool-card__head">
+                                <span>02</span><i class="fa fa-th-large"></i>
+                                <div><h2>Blocos para parede</h2><p>Estima unidades por área de parede.</p></div>
+                            </div>
+                            <div class="ges-tool-fields">
+                                <label>Comprimento total (m)<input type="number" min="0" step="0.01" data-tool-field="wall_length" placeholder="0"/></label>
+                                <label>Altura (m)<input type="number" min="0" step="0.01" data-tool-field="wall_height" placeholder="0"/></label>
+                                <label>Face do bloco<select data-tool-field="block_area"><option value="0.08">40 × 20 cm</option><option value="0.0741">39 × 19 cm</option><option value="0.06">30 × 20 cm</option></select></label>
+                                <label>Desperdício (%)<input type="number" min="0" max="40" step="1" data-tool-field="waste" value="7"/></label>
+                            </div>
+                            <div class="ges-tool-result"><span>Quantidade estimada</span><strong data-tool-output="blocks">0 un.</strong><small>Sem descontar aberturas de portas/janelas.</small></div>
+                        </article>
+
+                        <article id="transporte" class="ges-tool-card" data-ges-tool="transport">
+                            <div class="ges-tool-card__head">
+                                <span>03</span><i class="fa fa-truck"></i>
+                                <div><h2>Plano de transporte</h2><p>Calcula viagens aproximadas por carga útil.</p></div>
+                            </div>
+                            <div class="ges-tool-fields">
+                                <label>Volume ou peso total<input type="number" min="0" step="0.01" data-tool-field="load" placeholder="0"/></label>
+                                <label>Capacidade por viagem<input type="number" min="0" step="0.01" data-tool-field="capacity" value="8"/></label>
+                                <label>Distância até à obra (km)<input type="number" min="0" step="1" data-tool-field="distance" placeholder="0"/></label>
+                                <label>Janela de entrega<select data-tool-field="urgency"><option value="normal">Normal</option><option value="urgent">Urgente</option><option value="scheduled">Agendada</option></select></label>
+                            </div>
+                            <div class="ges-tool-result"><span>Operação estimada</span><strong data-tool-output="transport">0 viagens</strong><small data-tool-note="transport">Informe volume/peso para estimar.</small></div>
+                        </article>
+
+                        <article id="checklist" class="ges-tool-card" data-ges-tool="readiness">
+                            <div class="ges-tool-card__head">
+                                <span>04</span><i class="fa fa-check-square-o"></i>
+                                <div><h2>Check-list de prontidão</h2><p>Avalia se a obra está preparada para cotação/arranque.</p></div>
+                            </div>
+                            <div class="ges-checklist">
+                                <label><input type="checkbox" data-readiness-item="1"/> Local da obra definido</label>
+                                <label><input type="checkbox" data-readiness-item="1"/> Medições ou quantidades disponíveis</label>
+                                <label><input type="checkbox" data-readiness-item="1"/> Prazo pretendido indicado</label>
+                                <label><input type="checkbox" data-readiness-item="1"/> Acesso/logística conhecidos</label>
+                                <label><input type="checkbox" data-readiness-item="1"/> Desenhos, memória ou fotografias disponíveis</label>
+                            </div>
+                            <div class="ges-tool-result"><span>Prontidão</span><strong data-tool-output="readiness">0%</strong><small data-tool-note="readiness">Comece por marcar o que já tem.</small></div>
+                        </article>
+
+                        <article id="recomendador" class="ges-tool-card ges-tool-card--dark" data-ges-tool="advisor">
+                            <div class="ges-tool-card__head">
+                                <span>05</span><i class="fa fa-compass"></i>
+                                <div><h2>Recomendador GES</h2><p>Indica a combinação de soluções mais provável.</p></div>
+                            </div>
+                            <div class="ges-tool-fields">
+                                <label>Tipo de necessidade<select data-tool-field="need"><option value="materials">Materiais</option><option value="equipment">Equipamentos</option><option value="execution">Execução de obra</option><option value="logistics">Logística</option><option value="integrated">Projecto integrado</option></select></label>
+                                <label>Fase do projecto<select data-tool-field="phase"><option value="planning">Planeamento</option><option value="procurement">Compra/fornecimento</option><option value="site">Obra em execução</option><option value="maintenance">Manutenção/reabilitação</option></select></label>
+                                <label>Urgência<select data-tool-field="speed"><option value="normal">Normal</option><option value="fast">Rápida</option><option value="critical">Crítica</option></select></label>
+                                <label>Escala<select data-tool-field="scale"><option value="small">Pequena</option><option value="medium">Média</option><option value="large">Grande</option></select></label>
+                            </div>
+                            <div class="ges-tool-result"><span>Recomendação</span><strong data-tool-output="advisor">Produção + Comercial</strong><small data-tool-note="advisor">Seleccione os dados para afinar a sugestão.</small></div>
+                        </article>
+                    </div>
+
+                    <div class="ges-tools-cta">
+                        <div><span class="ges-eyebrow">Próximo passo</span><h2>Transforme a estimativa numa cotação.</h2><p>Envie os dados para a GES validar quantidades, disponibilidade, transporte e condições de entrega.</p></div>
+                        <div class="ges-actions"><a class="ges-btn" href="/ges/contactos#cotacao">Pedir cotação <i class="fa fa-arrow-right"></i></a><a class="ges-text-link ges-text-link--light" href="/my/ges/calculator">Usar portal do cliente</a></div>
+                    </div>
+                </div>
+            </section>
+        </t>
+    </template>
+
+    <template id="social_contribution_page" name="Contribuição Social | GES">
+        <t t-call="js_website_ges.ges_shell">
+            <section class="ges-inner-hero ges-inner-hero--social">
+                <div class="ges-container">
+                    <span class="ges-eyebrow ges-eyebrow--light">Contribuição social</span>
+                    <h1>Construir também é<br/><em>cuidar de pessoas.</em></h1>
+                    <p>A GES reforça o seu compromisso comunitário como parceira da SOS Palace, apoiando iniciativas orientadas para famílias, inclusão social e dignidade humana.</p>
+                    <div class="ges-catalog-hero__actions">
+                        <a class="ges-btn" href="https://sos.palace.co.mz/" target="_blank" rel="noopener">Conhecer SOS Palace <i class="fa fa-external-link"></i></a>
+                        <a class="ges-btn ges-btn--ghost" href="/ges/contribuicao-ambiental">Ver contribuição ambiental</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="ges-section ges-impact-page">
+                <div class="ges-container ges-impact-intro">
+                    <div>
+                        <span class="ges-kicker">Parceria social</span>
+                        <h2>GES + SOS Palace: impacto social com continuidade.</h2>
+                    </div>
+                    <p>A SOS Palace apresenta-se como uma organização dedicada a apoiar pessoas e comunidades em situação de vulnerabilidade, promovendo assistência, oportunidades, inclusão social e empoderamento. A contribuição social da GES nasce desse alinhamento: transformar capacidade empresarial em presença útil para a comunidade.</p>
+                </div>
+                <div class="ges-container ges-social-showcase">
+                    <figure class="ges-social-showcase__main">
+                        <img src="https://sos.palace.co.mz/web/image/878-0ce901da/IMG_3473.webp" alt="Acção social SOS Palace apoiada por parceiros" width="1200" height="900" loading="lazy" decoding="async"/>
+                        <figcaption><span>SOS Palace</span><strong>Parceria comunitária</strong></figcaption>
+                    </figure>
+                    <div class="ges-social-showcase__side">
+                        <img src="https://sos.palace.co.mz/web/image/928-5c010c18/IMG_3380%20%20Banner%202.webp" alt="Famílias e voluntários em iniciativa social" width="900" height="650" loading="lazy" decoding="async"/>
+                        <img src="https://sos.palace.co.mz/web/image/941-4edb74f4/IMG_3648.webp" alt="Momento de apoio comunitário SOS Palace" width="900" height="650" loading="lazy" decoding="async"/>
+                    </div>
+                    <div class="ges-social-metrics" aria-label="Indicadores públicos SOS Palace">
+                        <article><strong>45</strong><span>Famílias</span></article>
+                        <article><strong>15</strong><span>Padrinhos</span></article>
+                        <article><strong>18</strong><span>Voluntários</span></article>
+                        <article><strong>7</strong><span>Eventos</span></article>
+                    </div>
+                </div>
+                <div class="ges-container ges-impact-feature">
+                    <article class="ges-impact-card ges-impact-card--yellow">
+                        <span>01</span><i class="fa fa-home"></i><h3>Apoio a famílias</h3><p>Contribuir para iniciativas que ajudam famílias carenciadas com dignidade, proximidade e acompanhamento humano.</p>
+                    </article>
+                    <article class="ges-impact-card">
+                        <span>02</span><i class="fa fa-users"></i><h3>Inclusão social</h3><p>Apoiar acções que reduzem vulnerabilidades e criam melhores condições de participação comunitária.</p>
+                    </article>
+                    <article class="ges-impact-card">
+                        <span>03</span><i class="fa fa-handshake-o"></i><h3>Voluntariado</h3><p>Valorizar a participação de pessoas e equipas em iniciativas solidárias com impacto local.</p>
+                    </article>
+                    <article class="ges-impact-card ges-impact-card--dark">
+                        <span>04</span><i class="fa fa-line-chart"></i><h3>Impacto mensurável</h3><p>Organizar a contribuição social com foco em continuidade, transparência e resultados comunitários.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="ges-impact-split">
+                <div class="ges-container">
+                    <div>
+                        <span class="ges-eyebrow">Como a GES contribui</span>
+                        <h2>Uma parceria que liga empresa, comunidade e futuro.</h2>
+                    </div>
+                    <div class="ges-impact-list">
+                        <article><b>01</b><div class="ges-impact-list__body"><h3>Apoio institucional</h3><p>Divulgação, articulação e suporte à missão social da SOS Palace.</p></div></article>
+                        <article><b>02</b><div class="ges-impact-list__body"><h3>Mobilização de recursos</h3><p>Canalização de capacidade, contactos e meios para iniciativas comunitárias.</p></div></article>
+                        <article><b>03</b><div class="ges-impact-list__body"><h3>Participação humana</h3><p>Incentivo a uma cultura interna de solidariedade, responsabilidade e serviço.</p></div></article>
+                    </div>
+                </div>
+            </section>
+            <t t-call="js_website_ges.cta_band"/>
+        </t>
+    </template>
+
+    <template id="environmental_contribution_page" name="Contribuição Ambiental | GES">
+        <t t-call="js_website_ges.ges_shell">
+            <section class="ges-inner-hero ges-inner-hero--environment">
+                <div class="ges-container">
+                    <span class="ges-eyebrow ges-eyebrow--light">Contribuição ambiental</span>
+                    <h1>Construção responsável.<br/><em>Menos desperdício.</em></h1>
+                    <p>A contribuição ambiental da GES orienta a forma como planeamos materiais, logística, obra e operações para reduzir perdas e promover práticas mais conscientes.</p>
+                    <div class="ges-catalog-hero__actions">
+                        <a class="ges-btn" href="/ges/contactos#cotacao">Falar com a GES <i class="fa fa-arrow-right"></i></a>
+                        <a class="ges-btn ges-btn--ghost" href="/ges/contribuicao-social">Ver contribuição social</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="ges-section ges-impact-page ges-impact-page--green">
+                <div class="ges-container ges-impact-intro">
+                    <div>
+                        <span class="ges-kicker">Responsabilidade ambiental</span>
+                        <h2>Eficiência operacional como prática sustentável.</h2>
+                    </div>
+                    <p>Na construção, sustentabilidade começa antes da obra: medir melhor, comprar melhor, transportar melhor e executar com menos desperdício. A GES integra produção, logística e execução para tornar cada projecto mais organizado e ambientalmente consciente.</p>
+                </div>
+                <div class="ges-container ges-environment-showcase">
+                    <figure class="ges-environment-panel ges-environment-panel--large">
+                        <img src="/js_website_ges/static/src/img/hero-materials-premium.webp" alt="Materiais de construção organizados pela GES" width="1672" height="941" loading="lazy" decoding="async"/>
+                        <figcaption><span>Materiais</span><strong>Quantidades melhor planeadas</strong></figcaption>
+                    </figure>
+                    <figure class="ges-environment-panel">
+                        <img src="/js_website_ges/static/src/img/ges-truck.webp" alt="Transporte GES para logística eficiente" width="1200" height="800" loading="lazy" decoding="async"/>
+                        <figcaption><span>Logística</span><strong>Rotas e cargas coordenadas</strong></figcaption>
+                    </figure>
+                    <figure class="ges-environment-panel">
+                        <img src="/js_website_ges/static/src/img/hero-concrete-premium.webp" alt="Produção de betão com controlo operacional" width="1672" height="941" loading="lazy" decoding="async"/>
+                        <figcaption><span>Produção</span><strong>Menos perdas no processo</strong></figcaption>
+                    </figure>
+                </div>
+                <div class="ges-container ges-impact-feature">
+                    <article class="ges-impact-card ges-impact-card--green">
+                        <span>01</span><i class="fa fa-recycle"></i><h3>Gestão de resíduos</h3><p>Promover separação, reaproveitamento possível e descarte responsável de materiais de obra.</p>
+                    </article>
+                    <article class="ges-impact-card">
+                        <span>02</span><i class="fa fa-truck"></i><h3>Logística eficiente</h3><p>Planear rotas, cargas e entregas para reduzir viagens desnecessárias e melhorar o uso da frota.</p>
+                    </article>
+                    <article class="ges-impact-card">
+                        <span>03</span><i class="fa fa-cubes"></i><h3>Materiais bem calculados</h3><p>Usar ferramentas e validação técnica para reduzir sobras, rupturas e compras mal dimensionadas.</p>
+                    </article>
+                    <article class="ges-impact-card ges-impact-card--dark">
+                        <span>04</span><i class="fa fa-leaf"></i><h3>Cultura de obra limpa</h3><p>Incentivar estaleiros organizados, segurança, limpeza operacional e respeito pelo espaço envolvente.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="ges-impact-split ges-impact-split--environment">
+                <div class="ges-container">
+                    <div>
+                        <span class="ges-eyebrow">Compromissos práticos</span>
+                        <h2>Ambiental não é discurso: é processo.</h2>
+                    </div>
+                    <div class="ges-impact-list">
+                        <article><b>01</b><div class="ges-impact-list__body"><h3>Planeamento</h3><p>Estimativas digitais, listas de materiais e validação técnica antes da mobilização.</p></div></article>
+                        <article><b>02</b><div class="ges-impact-list__body"><h3>Operação</h3><p>Coordenação de transporte, armazenagem e fornecimento para reduzir desperdício logístico.</p></div></article>
+                        <article><b>03</b><div class="ges-impact-list__body"><h3>Execução</h3><p>Boas práticas de obra, organização de estaleiro e atenção ao impacto local.</p></div></article>
+                    </div>
+                </div>
+            </section>
+            <t t-call="js_website_ges.cta_band"/>
+        </t>
+    </template>
+
+    <template id="contact_page" name="Contactos e Pedido de Cotação | GES">
+        <t t-call="js_website_ges.ges_shell">
+            <section class="ges-inner-hero ges-inner-hero--contact">
+                <div class="ges-container">
+                    <span class="ges-eyebrow ges-eyebrow--light">Contactos</span>
+                    <h1>Vamos construir o seu<br/><em>próximo projecto.</em></h1>
+                    <p>Partilhe a sua necessidade. A nossa equipa entrará em contacto para compreender o projecto e identificar a solução adequada.</p>
+                </div>
+            </section>
+            <section class="ges-section" id="cotacao">
+                <div class="ges-container ges-contact-grid">
+                    <aside>
+                        <span class="ges-eyebrow">Fale com a GES</span>
+                        <h2>Um contacto directo e uma resposta orientada.</h2>
+                        <div class="ges-contact-list">
+                            <a href="tel:+258858900313"><span>Comercial</span>+258 85 890 0313</a>
+                            <a href="tel:+258849102552"><span>Vendas</span>+258 84 910 2552</a>
+                            <a href="mailto:comercial@generalexpress.co.mz"><span>E-mail</span>comercial@generalexpress.co.mz</a>
+                            <p><span>Endereço</span>Av. de Moçambique, n.º 2298<br/>Maputo 1102, Moçambique</p>
+                        </div>
+                    </aside>
+                    <div class="ges-form-wrap">
+                        <div t-if="sent" class="ges-alert ges-alert--success"><i class="fa fa-check-circle"></i><div><strong>Recebemos o seu pedido.</strong><p>A equipa GES entrará em contacto consigo.</p></div></div>
+                        <div t-if="error == 'required'" class="ges-alert ges-alert--error"><i class="fa fa-exclamation-circle"></i><div><strong>Preencha os campos obrigatórios.</strong><p>Verifique os dados e tente novamente.</p></div></div>
+                        <div t-if="error == 'send'" class="ges-alert ges-alert--error"><i class="fa fa-exclamation-circle"></i><div><strong>Não foi possível enviar o pedido.</strong><p>Tente novamente ou contacte-nos directamente.</p></div></div>
+                        <div t-if="error == 'attachment'" class="ges-alert ges-alert--error"><i class="fa fa-exclamation-circle"></i><div><strong>O anexo excede o limite de 10 MB.</strong><p>Escolha um ficheiro menor e tente novamente.</p></div></div>
+                        <form action="/ges/contactos/enviar" method="post" enctype="multipart/form-data" class="ges-form">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="ges-honeypot" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"/></label></div>
+                            <div class="ges-field"><label for="ges-name">Nome completo *</label><input id="ges-name" name="name" type="text" required="required"/></div>
+                            <div class="ges-field"><label for="ges-company">Empresa ou instituição</label><input id="ges-company" name="company" type="text"/></div>
+                            <div class="ges-field"><label for="ges-phone">Telefone *</label><input id="ges-phone" name="phone" type="tel" required="required"/></div>
+                            <div class="ges-field"><label for="ges-email">E-mail *</label><input id="ges-email" name="email" type="email" required="required"/></div>
+                            <div class="ges-field"><label for="ges-location">Localização do projecto</label><input id="ges-location" name="location" type="text"/></div>
+                            <div class="ges-field"><label for="ges-solution">Solução de interesse</label><select id="ges-solution" name="solution"><option value="">Seleccione uma solução</option><option t-foreach="solutions" t-as="item" t-att-value="item['name']" t-att-selected="'selected' if selected_solution == item['slug'] else None"><t t-esc="item['name']"/></option></select></div>
+                            <div class="ges-field ges-field--full"><label for="ges-message">Descrição da necessidade *</label><textarea id="ges-message" name="message" rows="5" required="required"></textarea></div>
+                            <div class="ges-field"><label for="ges-deadline">Prazo previsto</label><input id="ges-deadline" name="deadline" type="text" placeholder="Ex.: 3 meses"/></div>
+                            <div class="ges-field"><label for="ges-attachment">Documento ou memória descritiva</label><input id="ges-attachment" name="attachment" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"/></div>
+                            <div class="ges-form__footer"><p>Os dados enviados serão utilizados apenas para responder ao seu pedido.</p><button class="ges-btn ges-btn--dark" type="submit">Enviar pedido de cotação <i class="fa fa-arrow-right"></i></button></div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </t>
+    </template>
+</odoo>

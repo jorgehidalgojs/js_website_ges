@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="seq_ges_material_request" model="ir.sequence">
+        <field name="name">Requisição Portal GES</field>
+        <field name="code">ges.material.request</field>
+        <field name="prefix">REQ/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    <record id="seq_ges_subcontractor_job" model="ir.sequence">
+        <field name="name">Oportunidade Subempreiteiros GES</field>
+        <field name="code">ges.subcontractor.job</field>
+        <field name="prefix">VAGA/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    <record id="seq_ges_subcontractor_application" model="ir.sequence">
+        <field name="name">Candidatura Subempreiteiros GES</field>
+        <field name="code">ges.subcontractor.application</field>
+        <field name="prefix">CAND/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="product_ges_ready_concrete" model="product.template">
+        <field name="name">Betão pronto</field>
+        <field name="default_code">GES-BETAO</field>
+        <field name="type">product</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+        <field name="uom_id" ref="uom.product_uom_cubic_meter"/>
+        <field name="uom_po_id" ref="uom.product_uom_cubic_meter"/>
+        <field name="list_price">0</field>
+        <field name="ges_portal_available">True</field>
+        <field name="ges_calculator_type">concrete</field>
+        <field name="ges_portal_description">Calcule o volume por comprimento, largura e espessura.</field>
+    </record>
+    <record id="product_ges_blocks" model="product.template">
+        <field name="name">Blocos de construção</field>
+        <field name="default_code">GES-BLOCO</field>
+        <field name="type">product</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        <field name="list_price">0</field>
+        <field name="ges_portal_available">True</field>
+        <field name="ges_calculator_type">blocks</field>
+        <field name="ges_portal_description">Estime blocos a partir da área total das paredes.</field>
+    </record>
+    <record id="product_ges_construction_steel" model="product.template">
+        <field name="name">Ferro de construção</field>
+        <field name="default_code">GES-FERRO</field>
+        <field name="type">product</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="list_price">0</field>
+        <field name="ges_portal_available">True</field>
+        <field name="ges_calculator_type">manual</field>
+        <field name="ges_portal_description">Indique o peso previsto em quilogramas.</field>
+    </record>
+    <record id="product_ges_transport" model="product.template">
+        <field name="name">Transporte de materiais</field>
+        <field name="default_code">GES-TRANSP</field>
+        <field name="type">service</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        <field name="list_price">0</field>
+        <field name="ges_portal_available">True</field>
+        <field name="ges_calculator_type">manual</field>
+        <field name="ges_portal_description">Número estimado de viagens; a equipa valida distância e capacidade.</field>
+    </record>
+    <record id="product_ges_equipment_rental" model="product.template">
+        <field name="name">Aluguer de equipamento</field>
+        <field name="default_code">GES-EQUIP</field>
+        <field name="type">service</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+        <field name="uom_id" ref="uom.product_uom_day"/>
+        <field name="uom_po_id" ref="uom.product_uom_day"/>
+        <field name="list_price">0</field>
+        <field name="ges_portal_available">True</field>
+        <field name="ges_calculator_type">manual</field>
+        <field name="ges_portal_description">Indique a duração; descreva o equipamento nas observações.</field>
+    </record>
+</odoo>

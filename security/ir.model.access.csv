@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ges_material_request_user,ges.material.request user,model_ges_material_request,sales_team.group_sale_salesman,1,1,1,0
+access_ges_material_request_manager,ges.material.request manager,model_ges_material_request,sales_team.group_sale_manager,1,1,1,1
+access_ges_material_request_portal,ges.material.request portal,model_ges_material_request,base.group_portal,1,0,0,0
+access_ges_material_request_line_user,ges.material.request.line user,model_ges_material_request_line,sales_team.group_sale_salesman,1,1,1,1
+access_ges_material_request_line_portal,ges.material.request.line portal,model_ges_material_request_line,base.group_portal,1,0,0,0
+access_ges_subcontractor_profile_user,ges.subcontractor.profile user,model_ges_subcontractor_profile,sales_team.group_sale_salesman,1,1,1,0
+access_ges_subcontractor_profile_manager,ges.subcontractor.profile manager,model_ges_subcontractor_profile,sales_team.group_sale_manager,1,1,1,1
+access_ges_subcontractor_profile_portal,ges.subcontractor.profile portal,model_ges_subcontractor_profile,base.group_portal,1,0,0,0
+access_ges_subcontractor_job_user,ges.subcontractor.job user,model_ges_subcontractor_job,sales_team.group_sale_salesman,1,1,1,0
+access_ges_subcontractor_job_manager,ges.subcontractor.job manager,model_ges_subcontractor_job,sales_team.group_sale_manager,1,1,1,1
+access_ges_subcontractor_job_portal,ges.subcontractor.job portal,model_ges_subcontractor_job,base.group_portal,1,0,0,0
+access_ges_subcontractor_application_user,ges.subcontractor.application user,model_ges_subcontractor_application,sales_team.group_sale_salesman,1,1,1,0
+access_ges_subcontractor_application_manager,ges.subcontractor.application manager,model_ges_subcontractor_application,sales_team.group_sale_manager,1,1,1,1
+access_ges_subcontractor_application_portal,ges.subcontractor.application portal,model_ges_subcontractor_application,base.group_portal,1,0,0,0

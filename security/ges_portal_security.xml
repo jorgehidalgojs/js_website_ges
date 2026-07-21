@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ges_material_request_portal_rule" model="ir.rule">
+        <field name="name">Portal: requisições comerciais próprias</field>
+        <field name="model_id" ref="model_ges_material_request"/>
+        <field name="domain_force">[('partner_id', 'child_of', [user.partner_id.commercial_partner_id.id])]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="ges_material_request_line_portal_rule" model="ir.rule">
+        <field name="name">Portal: linhas das requisições próprias</field>
+        <field name="model_id" ref="model_ges_material_request_line"/>
+        <field name="domain_force">[('request_id.partner_id', 'child_of', [user.partner_id.commercial_partner_id.id])]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="ges_subcontractor_profile_portal_rule" model="ir.rule">
+        <field name="name">Portal: perfil de subempreiteiro próprio</field>
+        <field name="model_id" ref="model_ges_subcontractor_profile"/>
+        <field name="domain_force">[('partner_id', 'child_of', [user.partner_id.commercial_partner_id.id])]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="ges_subcontractor_job_portal_rule" model="ir.rule">
+        <field name="name">Portal: oportunidades publicadas</field>
+        <field name="model_id" ref="model_ges_subcontractor_job"/>
+        <field name="domain_force">[('state', '=', 'published')]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="ges_subcontractor_application_portal_rule" model="ir.rule">
+        <field name="name">Portal: candidaturas próprias</field>
+        <field name="model_id" ref="model_ges_subcontractor_application"/>
+        <field name="domain_force">[('partner_id', 'child_of', [user.partner_id.commercial_partner_id.id])]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>
